@@ -1,0 +1,74 @@
+/*
+
+[Main Script]
+
+Project: Gratech
+Version: 1.0
+Author : OnerTheme
+
+*/
+; (function ($) {
+    "use strict";
+
+    jQuery(window).on('elementor/frontend/init', function () {
+        // console.log( elementorFrontend);
+        if (typeof elementor != "undefined" && typeof elementor.settings.page != "undefined") {
+
+            elementor.settings.page.addChangeCallback('gratech_header_style', function (newValue) {
+                if (newValue == 'prebuilt') {
+                    elementor.saver.update({
+                        onSuccess: function () {
+                            elementor.reloadPreview();
+                            elementor.once('preview:loaded', function () {
+                                elementor.getPanelView().setPage('page_settings').activateTab('settings');
+                            });
+                        }
+                    });
+                }
+            });
+
+
+            elementor.settings.page.addChangeCallback('gratech_header_builder_option', function (newValue) {
+                elementor.saver.update({
+                    onSuccess: function () {
+                        elementor.reloadPreview();
+                        elementor.once('preview:loaded', function () {
+                            elementor.getPanelView().setPage('page_settings').activateTab('settings');
+                        });
+                    }
+                });
+            });
+
+            elementor.settings.page.addChangeCallback('gratech_footer_style', gratechFooterStyle);
+            function gratechFooterStyle(newValue) {
+                elementor.saver.update({
+                    onSuccess: function () {
+                        elementor.reloadPreview();
+                        elementor.once('preview:loaded', function () {
+                            elementor.getPanelView().setPage('page_settings').activateTab('settings');
+                        });
+                    }
+                });
+            }
+            elementor.settings.page.addChangeCallback('gratech_footer_choice', gratechFooterChoice);
+            function gratechFooterChoice(newValue) {
+                elementor.saver.update({
+                    onSuccess: function () {
+                        elementor.reloadPreview();
+                        elementor.once('preview:loaded', function () {
+                            elementor.getPanelView().setPage('page_settings').activateTab('settings');
+                        });
+                    }
+                });
+            }
+
+            // Add click event listener to open .case__btn links in a new tab
+            jQuery(document).on('click', '.case__btn', function (event) {
+                event.preventDefault(); // Prevents the default action
+                window.open(this.href, '_blank'); // Opens the link in a new tab/window
+            });
+
+        }
+    });
+
+})(jQuery);
