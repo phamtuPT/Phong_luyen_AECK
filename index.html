@@ -355,6 +355,35 @@
                 --wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);
             }
 
+			.hamburger-menu {
+				position: fixed;
+				top: 10px;
+				left: 10px;
+				cursor: pointer;
+			}
+
+			.bar {
+				width: 30px;
+				height: 4px;
+				background-color: #333;
+				margin: 6px 0;
+				transition: 0.4s;
+			}
+
+			.menu-items {
+				display: none;
+				position: fixed;
+				top: 50px;
+				left: 0;
+				background-color: #f0f0f0;
+				width: 200px;
+				padding: 10px;
+			}
+
+			.menu-items.show {
+				display: block;
+			}
+
             :where(.is-layout-flex) {
                 gap: 0.5em;
             }
@@ -948,6 +977,13 @@
                 padding-top: 90px;
                 padding-bottom: 90px;
             }
+
+			.no-square {
+  				border: none;
+  				outline: none;
+ 	 			background: none;
+			}
+
         </style>
         <link rel="stylesheet" id="google-fonts-1-css" href="./Homepage - AI4LIFE_files/css" media="all">
         <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
@@ -1166,20 +1202,17 @@
                                     <li id="menu-item-1650" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-1650">
                                         <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/trang-ch%E1%BB%A7">Web tải đề</a>
                                         <ul class="sub-menu">
-                                            <li id="menu-item-2476" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2476">
-                                                <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/t%C3%A0i-li%E1%BB%87u-2k7?authuser=0">Tài liệu 2k7</a>
-                                            </li>
                                             <li id="menu-item-2477" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2477">
-                                                <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/t%C3%A0i-li%E1%BB%87u-2k6/%C4%91%E1%BB%81-thi-tsa-2k6?authuser=0">Đề TSA 2k6</a>
+                                                <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/tsa-2025">TSA 2025</a>
                                             </li>
                                             <li id="menu-item-2478" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2478">
-                                                <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/t%C3%A0i-li%E1%BB%87u-2k6/%C4%91%E1%BB%81-thi-hsa-2k6?authuser=0">Đề HSA 2k6</a>
+                                                <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/hsa-2025">HSA 2025</a>
                                             </li>
                                             <li id="menu-item-2479" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2479">
                                                 <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/ebook-b%E1%BB%95-tr%E1%BB%A3-t%C6%B0-duy-tsa?authuser=0">Ebook AECK</a>
                                             </li>
                                             <li id="menu-item-2480" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2480">
-                                                <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/t%C3%A0i-li%E1%BB%87u-2k6/ph%C3%B2ng-luy%E1%BB%87n-%C4%91%E1%BB%81-tsa-hsa-2k6?authuser=0">Phòng luyện 2k6</a>
+                                                <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/t%C3%A0i-li%E1%BB%87u-2k6">Tài liệu TSA / HSA 2024</a>
                                             </li>
                                             <li id="menu-item-2481" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2481">
                                                 <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/mua-file-word?authuser=0">Mua File Word</a>
@@ -1187,14 +1220,12 @@
                                         </ul>
                                     </li>
                                     <li id="menu-item-1660" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item menu-item-home menu-item-1660">
-                                        <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/t%C3%A0i-li%E1%BB%87u-2k7?authuser=0">Luyện thi TSA</a>
+                                        <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/tsa-2025">TSA 2025</a>
                                     </li>
                                     <li id="menu-item-1661" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item menu-item-home menu-item-1661">
-                                        <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/t%C3%A0i-li%E1%BB%87u-2k6/%C4%91%E1%BB%81-thi-hsa-2k6?authuser=0">Luyện thi HSA</a>
+                                        <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/hsa-2025">HSA 2025</a>
                                     </li>
-                                    <li id="menu-item-1662" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item menu-item-home menu-item-1662">
-                                        <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/t%C3%A0i-li%E1%BB%87u-2k7/study-with-shiba?authuser=0">Record</a>
-                                    </li>
+                                    
                                     <li id="menu-item-1663" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1663">
                                         <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/li%C3%AAn-h%E1%BB%87?authuser=0">Liên hệ</a>
                                     </li>
@@ -2354,13 +2385,13 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
                                 <div class="container">
                                     <div class="section-header text-center mb-60">
                                         <h5 class="wow fadeInUp" data-wow-delay="00ms" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-delay: 0ms; animation-name: fadeInUp;">
-                                            <img decoding="async" class="me-1 lazyloaded" src="./Homepage - AI4LIFE_files/38_50.png" alt="icon" data-ll-status="loaded">
+                                            <img decoding="async" class="me-1 lazyloaded" src="./Homepage - AI4LIFE_files/2550.svg" alt="icon" data-ll-status="loaded">
                                             <noscript>
                                                 <img decoding="async" class="me-1" src="https://ai4life.hust.edu.vn/wp-content/uploads/2024/11/38_50.png" alt="icon">
                                             </noscript>
-                                            Delivering Essential Data to Solve Real-World Challenges							
+                                            Quy trình làm bài thi TSA							
                                         </h5>
-                                        <h2 class="wow fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-delay: 200ms; animation-name: fadeInUp;">Datasets							</h2>
+                                        <h2 class="wow fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-delay: 200ms; animation-name: fadeInUp;">Quy trình</h2>
                                     </div>
                                     <div class="row g-4">
                                         <div class="col-lg-4 wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-delay: 0ms; animation-name: fadeInUp;">
@@ -2379,8 +2410,8 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
                                                     <span class="process-number">1</span>
                                                 </div>
                                                 <div class="process__content">
-                                                    <h4 class="mt-25 mb-10">VAIPE-Pill: A Large-scale, Annotated Benchmark Dataset for Visual Pill Identification												</h4>
-                                                    <p>This dataset consists of a real-world, large-scale pill image. All these datasets are established under real-world scenarios and then normalized to train machine learning systems. </p>
+                                                    <h4 class="mt-25 mb-10">Hạn chế sai ngu</h4>
+                                                    <p>Điểm câu khó phụ thuộc cả vào những câu dễ nên hãy hạn chế sai ngu.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2400,8 +2431,8 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
                                                     <span class="process-number">2</span>
                                                 </div>
                                                 <div class="process__content">
-                                                    <h4 class="mt-25 mb-10">VAIPE-P: An Open Dataset of Prescription for Visual-based Clinical Applications												</h4>
-                                                    <p>This dataset consists of an Open Dataset of Prescription Images collected from large Vietnamese hospitals with various templates.</p>
+                                                    <h4 class="mt-25 mb-10">Thời gian không ảnh hưởng kết quả</h4>
+                                                    <p>Kết quả của bài thi không bị ảnh hưởng bởi thời gian nên cứ bình tĩnh làm bài</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2415,10 +2446,8 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
                                                     <span class="process-number">3</span>
                                                 </div>
                                                 <div class="process__content">
-                                                    <h4 class="mt-25 mb-10">CT2PET												</h4>
-                                                    <p>This is a comprehensive large-scale
-PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paired CT-PET images from studies of
-3,454 patients, designed to cover a wide range of anatomical regions.</p>
+                                                    <h4 class="mt-25 mb-10">Khoanh liều không mất điểm</h4>
+                                                    <p>Hệ thống không biết bạn khoanh liều nên hãy thoải mái, đúng thì được điểm, sai thì cũng không sao.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2432,9 +2461,8 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
                                                     <span class="process-number">4</span>
                                                 </div>
                                                 <div class="process__content">
-                                                    <h4 class="mt-25 mb-10">Multi-VSL: A Large-scale Multi-view Sign
-Language Dataset												</h4>
-                                                    <p>We provide a new large-scale, multi-view sign language recognition dataset spanning 1,000 glosses and 30 signers resulting in over 84,000 multi-view videos.</p>
+                                                    <h4 class="mt-25 mb-10">Sử dụng dấu phẩy và đúng chính tả</h4>
+                                                    <p>Hệ thống có phân biệt chính tả nên hãy cẩn thận dấu câu và dấu của số.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -2459,9 +2487,9 @@ Language Dataset												</h4>
                                                     </mask>
                                                     <path d="M3 5.99805C3 2.96048 5.46243 0.498047 8.5 0.498047H11.5C14.5376 0.498047 17 2.96048 17 5.99805C17 4.61734 15.2091 3.49805 13 3.49805H7C4.79086 3.49805 3 4.61734 3 5.99805ZM17 5.99805C17 9.03561 14.5376 11.498 11.5 11.498H8.5C5.46243 11.498 3 9.03561 3 5.99805C3 7.37876 4.79086 8.49805 7 8.49805H13C15.2091 8.49805 17 7.37876 17 5.99805ZM3 9.99805V1.99805V9.99805ZM17 1.99805V9.99805V1.99805Z" fill="#3C72FC" mask="url(#path-2-inside-1_1120_300)"></path>
                                                 </svg>
-                                                Explore our latest news on seminars, internships                                
+                                                Thông tin tuyển sinh                            
                                             </h5>
-                                            <h2 class="wow fadeInLeft" data-wow-delay="200ms" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-delay: 200ms; animation-name: fadeInLeft;">News &amp;Events</h2>
+                                            <h2 class="wow fadeInLeft" data-wow-delay="200ms" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-delay: 200ms; animation-name: fadeInLeft;">Tin tức &amp; Sự kiện</h2>
                                         </div>
                                         <a href="./index.html" class="btn-one wow fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-delay: 200ms; animation-name: fadeInUp;">Đọc thêm</a>
                                     </div>
@@ -2520,13 +2548,13 @@ Language Dataset												</h4>
                                         <div class="col-lg-6">
                                             <div class="blog-two__list-item mb-30 wow fadeInUp" data-wow-delay="200ms" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-delay: 200ms; animation-name: fadeInUp;">
                                                 <a href="https://ai4life.hust.edu.vn/2024/12/02/hust-uts-collaborative-doctoral-research-degree/" class="blog__image d-block image">
-                                                    <img decoding="async" width="235" height="233" src="./Homepage - AI4LIFE_files/z6001962682706_76a31cc950a9e800ba541722b7450f44-copy-235x233.jpg" class="attachment-gratech_235X233 size-gratech_235X233 wp-post-image lazyloaded" alt="" sizes="(max-width: 235px) 100vw, 235px" srcset="https://ai4life.hust.edu.vn/wp-content/uploads/2024/12/z6001962682706_76a31cc950a9e800ba541722b7450f44-copy-235x233.jpg 235w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/12/z6001962682706_76a31cc950a9e800ba541722b7450f44-copy-150x150.jpg 150w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/12/z6001962682706_76a31cc950a9e800ba541722b7450f44-copy-85x85.jpg 85w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/12/z6001962682706_76a31cc950a9e800ba541722b7450f44-copy-100x100.jpg 100w" data-ll-status="loaded">
+                                                    <img decoding="async" width="235" height="233" src="./Homepage - AI4LIFE_files/phodot1.jpg" class="attachment-gratech_235X233 size-gratech_235X233 wp-post-image lazyloaded" alt="" sizes="(max-width: 235px) 100vw, 235px" srcset="./Homepage - AI4LIFE_files/phodot1.jpg 235w, ./Homepage - AI4LIFE_files/phodot1.jpg-copy-150x150.jpg 150w, ./Homepage - AI4LIFE_files/phodot1.jpg-copy-85x85.jpg 85w, ./Homepage - AI4LIFE_files/phodot1.jpg-copy-100x100.jpg 100w" data-ll-status="loaded">
                                                     <noscript>
-                                                        <img decoding="async" width="235" height="233" src="https://ai4life.hust.edu.vn/wp-content/uploads/2024/12/z6001962682706_76a31cc950a9e800ba541722b7450f44-copy-235x233.jpg" class="attachment-gratech_235X233 size-gratech_235X233 wp-post-image" alt="" srcset="https://ai4life.hust.edu.vn/wp-content/uploads/2024/12/z6001962682706_76a31cc950a9e800ba541722b7450f44-copy-235x233.jpg 235w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/12/z6001962682706_76a31cc950a9e800ba541722b7450f44-copy-150x150.jpg 150w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/12/z6001962682706_76a31cc950a9e800ba541722b7450f44-copy-85x85.jpg 85w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/12/z6001962682706_76a31cc950a9e800ba541722b7450f44-copy-100x100.jpg 100w" sizes="(max-width: 235px) 100vw, 235px"/>
+                                                        <img decoding="async" width="235" height="233" src="./Homepage - AI4LIFE_files/phodot1.jpg" class="attachment-gratech_235X233 size-gratech_235X233 wp-post-image" alt="" srcset="./Homepage - AI4LIFE_files/phodot1.jpg 235w, ./Homepage - AI4LIFE_files/phodot1.jpg-copy-150x150.jpg 150w, ./Homepage - AI4LIFE_files/phodot1.jpg-copy-85x85.jpg 85w, ./Homepage - AI4LIFE_files/phodot1.jpg-copy-100x100.jpg 100w" sizes="(max-width: 235px) 100vw, 235px"/>
                                                     </noscript>
                                                     <div class="blog-tag">
-                                                        <h3 class="text-white">02</h3>
-                                                        <span class="text-white">Dec</span>
+                                                        <h3 class="text-white">04</h3>
+                                                        <span class="text-white">Feb</span>
                                                     </div>
                                                 </a>
                                                 <div class="blog__content">
@@ -2542,14 +2570,14 @@ Language Dataset												</h4>
                                                                     </clippath>
                                                                 </defs>
                                                             </svg>
-                                                            <a href="https://ai4life.hust.edu.vn/category/news/">News</a>
+                                                            <a href="./index.html"> TSA News</a>
                                                         </li>
                                                         <li>
                                                             <a href="./index.html">AECK 2025</a>
                                                         </li>
                                                     </ul>
                                                     <h3 class="box-titleg">
-                                                        <a class="primary-hover" href="https://ai4life.hust.edu.vn/2024/12/02/hust-uts-collaborative-doctoral-research-degree/">HUST-UTS Collaborative PhD Program</a>
+                                                        <a class="primary-hover" href="https://ts.hust.edu.vn/tin-tuc/dot-1-tsa-2025-xuat-hien-thu-khoa-cua-thu-khoa">Đợt 1 TSA 2025: Xuất hiện thủ khoa của...thủ khoa!</a>
                                                     </h3>
                                                     <div class="about__info mt-30">
                                                         <div class="d-flex gap-2 align-items-center">
@@ -2559,17 +2587,17 @@ Language Dataset												</h4>
                                                             </noscript>
                                                             <div class="info">
                                                                 <h5>By Admin</h5>
-                                                                <a href="https://ai4life.hust.edu.vn/author/nguyenle0820/" class="primary-color">AECK</a>
+                                                                <a href="./index.html" class="primary-color">AECK</a>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="blog-two__list-item  wow fadeInUp" data-wow-delay="400ms" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-delay: 400ms; animation-name: fadeInUp;">
-                                                <a href="https://ai4life.hust.edu.vn/2024/11/06/establishment-of-uts-hust-ai-hub/" class="blog__image d-block image">
-                                                    <img decoding="async" width="235" height="233" src="./Homepage - AI4LIFE_files/TAT07581-235x233.jpg" class="attachment-gratech_235X233 size-gratech_235X233 wp-post-image lazyloaded" alt="" sizes="(max-width: 235px) 100vw, 235px" srcset="https://ai4life.hust.edu.vn/wp-content/uploads/2024/11/TAT07581-235x233.jpg 235w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/11/TAT07581-150x150.jpg 150w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/11/TAT07581-85x85.jpg 85w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/11/TAT07581-100x100.jpg 100w" data-ll-status="loaded">
+                                                <a href="https://ts.hust.edu.vn/tin-tuc/dot-1-tsa-2025-xuat-hien-thu-khoa-cua-thu-khoa" class="blog__image d-block image">
+                                                    <img decoding="async" width="235" height="233" src="./Homepage - AI4LIFE_files/phodot1.jpg" class="attachment-gratech_235X233 size-gratech_235X233 wp-post-image lazyloaded" alt="" sizes="(max-width: 235px) 100vw, 235px" srcset="./Homepage - AI4LIFE_files/phodot1.jpg 235w, ./Homepage - AI4LIFE_files/phodot1.jpg-150x150.jpg 150w, ./Homepage - AI4LIFE_files/phodot1.jpg-85x85.jpg 85w, ./Homepage - AI4LIFE_files/phodot1.jpg-100x100.jpg 100w" data-ll-status="loaded">
                                                     <noscript>
-                                                        <img decoding="async" width="235" height="233" src="https://ai4life.hust.edu.vn/wp-content/uploads/2024/11/TAT07581-235x233.jpg" class="attachment-gratech_235X233 size-gratech_235X233 wp-post-image" alt="" srcset="https://ai4life.hust.edu.vn/wp-content/uploads/2024/11/TAT07581-235x233.jpg 235w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/11/TAT07581-150x150.jpg 150w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/11/TAT07581-85x85.jpg 85w, https://ai4life.hust.edu.vn/wp-content/uploads/2024/11/TAT07581-100x100.jpg 100w" sizes="(max-width: 235px) 100vw, 235px"/>
+                                                        <img decoding="async" width="235" height="233" src="./Homepage - AI4LIFE_files/phodot1.jpg" class="attachment-gratech_235X233 size-gratech_235X233 wp-post-image" alt="" srcset="./Homepage - AI4LIFE_files/phodot1.jpg 235w, ./Homepage - AI4LIFE_files/phodot1.jpg-150x150.jpg 150w, ./Homepage - AI4LIFE_files/phodot1.jpg-85x85.jpg 85w, ./Homepage - AI4LIFE_files/phodot1.jpg-100x100.jpg 100w" sizes="(max-width: 235px) 100vw, 235px"/>
                                                     </noscript>
                                                     <div class="blog-tag">
                                                         <h3 class="text-white">06</h3>
@@ -2589,14 +2617,14 @@ Language Dataset												</h4>
                                                                     </clippath>
                                                                 </defs>
                                                             </svg>
-                                                            <a href="https://ai4life.hust.edu.vn/category/uncategorized/">Uncategorized</a>
+                                                            <a href="./index.html">TSA News</a>
                                                         </li>
                                                         <li>
                                                             <a href="./index.html">AECK 2025</a>
                                                         </li>
                                                     </ul>
                                                     <h3 class="box-titleg">
-                                                        <a class="primary-hover" href="https://ai4life.hust.edu.vn/2024/11/06/establishment-of-uts-hust-ai-hub/">Establishment of UTS-HUST AI HUB</a>
+                                                        <a class="primary-hover" href="https://ts.hust.edu.vn/tin-tuc/dot-1-tsa-2025-xuat-hien-thu-khoa-cua-thu-khoa">Đợt 1 TSA 2025: Xuất hiện thủ khoa của...thủ khoa!/a>
                                                     </h3>
                                                     <div class="about__info mt-30">
                                                         <div class="d-flex gap-2 align-items-center">
@@ -2606,7 +2634,7 @@ Language Dataset												</h4>
                                                             </noscript>
                                                             <div class="info">
                                                                 <h5>By Admin</h5>
-                                                                <a href="https://ai4life.hust.edu.vn/author/nguyenle0820/" class="primary-color">AECK</a>
+                                                                <a href="./index.html" class="primary-color">AECK</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2725,13 +2753,14 @@ Language Dataset												</h4>
                 </div>
             </div>
             <div id="block-8" class="footer__item item-big wow fadeInUp widget_block" data-wow-delay="600ms" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-delay: 600ms; animation-name: fadeInUp;">
-                <h3 class="footer-title">Truyền thông</h3>
-                <p class="mb-20">Chưa nghĩ ra thêm sau</p>
+                <h3 class="footer-title">Fanpage</h3>
+                <p class="mb-20">Anh Em Cây Khế - Chinh phục TSA / HSA</p>
                 <ul class="footer-contact">
                     <li>
                         <div class="info">
-                            <h5>Fanpage:</h5>
-                            <p>Anh Em Cây Khế - Chinh phục TSA / HSA</p>
+                            <h5>Group</h5>
+                            <p>- Học hỏi & Trao đổi TSA / HSA</p>
+							<p>- Học hỏi & Trao đổi ĐGTD / ĐGNL (TSA / HSA / APT) 2025 cùng 2K7</p>
                         </div>
                     </li>
                 </ul>
