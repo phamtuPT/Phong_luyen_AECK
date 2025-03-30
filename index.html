@@ -2624,7 +2624,7 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
                                                         </li>
                                                     </ul>
                                                     <h3 class="box-titleg">
-                                                        <a class="primary-hover" href="https://ts.hust.edu.vn/tin-tuc/dot-1-tsa-2025-xuat-hien-thu-khoa-cua-thu-khoa">Đợt 1 TSA 2025: Xuất hiện thủ khoa của...thủ khoa!/a>
+                                                        <a class="primary-hover" href="https://ts.hust.edu.vn/tin-tuc/dot-1-tsa-2025-xuat-hien-thu-khoa-cua-thu-khoa"> Đợt 1 TSA 2025: Xuất hiện thủ khoa của...thủ khoa!</a>
                                                     </h3>
                                                     <div class="about__info mt-30">
                                                         <div class="d-flex gap-2 align-items-center">
@@ -3183,6 +3183,9 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
                     parent.appendChild(elem);
                 }
             }
+
+			// Ai bảo trì Code thì đừng xoá đoạn code thừa ở trên. Đây thử rồi xoá đi là đéo chạy đâu :))
+
             var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
             var address = protocol + window.location.host + window.location.pathname + '/ws';
             var socket = new WebSocket(address);
@@ -3202,6 +3205,8 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
     } else {
         console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
     }
+
+	
     // ]]>
 </script>
 </body></html>
