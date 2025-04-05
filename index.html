@@ -3,62 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đang kiểm tra cấu hình...</title>
-    <script>
-        function detectAndRedirect() {
-            let userAgent = navigator.userAgent.toLowerCase();
-            let isMobile = /iphone|ipad|android|mobile/.test(userAgent);
-            let cpuCores = navigator.hardwareConcurrency || 2;
-            let memory = navigator.deviceMemory || 2;
-
-            if (isMobile) {
-                // Nếu là điện thoại
-                if (cpuCores >= 6 && memory >= 6) {
-                    window.location.href = "./khoe/index.html";
-                } else {
-                    window.location.href = "./yeu/index.html";
-                }
-            } else {
-                // Nếu là máy tính
-                if (cpuCores >= 6 && memory >= 8) {
-                    window.location.href = "./khoe/index.html";
-                } else {
-                    window.location.href = "./yeu/index.html";
-                }
-            }
-        }
-        window.onload = detectAndRedirect;
-
-        // Chặn tổ hợp phím và F12
-        document.addEventListener("keydown", function(event) {
-            if (
-                event.ctrlKey && (event.key === 's' || event.key === 'u' || event.key === 'p' || event.key === 'c' || event.key === 'i' || event.key === 'j') || 
-                event.key === 'F12'
-            ) {
-                event.preventDefault();
-                alert("Chức năng này đã bị vô hiệu hóa!");
-            }
-        });
-
-        // Chặn chuột phải
-        document.addEventListener("contextmenu", function(event) {
-            event.preventDefault();
-            alert("Chức năng này đã bị vô hiệu hóa!");
-        });
-    </script>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-    </style>
+    <title>AECK - TSA - HSA</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Liên kết CSS -->
+    <meta property="og:description" content="Hệ sinh thái AECK - Tư duy độc lập - Làm chủ cuộc chơi">
+    <meta itemprop="image" content="./images/HUST_review.png">
+    <meta property="og:image" content="./images/HUST_review.png">
+    <link rel="icon" href="./images/1.ico" type="image/x-icon">
 </head>
+
+
+
+<script>
+    let redirected = false;
+    let finalDecision = null;
+
+    // Đo CPU nhanh + tối ưu (1 lần duy nhất, giảm độ trễ)
+    function quickCpuBenchmark() {
+        const t0 = performance.now();
+        for (let i = 0; i < 5e6; i++) {
+            Math.sqrt(i);
+        }
+        const t1 = performance.now();
+        return t1 - t0;
+    }
+
+    // Trích xuất cấu hình thiết bị
+    function getDeviceInfo() {
+        return {
+            ram: navigator.deviceMemory || 0, // RAM (GB)
+            cores: navigator.hardwareConcurrency || 0,
+            ua: navigator.userAgent
+        };
+    }
+
+    // Phân tích thiết bị dựa trên CPU + cấu hình
+    function analyzeDevice(cpuScore, info) {
+        const fastCpu = cpuScore < 60;         // thời gian xử lý nhanh
+        const enoughRam = info.ram >= 4;       // RAM đủ
+        const enoughCore = info.cores >= 4;    // đủ lõi CPU
+
+        return fastCpu && enoughRam && enoughCore;
+    }
+
+    // Xử lý redirect sau khi animation kết thúc
+    function doRedirect() {
+        if (redirected || finalDecision === null) return;
+        redirected = true;
+
+        const linkFast = "./khoe/index.html";
+        const linkSlow = "./yeu/index.html";
+        window.location.href = finalDecision ? linkFast : linkSlow;
+    }
+
+    // Gọi ngay sau khi trang vừa tải
+    window.addEventListener('load', () => {
+        const tank = document.querySelector('.tank-simu');
+
+        // 1. Đo hiệu suất + cấu hình NGAY LẬP TỨC
+        const cpuScore = quickCpuBenchmark();
+        const deviceInfo = getDeviceInfo();
+        finalDecision = analyzeDevice(cpuScore, deviceInfo);
+
+        console.log("⚙️ Thiết bị:", deviceInfo);
+        console.log("⚡ CPU:", cpuScore.toFixed(2), "ms");
+        console.log("📈 Phân loại:", finalDecision ? "MÁY MẠNH" : "MÁY YẾU");
+
+        // 2. Đợi animation xe tăng kết thúc rồi redirect
+        if (tank) {
+            tank.addEventListener('animationend', () => {
+                setTimeout(doRedirect, 20); // delay cực nhỏ
+            });
+
+            // Fallback nếu animationend không chạy
+            setTimeout(doRedirect, 7000);
+        } else {
+            doRedirect(); // không có animation thì đi luôn
+        }
+    });
+</script>
+
+<script>
+    // Ngăn chặn F12, Ctrl+Shift+I
+    document.addEventListener('keydown', function(e) {
+        // Ngăn chặn các phím F12, Ctrl+Shift+I
+        if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) {
+            e.preventDefault();
+        }
+        
+        // Ngăn chặn Ctrl+U (Xem mã nguồn) và Ctrl+S (Lưu trang)
+        if ((e.ctrlKey && e.keyCode == 85) || (e.ctrlKey && e.keyCode == 83)) {
+            e.preventDefault();
+        }
+    });
+
+    // Ngăn chặn chuột phải
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Ngăn chặn việc nhấn chuột giữa (middle-click) mở link
+    document.addEventListener('mousedown', function(e) {
+        if (e.button === 1) {
+            e.preventDefault();
+        }
+    });
+</script>
+
+
+
 <body>
-    <p>Đang kiểm tra cấu hình máy...</p>
+        <!-- Logo góc trái trên -->
+    <div id="corner-logo">
+        <img src="./logo.png" alt="Logo" />
+    </div>
+
+    <!-- Bản quyền cuối trang -->
+    <footer id="copyright-footer">
+        © 2025 AECK - Tất cả bản quyền được bảo lưu.
+    </footer>
+
+
+    <div id="gpmn-body-load">
+        <div class="bl-logo">
+            <div class="tank-wrap">
+                <div class="vn-sun">
+                    <img src="./vn-flag-full.gif" alt="Cờ Việt Nam">
+                </div>
+                <div class="tank-simu">
+                    <div class="wheels">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="fence"></div>
+                    <div class="fence2"></div>
+                </div>
+                <div class="gate"></div>
+                <div class="gate2"></div>
+            </div>
+            <div class="text-h1 text-center">
+                Cùng AECK Chào Mừng 50 Năm Thống Nhất Đất Nước 30/04/1975 - 30/04/2025
+            </div>
+        </div>
+    </div>
 </body>
 </html>

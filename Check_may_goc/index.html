@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đang kiểm tra cấu hình...</title>
+    <script>
+        function detectAndRedirect() {
+            let userAgent = navigator.userAgent.toLowerCase();
+            let isMobile = /iphone|ipad|android|mobile/.test(userAgent);
+            let cpuCores = navigator.hardwareConcurrency || 2;
+            let memory = navigator.deviceMemory || 2;
+
+            if (isMobile) {
+                // Nếu là điện thoại
+                if (cpuCores >= 6 && memory >= 6) {
+                    window.location.href = "./khoe/index.html";
+                } else {
+                    window.location.href = "./yeu/index.html";
+                }
+            } else {
+                // Nếu là máy tính
+                if (cpuCores >= 6 && memory >= 8) {
+                    window.location.href = "./khoe/index.html";
+                } else {
+                    window.location.href = "./yeu/index.html";
+                }
+            }
+        }
+        window.onload = detectAndRedirect;
+
+        // Chặn tổ hợp phím và F12
+        document.addEventListener("keydown", function(event) {
+            if (
+                event.ctrlKey && (event.key === 's' || event.key === 'u' || event.key === 'p' || event.key === 'c' || event.key === 'i' || event.key === 'j') || 
+                event.key === 'F12'
+            ) {
+                event.preventDefault();
+                alert("Chức năng này đã bị vô hiệu hóa!");
+            }
+        });
+
+        // Chặn chuột phải
+        document.addEventListener("contextmenu", function(event) {
+            event.preventDefault();
+            alert("Chức năng này đã bị vô hiệu hóa!");
+        });
+    </script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <p>Đang kiểm tra cấu hình máy...</p>
+</body>
+</html>
