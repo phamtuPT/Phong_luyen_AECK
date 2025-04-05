@@ -17,35 +17,54 @@
     let redirected = false;
     let finalDecision = null;
 
-    // Đo CPU nhanh + tối ưu (1 lần duy nhất, giảm độ trễ)
+    // Nhận biết thiết bị di động
+    function isMobileDevice() {
+        return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
+    // Đo hiệu suất CPU tùy thiết bị
     function quickCpuBenchmark() {
+        const iterations = isMobileDevice() ? 1e6 : 5e6;
         const t0 = performance.now();
-        for (let i = 0; i < 5e6; i++) {
+        for (let i = 0; i < iterations; i++) {
             Math.sqrt(i);
         }
         const t1 = performance.now();
         return t1 - t0;
     }
 
-    // Trích xuất cấu hình thiết bị
+    // Lấy thông tin thiết bị (gán mặc định thông minh nếu thiếu)
     function getDeviceInfo() {
+        const isMobile = isMobileDevice();
+        const rawRam = navigator.deviceMemory;
+        const rawCores = navigator.hardwareConcurrency;
+
         return {
-            ram: navigator.deviceMemory || 0, // RAM (GB)
-            cores: navigator.hardwareConcurrency || 0,
-            ua: navigator.userAgent
+            ram: (typeof rawRam === 'number' && rawRam > 0) ? rawRam : (isMobile ? 0 : 8),
+            cores: (typeof rawCores === 'number' && rawCores > 0) ? rawCores : (isMobile ? 0 : 4),
+            ua: navigator.userAgent,
+            isMobile: isMobile
         };
     }
 
-    // Phân tích thiết bị dựa trên CPU + cấu hình
+    // Phân tích mạnh / yếu dựa trên CPU + cấu hình
     function analyzeDevice(cpuScore, info) {
-        const fastCpu = cpuScore < 60;         // thời gian xử lý nhanh
-        const enoughRam = info.ram >= 4;       // RAM đủ
-        const enoughCore = info.cores >= 4;    // đủ lõi CPU
+        const validRam = info.ram > 0;
+        const validCores = info.cores > 0;
+
+        if (!validRam || !validCores) {
+            console.warn("⚠️ Thiếu thông tin phần cứng - mặc định là yếu");
+            return false;
+        }
+
+        const fastCpu = cpuScore < (info.isMobile ? 100 : 60);
+        const enoughRam = info.ram >= (info.isMobile ? 2 : 4);
+        const enoughCore = info.cores >= (info.isMobile ? 2 : 4);
 
         return fastCpu && enoughRam && enoughCore;
     }
 
-    // Xử lý redirect sau khi animation kết thúc
+    // Chuyển hướng sau khi đánh giá
     function doRedirect() {
         if (redirected || finalDecision === null) return;
         redirected = true;
@@ -55,59 +74,53 @@
         window.location.href = finalDecision ? linkFast : linkSlow;
     }
 
-    // Gọi ngay sau khi trang vừa tải
+    // Khởi chạy khi trang đã load
     window.addEventListener('load', () => {
         const tank = document.querySelector('.tank-simu');
 
-        // 1. Đo hiệu suất + cấu hình NGAY LẬP TỨC
         const cpuScore = quickCpuBenchmark();
         const deviceInfo = getDeviceInfo();
         finalDecision = analyzeDevice(cpuScore, deviceInfo);
 
-        console.log("⚙️ Thiết bị:", deviceInfo);
+        console.log("⚙️ Thiết bị:", deviceInfo.isMobile ? "📱 MOBILE" : "💻 PC");
+        console.log("🧠 RAM:", deviceInfo.ram, "GB | Cores:", deviceInfo.cores);
         console.log("⚡ CPU:", cpuScore.toFixed(2), "ms");
-        console.log("📈 Phân loại:", finalDecision ? "MÁY MẠNH" : "MÁY YẾU");
+        console.log("📈 Phân loại:", finalDecision ? "✅ MÁY MẠNH" : "❌ MÁY YẾU");
 
-        // 2. Đợi animation xe tăng kết thúc rồi redirect
         if (tank) {
             tank.addEventListener('animationend', () => {
-                setTimeout(doRedirect, 20); // delay cực nhỏ
+                setTimeout(doRedirect, 20);
             });
-
-            // Fallback nếu animationend không chạy
-            setTimeout(doRedirect, 7000);
+            setTimeout(doRedirect, 7000); // fallback nếu animation lỗi
         } else {
-            doRedirect(); // không có animation thì đi luôn
+            doRedirect();
         }
     });
 </script>
 
 <script>
-    // Ngăn chặn F12, Ctrl+Shift+I
+    // Chặn các phím mở dev tools, xem mã nguồn, lưu trang
     document.addEventListener('keydown', function(e) {
-        // Ngăn chặn các phím F12, Ctrl+Shift+I
-        if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) {
-            e.preventDefault();
+        if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) {
+            e.preventDefault(); // F12, Ctrl+Shift+I
         }
-        
-        // Ngăn chặn Ctrl+U (Xem mã nguồn) và Ctrl+S (Lưu trang)
-        if ((e.ctrlKey && e.keyCode == 85) || (e.ctrlKey && e.keyCode == 83)) {
-            e.preventDefault();
+        if ((e.ctrlKey && e.keyCode === 85) || (e.ctrlKey && e.keyCode === 83)) {
+            e.preventDefault(); // Ctrl+U, Ctrl+S
         }
     });
 
-    // Ngăn chặn chuột phải
+    // Chặn chuột phải và chuột giữa
     document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
     });
 
-    // Ngăn chặn việc nhấn chuột giữa (middle-click) mở link
     document.addEventListener('mousedown', function(e) {
         if (e.button === 1) {
             e.preventDefault();
         }
     });
 </script>
+
 
 
 
@@ -119,7 +132,7 @@
 
     <!-- Bản quyền cuối trang -->
     <footer id="copyright-footer">
-        © 2025 AECK - Tất cả bản quyền được bảo lưu.
+        © 2025 AECK - Animation from RP.
     </footer>
 
 
@@ -144,7 +157,7 @@
                 <div class="gate2"></div>
             </div>
             <div class="text-h1 text-center">
-                Cùng AECK Chào Mừng 50 Năm Thống Nhất Đất Nước 30/04/1975 - 30/04/2025
+                💖 Cùng AECK Chào Mừng 50 Năm Thống Nhất Đất Nước 30/04/1975 - 30/04/2025
             </div>
         </div>
     </div>

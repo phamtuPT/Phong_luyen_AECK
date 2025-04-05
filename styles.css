@@ -695,7 +695,7 @@ body {
 /* Trung tâm hóa nội dung */
 .text-center {
     text-align: center;
-    color: rgb(255, 255, 255);
+    color: rgb(166, 165, 165); /*màu chữ */
 }
 
 /* Logo cố định góc trái trên */
