@@ -1,165 +1,55 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AECK - TSA - HSA</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Liên kết CSS -->
-    <meta property="og:description" content="Hệ sinh thái AECK - Tư duy độc lập - Làm chủ cuộc chơi">
-    <meta itemprop="image" content="./images/HUST_review.png">
-    <meta property="og:image" content="./images/HUST_review.png">
-    <link rel="icon" href="./images/1.ico" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bảo trì hệ thống</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      background-image: url('./HUST_review.png'); /* Thay bằng URL ảnh nền của bạn */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    .message-box {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 40px;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .message-box h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .message-box p {
+      font-size: 1.2rem;
+    }
+  </style>
 </head>
-
-
-
-<script>
-    let redirected = false;
-    let finalDecision = null;
-
-    // Nhận biết thiết bị di động
-    function isMobileDevice() {
-        return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    }
-
-    // Đo hiệu suất CPU tùy thiết bị
-    function quickCpuBenchmark() {
-        const iterations = isMobileDevice() ? 1e6 : 5e6;
-        const t0 = performance.now();
-        for (let i = 0; i < iterations; i++) {
-            Math.sqrt(i);
-        }
-        const t1 = performance.now();
-        return t1 - t0;
-    }
-
-    // Lấy thông tin thiết bị (gán mặc định thông minh nếu thiếu)
-    function getDeviceInfo() {
-        const isMobile = isMobileDevice();
-        const rawRam = navigator.deviceMemory;
-        const rawCores = navigator.hardwareConcurrency;
-
-        return {
-            ram: (typeof rawRam === 'number' && rawRam > 0) ? rawRam : (isMobile ? 0 : 8),
-            cores: (typeof rawCores === 'number' && rawCores > 0) ? rawCores : (isMobile ? 0 : 4),
-            ua: navigator.userAgent,
-            isMobile: isMobile
-        };
-    }
-
-    // Phân tích mạnh / yếu dựa trên CPU + cấu hình
-    function analyzeDevice(cpuScore, info) {
-        const validRam = info.ram > 0;
-        const validCores = info.cores > 0;
-
-        if (!validRam || !validCores) {
-            console.warn("⚠️ Thiếu thông tin phần cứng - mặc định là yếu");
-            return false;
-        }
-
-        const fastCpu = cpuScore < (info.isMobile ? 100 : 60);
-        const enoughRam = info.ram >= (info.isMobile ? 2 : 4);
-        const enoughCore = info.cores >= (info.isMobile ? 2 : 4);
-
-        return fastCpu && enoughRam && enoughCore;
-    }
-
-    // Chuyển hướng sau khi đánh giá
-    function doRedirect() {
-        if (redirected || finalDecision === null) return;
-        redirected = true;
-
-        const linkFast = "./khoe/index.html";
-        const linkSlow = "./yeu/index.html";
-        window.location.href = finalDecision ? linkFast : linkSlow;
-    }
-
-    // Khởi chạy khi trang đã load
-    window.addEventListener('load', () => {
-        const tank = document.querySelector('.tank-simu');
-
-        const cpuScore = quickCpuBenchmark();
-        const deviceInfo = getDeviceInfo();
-        finalDecision = analyzeDevice(cpuScore, deviceInfo);
-
-        console.log("⚙️ Thiết bị:", deviceInfo.isMobile ? "📱 MOBILE" : "💻 PC");
-        console.log("🧠 RAM:", deviceInfo.ram, "GB | Cores:", deviceInfo.cores);
-        console.log("⚡ CPU:", cpuScore.toFixed(2), "ms");
-        console.log("📈 Phân loại:", finalDecision ? "✅ MÁY MẠNH" : "❌ MÁY YẾU");
-
-        if (tank) {
-            tank.addEventListener('animationend', () => {
-                setTimeout(doRedirect, 20);
-            });
-            setTimeout(doRedirect, 7000); // fallback nếu animation lỗi
-        } else {
-            doRedirect();
-        }
-    });
-</script>
-
-<script>
-    // Chặn các phím mở dev tools, xem mã nguồn, lưu trang
-    document.addEventListener('keydown', function(e) {
-        if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) {
-            e.preventDefault(); // F12, Ctrl+Shift+I
-        }
-        if ((e.ctrlKey && e.keyCode === 85) || (e.ctrlKey && e.keyCode === 83)) {
-            e.preventDefault(); // Ctrl+U, Ctrl+S
-        }
-    });
-
-    // Chặn chuột phải và chuột giữa
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-    });
-
-    document.addEventListener('mousedown', function(e) {
-        if (e.button === 1) {
-            e.preventDefault();
-        }
-    });
-</script>
-
-
-
-
 <body>
-        <!-- Logo góc trái trên -->
-    <div id="corner-logo">
-        <img src="./logo.png" alt="Logo" />
-    </div>
+  <div class="message-box">
+    <h1>Hệ thống đang được bảo trì</h1>
+    <p>Chúng tôi sẽ quay lại sớm nhất có thể. Cảm ơn bạn đã ủng hộ!</p>
+    <p>...</p>
+    <p>© 2025 AECK</p>
+  </div>
 
-    <!-- Bản quyền cuối trang -->
-    <footer id="copyright-footer">
-        © 2025 AECK - Animation from RP.
-    </footer>
-
-
-    <div id="gpmn-body-load">
-        <div class="bl-logo">
-            <div class="tank-wrap">
-                <div class="vn-sun">
-                    <img src="./vn-flag-full.gif" alt="Cờ Việt Nam">
-                </div>
-                <div class="tank-simu">
-                    <div class="wheels">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <div class="fence"></div>
-                    <div class="fence2"></div>
-                </div>
-                <div class="gate"></div>
-                <div class="gate2"></div>
-            </div>
-            <div class="text-h1 text-center">
-                💖 Cùng AECK Chào Mừng 50 Năm Thống Nhất Đất Nước 30/04/1975 - 30/04/2025
-            </div>
-        </div>
-    </div>
+  
 </body>
 </html>
