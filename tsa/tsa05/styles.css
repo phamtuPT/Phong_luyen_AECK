@@ -488,6 +488,19 @@ header {
   color: #333;
 }
 
+/* Define the blinking animation */
+@keyframes blink {
+  0% {
+    filter: brightness(100%);
+  }
+  50% {
+    filter: brightness(130%);
+  }
+  100% {
+    filter: brightness(100%);
+  }
+}
+
 /* Style the "Đáp án" button */
 .answer-button {
   background-color: #003f7d; /* Blue color to distinguish from "Vào thi" */
@@ -522,8 +535,17 @@ header {
   font-size: 0.9rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.3s ease, filter 0.3s ease;
   margin-left: 0; /* Adjusted since "Đáp án" button is before */
+  animation: blink 1.5s infinite ease-in-out; /* Apply blinking animation */
+}
+
+/* Stop blinking when disabled */
+.schedule-button:disabled {
+  background-color: #999; /* Gray color for disabled state */
+  cursor: not-allowed; /* Show not-allowed cursor */
+  transform: none; /* Disable hover scaling */
+  animation: none; /* Disable blinking animation */
 }
 
 .schedule-button:hover {
@@ -533,13 +555,6 @@ header {
 
 .schedule-button:active {
   transform: scale(0.95);
-}
-
-/* Disabled state for the button */
-.schedule-button:disabled {
-  background-color: #999; /* Gray color for disabled state */
-  cursor: not-allowed; /* Show not-allowed cursor */
-  transform: none; /* Disable hover scaling */
 }
 
 .schedule-button:disabled:hover {
