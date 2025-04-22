@@ -416,7 +416,6 @@ header {
   }
 }
 
-
 /* Stagger the animation for each schedule item */
 .schedule-item:nth-child(1).visible {
   animation-delay: 0.3s;
@@ -489,6 +488,30 @@ header {
   color: #333;
 }
 
+/* Style the "Đáp án" button */
+.answer-button {
+  background-color: #003f7d; /* Blue color to distinguish from "Vào thi" */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-left: 10px; /* Space between content and button */
+  margin-right: 10px; /* Space between "Đáp án" and "Vào thi" buttons */
+}
+
+.answer-button:hover {
+  background-color: #0066cc; /* Slightly brighter blue on hover */
+  transform: scale(1.05);
+}
+
+.answer-button:active {
+  transform: scale(0.95);
+}
+
 /* Style the "Vào thi" button */
 .schedule-button {
   background-color: #c02135; /* Red color matching theme */
@@ -500,7 +523,7 @@ header {
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
-  margin-left: 10px; /* Space between content and button */
+  margin-left: 0; /* Adjusted since "Đáp án" button is before */
 }
 
 .schedule-button:hover {
@@ -549,9 +572,11 @@ header {
     font-size: 0.85rem;
   }
 
-  .schedule-button {
+  .answer-button, .schedule-button {
     margin-left: 0; /* Reset margin on mobile */
-    align-self: flex-end; /* Align button to the right */
+    margin-right: 0;
+    margin-top: 5px; /* Space between buttons on mobile */
+    align-self: flex-end; /* Align buttons to the right */
   }
 }
 

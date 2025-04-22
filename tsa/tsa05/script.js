@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
     localStorage.removeItem(`schedule-item-${index}`);
   });
 
-  // Add click event listener to each button
+  // Add click event listener to each "Vào thi" button
   scheduleButtons.forEach((button, index) => {
     button.addEventListener("click", () => {
       const link = button.getAttribute("data-link");
@@ -57,6 +57,17 @@ document.addEventListener("DOMContentLoaded", function() {
       button.textContent = "Đã thi";
 
       localStorage.setItem(`schedule-item-${index}`, "completed");
+    });
+  });
+
+  // Functionality for "Đáp án" buttons
+  const answerButtons = document.querySelectorAll(".answer-button");
+  answerButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const answerLink = button.getAttribute("data-answer-link");
+      if (answerLink) {
+        window.open(answerLink, "_blank");
+      }
     });
   });
 
