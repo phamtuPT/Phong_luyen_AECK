@@ -4,162 +4,171 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AECK - TSA - HSA</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Liên kết CSS -->
+    <link rel="stylesheet" href="styles.css">
     <meta property="og:description" content="Hệ sinh thái AECK - Tư duy độc lập - Làm chủ cuộc chơi">
     <meta itemprop="image" content="./images/HUST_review.png">
     <meta property="og:image" content="./images/HUST_review.png">
     <link rel="icon" href="./images/1.ico" type="image/x-icon">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            position: relative;
+            text-align: center;
+        }
+        img {
+            max-width: 600px;
+            width: 100%;
+            height: auto;
+        }
+        .grayscale {
+            filter: grayscale(100%);
+            position: relative;
+        }
+        .color {
+            position: absolute;
+            top: 0;
+            left: 0;
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 0.05s linear;
+        }
+        .copyright {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
+    </style>
 </head>
-
-
-
-<script>
-    let redirected = false;
-    let finalDecision = null;
-
-    // Nhận biết thiết bị di động
-    function isMobileDevice() {
-        return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    }
-
-    // Đo hiệu suất CPU tùy thiết bị
-    function quickCpuBenchmark() {
-        const iterations = isMobileDevice() ? 1e6 : 5e6;
-        const t0 = performance.now();
-        for (let i = 0; i < iterations; i++) {
-            Math.sqrt(i);
-        }
-        const t1 = performance.now();
-        return t1 - t0;
-    }
-
-    // Lấy thông tin thiết bị (gán mặc định thông minh nếu thiếu)
-    function getDeviceInfo() {
-        const isMobile = isMobileDevice();
-        const rawRam = navigator.deviceMemory;
-        const rawCores = navigator.hardwareConcurrency;
-
-        return {
-            ram: (typeof rawRam === 'number' && rawRam > 0) ? rawRam : (isMobile ? 0 : 8),
-            cores: (typeof rawCores === 'number' && rawCores > 0) ? rawCores : (isMobile ? 0 : 4),
-            ua: navigator.userAgent,
-            isMobile: isMobile
-        };
-    }
-
-    // Phân tích mạnh / yếu dựa trên CPU + cấu hình
-    function analyzeDevice(cpuScore, info) {
-        const validRam = info.ram > 0;
-        const validCores = info.cores > 0;
-
-        if (!validRam || !validCores) {
-            console.warn("⚠️ Thiếu thông tin phần cứng - mặc định là yếu");
-            return false;
-        }
-
-        const fastCpu = cpuScore < (info.isMobile ? 100 : 60);
-        const enoughRam = info.ram >= (info.isMobile ? 2 : 4);
-        const enoughCore = info.cores >= (info.isMobile ? 2 : 4);
-
-        return fastCpu && enoughRam && enoughCore;
-    }
-
-    // Chuyển hướng sau khi đánh giá
-    function doRedirect() {
-        if (redirected || finalDecision === null) return;
-        redirected = true;
-
-        const linkFast = "./khoe/index.html";
-        const linkSlow = "./yeu/index.html";
-        window.location.href = finalDecision ? linkFast : linkSlow;
-    }
-
-    // Khởi chạy khi trang đã load
-    window.addEventListener('load', () => {
-        const tank = document.querySelector('.tank-simu');
-
-        const cpuScore = quickCpuBenchmark();
-        const deviceInfo = getDeviceInfo();
-        finalDecision = analyzeDevice(cpuScore, deviceInfo);
-
-        console.log("⚙️ Thiết bị:", deviceInfo.isMobile ? "📱 MOBILE" : "💻 PC");
-        console.log("🧠 RAM:", deviceInfo.ram, "GB | Cores:", deviceInfo.cores);
-        console.log("⚡ CPU:", cpuScore.toFixed(2), "ms");
-        console.log("📈 Phân loại:", finalDecision ? "✅ MÁY MẠNH" : "❌ MÁY YẾU");
-
-        if (tank) {
-            tank.addEventListener('animationend', () => {
-                setTimeout(doRedirect, 20);
-            });
-            setTimeout(doRedirect, 7000); // fallback nếu animation lỗi
-        } else {
-            doRedirect();
-        }
-    });
-</script>
-
-<script>
-    // Chặn các phím mở dev tools, xem mã nguồn, lưu trang
-    document.addEventListener('keydown', function(e) {
-        if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) {
-            e.preventDefault(); // F12, Ctrl+Shift+I
-        }
-        if ((e.ctrlKey && e.keyCode === 85) || (e.ctrlKey && e.keyCode === 83)) {
-            e.preventDefault(); // Ctrl+U, Ctrl+S
-        }
-    });
-
-    // Chặn chuột phải và chuột giữa
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-    });
-
-    document.addEventListener('mousedown', function(e) {
-        if (e.button === 1) {
-            e.preventDefault();
-        }
-    });
-</script>
-
-
-
-
 <body>
-        <!-- Logo góc trái trên -->
-    <div id="corner-logo">
-        <img src="./logo.png" alt="Logo" />
+    <div class="container">
+        <img class="grayscale" src="./2.png" alt="Grayscale Image">
+        <img class="color" src="./2.png" alt="Color Image">
     </div>
+    <div class="copyright">© 2025 Your Company Name. All rights reserved.</div>
 
-    <!-- Bản quyền cuối trang -->
-    <footer id="copyright-footer">
-        © 2025 AECK - Animation from RP.
-    </footer>
+    <script>
+        let redirected = false;
+        let finalDecision = null;
 
+        // Nhận biết thiết bị di động
+        function isMobileDevice() {
+            return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
 
-    <div id="gpmn-body-load">
-        <div class="bl-logo">
-            <div class="tank-wrap">
-                <div class="vn-sun">
-                    <img src="./vn-flag-full.gif" alt="Cờ Việt Nam">
-                </div>
-                <div class="tank-simu">
-                    <div class="wheels">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <div class="fence"></div>
-                    <div class="fence2"></div>
-                </div>
-                <div class="gate"></div>
-                <div class="gate2"></div>
-            </div>
-            <div class="text-h1 text-center">
-                💖 Cùng AECK Chào Mừng 50 Năm Thống Nhất Đất Nước 30/04/1975 - 30/04/2025
-            </div>
-        </div>
-    </div>
+        // Đo hiệu suất CPU tùy thiết bị
+        function quickCpuBenchmark() {
+            const iterations = isMobileDevice() ? 1e6 : 5e6;
+            const t0 = performance.now();
+            for (let i = 0; i < iterations; i++) {
+                Math.sqrt(i);
+            }
+            const t1 = performance.now();
+            return t1 - t0;
+        }
+
+        // Lấy thông tin thiết bị
+        function getDeviceInfo() {
+            const isMobile = isMobileDevice();
+            const rawRam = navigator.deviceMemory;
+            const rawCores = navigator.hardwareConcurrency;
+
+            return {
+                ram: (typeof rawRam === 'number' && rawRam > 0) ? rawRam : (isMobile ? 0 : 8),
+                cores: (typeof rawCores === 'number' && rawCores > 0) ? rawCores : (isMobile ? 0 : 4),
+                ua: navigator.userAgent,
+                isMobile: isMobile
+            };
+        }
+
+        // Phân tích mạnh/yếu
+        function analyzeDevice(cpuScore, info) {
+            const validRam = info.ram > 0;
+            const validCores = info.cores > 0;
+
+            if (!validRam || !validCores) {
+                console.warn("⚠️ Thiếu thông tin phần cứng - mặc định là yếu");
+                return false;
+            }
+
+            const fastCpu = cpuScore < (info.isMobile ? 100 : 60);
+            const enoughRam = info.ram >= (info.isMobile ? 2 : 4);
+            const enoughCore = info.cores >= (info.isMobile ? 2 : 4);
+
+            return fastCpu && enoughRam && enoughCore;
+        }
+
+        // Chuyển hướng
+        function doRedirect() {
+            if (redirected || finalDecision === null) return;
+            redirected = true;
+
+            const linkFast = "./khoe/index.html";
+            const linkSlow = "./yeu/index.html";
+            window.location.href = finalDecision ? linkFast : linkSlow;
+        }
+
+        // Hiệu ứng chuyển màu
+        function startTransition() {
+            const colorImg = document.querySelector('.color');
+            let percentage = 0;
+
+            colorImg.style.clipPath = 'inset(0 100% 0 0)';
+
+            const interval = setInterval(() => {
+                percentage += 1;
+                if (percentage <= 100) {
+                    colorImg.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+                } else {
+                    clearInterval(interval);
+                    doRedirect(); // Gọi chuyển hướng sau khi hiệu ứng hoàn tất
+                }
+            }, 10); // Cập nhật mỗi 10ms
+        }
+
+        // Khởi chạy khi trang load
+        window.addEventListener('load', () => {
+            const cpuScore = quickCpuBenchmark();
+            const deviceInfo = getDeviceInfo();
+            finalDecision = analyzeDevice(cpuScore, deviceInfo);
+
+            console.log("⚙️ Thiết bị:", deviceInfo.isMobile ? "📱 MOBILE" : "💻 PC");
+            console.log("🧠 RAM:", deviceInfo.ram, "GB | Cores:", deviceInfo.cores);
+            console.log("⚡ CPU:", cpuScore.toFixed(2), "ms");
+            console.log("📈 Phân loại:", finalDecision ? "✅ MÁY MẠNH" : "❌ MÁY YẾU");
+
+            startTransition(); // Chạy hiệu ứng chuyển màu
+        });
+
+        // Chặn dev tools
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && e.keyCode === 73)) {
+                e.preventDefault(); // F12, Ctrl+Shift+I
+            }
+            if ((e.ctrlKey && e.keyCode === 85) || (e.ctrlKey && e.keyCode === 83)) {
+                e.preventDefault(); // Ctrl+U, Ctrl+S
+            }
+        });
+
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousedown', function(e) {
+            if (e.button === 1) {
+                e.preventDefault();
+            }
+        });
+    </script>
+
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'938c6098e8cce590',t:'MTc0NjA3MjA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Color Transition</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            position: relative;
+            text-align: center;
+        }
+        img {
+            max-width: 600px;
+            width: 100%;
+            height: auto;
+        }
+        .grayscale {
+            filter: grayscale(100%);
+            position: relative;
+        }
+        .color {
+            position: absolute;
+            top: 0;
+            left: 0;
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 0.05s linear;
+        }
+        .copyright {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="grayscale" src="./2.png" alt="Grayscale Image">
+        <img class="color" src="./2.png" alt="Color Image">
+    </div>
+    <div class="copyright">&copy; 2025 AECK. Bản quyền thuộc về AECK.</div>
+
+    <script>
+        function startTransition() {
+            const colorImg = document.querySelector('.color');
+            let percentage = 0;
+
+            // Reset trạng thái ban đầu
+            colorImg.style.clipPath = 'inset(0 100% 0 0)';
+
+            // Tạo hiệu ứng chuyển từ đen trắng sang màu từ trái sang phải
+            const interval = setInterval(() => {
+                percentage += 1;
+                if (percentage <= 100) {
+                    colorImg.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+                } else {
+                    clearInterval(interval);
+                    // Chuyển hướng sang link mới sau khi hoàn tất
+                    window.location.href = '';
+                }
+            }, 15); // Cập nhật mỗi 10ms
+        }
+
+        // Tự động chạy hiệu ứng khi trang tải
+        window.onload = startTransition;
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'938c6098e8cce590',t:'MTc0NjA3MjA4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('script');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
