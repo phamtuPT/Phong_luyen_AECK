@@ -930,16 +930,25 @@
                 const truong = truongSelect.value;
                 const method = phuongthucSelect.value;
                 let score = parseFloat(diemInput.value);
+                let bonus = 0;
+                let vung = 0;
                 // Nếu có input chứng chỉ và đang hiển thị, cộng điểm tương ứng
                 if (ccnnGroup.style.display !== 'none') {
-                    const bonus = parseInt(ccnnSelect.value) || 0;
-                    score += bonus;
+                    bonus = parseInt(ccnnSelect.value) || 0;
                 }
-                // Nếu có input điểm vùng và đang hiển thị, cộng điểm vùng
+                // Nếu có input điểm vùng và đang hiển thị, lấy điểm vùng
                 if (diemvungGroup.style.display !== 'none') {
-                    const vung = parseFloat(diemvungSelect.value) || 0;
-                    score += vung;
+                    vung = parseFloat(diemvungSelect.value) || 0;
                 }
+                let tong = score + bonus;
+                if (diemvungGroup.style.display !== 'none') {
+                    if (tong < 75) {
+                        tong = tong + vung;
+                    } else {
+                        tong = tong + (vung * (100 - tong) / 25);
+                    }
+                }
+                score = Math.round(tong * 100) / 100;
 
                 if (!truong || !method || isNaN(score)) {
                     alert('Vui lòng điền đầy đủ thông tin!');
