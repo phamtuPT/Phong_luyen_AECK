@@ -394,17 +394,6 @@
                 overflow-x: auto;
                 display: block;
             }
-
-            /* Ẩn cột "Điểm của bạn" trên mobile */
-            .benchmark-table th:nth-child(4),
-            .benchmark-table td:nth-child(4) {
-                display: none;
-            }
-
-            /* Ẩn cột "Điểm của bạn" trên mobile bằng class */
-            .user-score-col {
-                display: none;
-            }
         }
 
         /* Enhanced Result Display */
@@ -975,6 +964,7 @@
                                                             <th>Ngành</th>
                                                             <th>Mã ngành</th>
                                                             <th>Điểm chuẩn TSA 2024</th>
+                                                            <th>Điểm của bạn</th>
                                                             <th>Đánh giá</th>
                                                         </tr>
                                                     </thead>
@@ -987,6 +977,7 @@
                                                 <td>${item.major}</td>
                                                 <td>${item.code}</td>
                                                 <td>${item.score}</td>
+                                                <td>${tsaScore}</td>
                                                 <td><span class="score-status ${status.class}">${status.text}</span></td>
                                             </tr>
                                         `;
@@ -1160,6 +1151,7 @@
                     <td>${item.major}</td>
                     <td>${item.code}</td>
                     <td>${item.score}</td>
+                    <td>${userScore}</td>
                     <td><span class="score-status ${status.class}">${status.text}</span></td>
                 `;
                 tbody.appendChild(row);
