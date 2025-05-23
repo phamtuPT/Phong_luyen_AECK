@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy đổi điểm tuyển sinh</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #E63946;
+            --secondary-color: #C1121F;
+            --light-bg: #FFF1F2;
+            --success-color: #2A9D8F;
+            --danger-color: #E63946;
+            --warning-color: #F4A261;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff10" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            opacity: 0.1;
+        }
+
+        .card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(230, 57, 70, 0.15);
+        }
+
+        .form-control, .form-select {
+            border-radius: 12px;
+            padding: 12px;
+            border: 2px solid #FFE4E6;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(230, 57, 70, 0.1);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #4B5563;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn {
+            border-radius: 12px;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 12px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.3);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-success {
+            border: 2px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .btn-outline-success:hover {
+            background: var(--success-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.1);
+            margin-top: 2rem;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading-state p {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, var(--success-color), #238B7E);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 157, 143, 0.3);
+            color: white;
+        }
+
+        .info-text {
+            color: #4B5563;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .table {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.05);
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-weight: 500;
+        }
+
+        .table td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #FFE4E6;
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(230, 57, 70, 0.05);
+        }
+
+        .alert {
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .alert-danger {
+            background-color: #FFF1F2;
+            border-color: #FECDD3;
+            color: #BE123C;
+        }
+
+        .alert i {
+            margin-right: 0.5rem;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            opacity: 0.05;
+            border-radius: 50%;
+        }
+
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            right: -150px;
+        }
+
+        .shape-2 {
+            width: 200px;
+            height: 200px;
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .shape-3 {
+            width: 150px;
+            height: 150px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Modern Loading Animation */
+        .modern-loader {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+        }
+
+        .modern-loader div {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+
+        .modern-loader div:nth-child(1) {
+            left: 8px;
+            animation: modern-loader1 0.6s infinite;
+        }
+
+        .modern-loader div:nth-child(2) {
+            left: 8px;
+            animation: modern-loader2 0.6s infinite;
+        }
+
+        .modern-loader div:nth-child(3) {
+            left: 32px;
+            animation: modern-loader2 0.6s infinite;
+        }
+
+        .modern-loader div:nth-child(4) {
+            left: 56px;
+            animation: modern-loader3 0.6s infinite;
+        }
+
+        @keyframes modern-loader1 {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes modern-loader3 {
+            0% { transform: scale(1); }
+            100% { transform: scale(0); }
+        }
+
+        @keyframes modern-loader2 {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(24px, 0); }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 2rem 0;
+            }
+
+            .card {
+                margin: 0 1rem;
+            }
+
+            .btn-primary {
+                width: 100%;
+            }
+        }
+
+        /* Enhanced Result Display */
+        .result-animation {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-row {
+            animation: fadeInRow 0.5s ease-out;
+            animation-fill-mode: both;
+        }
+
+        @keyframes fadeInRow {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .score-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            animation: pulse 1s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .method-name {
+            font-weight: 500;
+            color: #4B5563;
+        }
+
+        .result-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 1rem;
+        }
+
+        .result-header h4 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .result-summary {
+            background: #FFF1F2;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-summary p {
+            margin: 0;
+            color: #4B5563;
+            font-size: 0.95rem;
+        }
+
+        .table tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(230, 57, 70, 0.05);
+            transform: translateX(5px);
+        }
+
+        .table tbody tr td {
+            transition: all 0.3s ease;
+        }
+
+        .table tbody tr:hover td {
+            color: var(--primary-color);
+        }
+
+        .share-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .share-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .share-btn:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Chart Styles */
+        .chart-container {
+            position: relative;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.1);
+            height: 400px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #scoreChart {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .chart-title {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #4B5563;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .chart-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .chart-tab {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chart-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .chart-tab:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Benchmark Score Styles */
+        .benchmark-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.1);
+        }
+
+        .benchmark-title {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .benchmark-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 1rem;
+        }
+
+        .benchmark-table th,
+        .benchmark-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #FFE4E6;
+        }
+
+        .benchmark-table th {
+            background: #FFF1F2;
+            font-weight: 600;
+            color: #4B5563;
+        }
+
+        .benchmark-table tr:hover {
+            background-color: rgba(230, 57, 70, 0.05);
+        }
+
+        .score-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .score-status.safe {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .score-status.risky {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .score-status.unsafe {
+            background-color: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 2px solid #FFE4E6;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(230, 57, 70, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <div class="header text-center">
+        <div class="container">
+            <h1 class="display-4 mb-3 fw-bold">Quy đổi mức điểm giữa các phương thức</h1>
+            <p class="lead mb-0">Tra cứu nhanh chóng và chính xác dựa trên phổ điểm 2024</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <form id="conversionForm">
+                            <div class="mb-4">
+                                <label for="truong" class="form-label">
+                                    <i class="fas fa-university me-2"></i>Chọn trường
+                                </label>
+                                <select class="form-select" id="truong" name="truong" required>
+                                    <option value="">Đang tải danh sách các trường...</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="phuongthuc" class="form-label">
+                                    <i class="fas fa-list-alt me-2"></i>Chọn phương thức xét tuyển
+                                </label>
+                                <select class="form-select" id="phuongthuc" name="phuongthuc" required disabled>
+                                    <option value="">Vui lòng chọn trường...</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="diem" class="form-label">
+                                    <i class="fas fa-star me-2"></i>Nhập điểm
+                                </label>
+                                <input type="number" class="form-control" id="diem" name="diem" 
+                                       placeholder="Nhập điểm cần quy đổi" step="0.01" required>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-calculator me-2"></i>Tra cứu
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="resultCard" class="card result-card">
+                    <div class="card-body p-4">
+                        <h4 class="card-title mb-4">
+                            <i class="fas fa-chart-line me-2"></i>Kết quả quy đổi
+                        </h4>
+                        <div id="resultContent"></div>
+                        <div class="text-center mt-4">
+                            <button id="shareBtn" class="share-btn">
+                                <i class="fas fa-share-alt me-2"></i>Chia sẻ kết quả
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-info-circle me-2"></i>Thông tin bổ sung
+                        </h5>
+                        <p class="info-text">
+                            Kết quả quy đổi được tính toán dựa trên phổ điểm năm 2024 và có thể thay đổi theo từng năm.
+                            Để có thông tin chính xác nhất, vui lòng tham khảo thông tin từ trường đại học.
+                        </p>
+                        <div class="mt-3">
+                            <a href="https://huongnghiep.hocmai.vn/tracuuthuhang" target="_blank" rel="noopener" class="btn btn-outline-primary me-2">
+                                <i class="fas fa-search me-2"></i>Tra cứu thứ hạng
+                            </a>
+                            <a href="https://topuni.hocmai.vn/2026" target="_blank" rel="noopener" class="btn btn-outline-success">
+                                <i class="fas fa-graduation-cap me-2"></i>Xuất phát sớm
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxbtIj7OMS6FK_o3PXWOvUrrypJocnFTFE0mVdq2z99jdMOe-Rkh1DLV4h2wuPT5fmK/exec";
+        
+        // Hàm chuyển chuỗi có dấu sang không dấu
+        function toSlug(str) {
+            return str.replace(/Đ/g, "D")
+                    .replace(/đ/g, "d")
+                    .normalize("NFD")
+                    .replace(/[̀-ͯ]/g, "")
+                    .replace(/[^a-zA-Z0-9]/g, "")
+                    .toLowerCase();
+        }
+
+        // Lấy danh sách trường khi trang được tải
+        document.addEventListener('DOMContentLoaded', function() {
+            const truongSelect = document.getElementById('truong');
+            const phuongthucSelect = document.getElementById('phuongthuc');
+            const diemInput = document.getElementById('diem');
+            const form = document.getElementById('conversionForm');
+            const resultCard = document.getElementById('resultCard');
+            const resultContent = document.getElementById('resultContent');
+            const shareBtn = document.getElementById('shareBtn');
+
+            // Lấy danh sách trường
+            fetch(`${API_URL}?action=getTruongs`)
+                .then(res => res.json())
+                .then(data => {
+                    truongSelect.innerHTML = '<option value="">Chọn trường</option>';
+                    data.forEach(truong => {
+                        const option = document.createElement('option');
+                        option.value = truong;
+                        option.textContent = truong;
+                        truongSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    truongSelect.innerHTML = '<option value="">Lỗi khi tải danh sách trường</option>';
+                    console.error('Error:', error);
+                });
+
+            // Xử lý khi chọn trường
+            truongSelect.addEventListener('change', function() {
+                const truong = this.value;
+                diemInput.value = '';
+                phuongthucSelect.disabled = true;
+                phuongthucSelect.innerHTML = '<option value="">Đang tải danh sách các phương thức quy đổi...</option>';
+
+                fetch(`${API_URL}?action=getPhuongThuc&truong=${encodeURIComponent(truong)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        phuongthucSelect.innerHTML = '<option value="">Chọn phương thức xét tuyển</option>';
+                        data.forEach(method => {
+                            const option = document.createElement('option');
+                            option.value = method;
+                            option.textContent = method;
+                            phuongthucSelect.appendChild(option);
+                        });
+                        phuongthucSelect.disabled = false;
+                    })
+                    .catch(error => {
+                        phuongthucSelect.innerHTML = '<option value="">Lỗi khi tải phương thức</option>';
+                        console.error('Error:', error);
+                    });
+            });
+
+            // Xử lý form submit
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const truong = truongSelect.value;
+                const method = phuongthucSelect.value;
+                const score = parseFloat(diemInput.value);
+
+                if (!truong || !method || isNaN(score)) {
+                    alert('Vui lòng điền đầy đủ thông tin!');
+                    return;
+                }
+
+                // Hiển thị loading
+                resultCard.style.display = 'block';
+                resultContent.innerHTML = `
+                    <div class="loading-state">
+                        <div class="modern-loader">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <p>Đang xử lý yêu cầu của bạn...</p>
+                    </div>
+                `;
+
+                // Gọi API quy đổi điểm
+                fetch(`${API_URL}?action=convertScore&truong=${encodeURIComponent(truong)}&method=${encodeURIComponent(method)}&score=${score}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.error) {
+                            resultContent.innerHTML = `
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-circle me-2"></i>${data.error}
+                                </div>
+                            `;
+                            return;
+                        }
+
+                        // Tạo bảng kết quả
+                        let html = `
+                            <div class="result-animation">
+                                <div class="result-header">
+                                    <h4><i class="fas fa-chart-line me-2"></i>Kết quả quy đổi điểm</h4>
+                                </div>
+                                <div class="result-summary">
+                                    <p><i class="fas fa-info-circle me-2"></i>Điểm ${score} của phương thức ${method} được quy đổi sang các phương thức khác như sau:</p>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Phương thức</th>
+                                                <th class="text-end">Điểm tương đương</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                        `;
+
+                        let delay = 0;
+                        for (let key in data) {
+                            html += `
+                                <tr class="result-row" style="animation-delay: ${delay}s">
+                                    <td class="method-name">${key}</td>
+                                    <td class="text-end"><span class="score-value">${data[key]}</span></td>
+                                </tr>
+                            `;
+                            delay += 0.1;
+                        }
+
+                        html += `
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+
+                        // Thêm phần gợi ý ngành học nếu là điểm ĐGTD/TSA
+                        let tsaScore = null;
+                        if (method.toLowerCase().includes('tsa') || method.toLowerCase().includes('đgtd') || method.toLowerCase().includes('dgtd')) {
+                            tsaScore = parseFloat(score);
+                        } else if (data['TSA']) {
+                            tsaScore = parseFloat(data['TSA']);
+                        }
+                        if (!isNaN(tsaScore)) {
+                            const suggestedMajors = benchmarkData
+                                .filter(item => tsaScore >= item.score)
+                                .sort((a, b) => b.score - a.score);
+                            if (suggestedMajors.length > 0) {
+                                html += `
+                                    <div class="benchmark-card mt-4">
+                                        <div class="benchmark-title">
+                                            <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm ĐGTD (TSA) của bạn
+                                        </div>
+                                        <div class="result-summary">
+                                            <p><i class="fas fa-info-circle me-2"></i>Với điểm ĐGTD (TSA) <b>${tsaScore}</b>, bạn có thể xét tuyển vào các ngành sau:</p>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="benchmark-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Ngành</th>
+                                                        <th>Mã ngành</th>
+                                                        <th>Điểm chuẩn TSA 2024</th>
+                                                        <th>Điểm của bạn</th>
+                                                        <th>Đánh giá</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                `;
+                                suggestedMajors.forEach(item => {
+                                    const status = getScoreStatus(tsaScore, item.score);
+                                    html += `
+                                        <tr>
+                                            <td>${item.major}</td>
+                                            <td>${item.code}</td>
+                                            <td>${item.score}</td>
+                                            <td>${tsaScore}</td>
+                                            <td><span class="score-status ${status.class}">${status.text}</span></td>
+                                        </tr>
+                                    `;
+                                });
+                                html += `
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                `;
+                            } else {
+                                html += `
+                                    <div class="benchmark-card mt-4">
+                                        <div class="benchmark-title">
+                                            <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm ĐGTD (TSA) của bạn
+                                        </div>
+                                        <div class="result-summary">
+                                            <p><i class="fas fa-info-circle me-2"></i>Rất tiếc, với điểm ĐGTD (TSA) <b>${tsaScore}</b> hiện tại bạn chưa đủ điều kiện xét tuyển vào ngành nào theo điểm chuẩn TSA 2024.</p>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }
+
+                        resultContent.innerHTML = html;
+
+                        // Cập nhật sự kiện chia sẻ
+                        shareBtn.onclick = function() {
+                            const shareLink = `${window.location.origin}${window.location.pathname}?truong=${toSlug(truong)}&phuongthuc=${toSlug(method)}&diem=${encodeURIComponent(diemInput.value)}`;
+                            navigator.clipboard.writeText(shareLink)
+                                .then(() => alert('Đã sao chép link chia sẻ!'))
+                                .catch(err => console.error('Không thể sao chép link:', err));
+                        };
+                    })
+                    .catch(error => {
+                        resultContent.innerHTML = `
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-circle me-2"></i>Lỗi khi xử lý dữ liệu. Vui lòng thử lại sau.
+                            </div>
+                        `;
+                        console.error('Error:', error);
+                    });
+            });
+
+            // Xử lý URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const truongParam = urlParams.get('truong');
+            const methodParam = urlParams.get('phuongthuc');
+            const scoreParam = urlParams.get('diem');
+
+            if (truongParam) {
+                truongSelect.value = truongParam;
+                truongSelect.dispatchEvent(new Event('change'));
+            }
+
+            if (methodParam && phuongthucSelect) {
+                for (let option of phuongthucSelect.options) {
+                    if (toSlug(option.textContent) === methodParam.toLowerCase()) {
+                        phuongthucSelect.value = option.value;
+                        break;
+                    }
+                }
+            }
+
+            if (scoreParam) {
+                diemInput.value = decodeURIComponent(scoreParam);
+            }
+
+            if (truongParam && methodParam && scoreParam) {
+                form.dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // Add the benchmark data and functions
+        const benchmarkData = [
+            { major: "Kỹ thuật Sinh học", code: "BF1", score: 50.29 },
+            { major: "Kỹ thuật Thực phẩm", code: "BF2", score: 50.29 },
+            { major: "Kỹ thuật Thực phẩm (CT tiên tiến)", code: "BF-E12", score: 52.55 },
+            { major: "Kỹ thuật sinh học (CT tiên tiến)", code: "BF-E19", score: 50.29 },
+            { major: "Kỹ thuật Hóa học", code: "CH1", score: 51.85 },
+            { major: "Hóa học", code: "CH2", score: 50.29 },
+            { major: "Công nghệ Giáo dục", code: "ED2", score: 52.07 },
+            { major: "Quản lý giáo dục", code: "ED3", score: 50.29 },
+            { major: "Kỹ thuật điện", code: "EE1", score: 65.25 },
+            { major: "Kỹ thuật điều khiển & Tự động hóa", code: "EE2", score: 73.77 },
+            { major: "Hệ thống điện và năng lượng tái tạo (CT tiên tiến)", code: "EE-E18", score: 58.18 },
+            { major: "Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)", code: "EE-E8", score: 69.13 },
+            { major: "Tin học công nghiệp và Tự động hóa (CT Việt - Pháp PFIEV)", code: "EE-EP", score: 62.48 },
+            { major: "Quản lý Năng lượng", code: "EM1", score: 52.68 },
+            { major: "Quản lý Công nghiệp", code: "EM2", score: 52.68 },
+            { major: "Quản trị Kinh doanh", code: "EM3", score: 55.65 },
+            { major: "Kế toán", code: "EM4", score: 54.62 },
+            { major: "Tài chính-Ngân hàng", code: "EM5", score: 56.17 },
+            { major: "Phân tích kinh doanh (CT tiên tiến)", code: "EM-E13", score: 53.81 },
+            { major: "Logistics và Quản lý chuỗi cung ứng (CT tiên tiến)", code: "EM-E14", score: 55.92 },
+            { major: "Kỹ thuật Điện tử-Viễn thông", code: "ET1", score: 68.88 },
+            { major: "Kỹ thuật Y sinh", code: "ET2", score: 59.98 },
+            { major: "Truyền thông số và Kỹ thuật đa phương tiện (CT tiên tiến)", code: "ET-E16", score: 64.98 },
+            { major: "Kỹ thuật Điện tử - Viễn thông (CT tiên tiến)", code: "ET-E4", score: 65.00 },
+            { major: "Kỹ thuật Y sinh (CT tiên tiến)", code: "ET-E5", score: 53.67 },
+            { major: "Hệ thống nhúng thông minh và IoT (CT tiên tiến)", code: "ET-E9", score: 69.07 },
+            { major: "Điện tử - Viễn thông - ĐH Leibniz Hannover (CHLB Đức)", code: "ET-LUH", score: 56.68 },
+            { major: "Kỹ thuật Môi trường", code: "EV1", score: 50.72 },
+            { major: "Quản lý Tài nguyên và Môi trường", code: "EV2", score: 50.33 },
+            { major: "Tiếng Anh KHKT và Công nghệ", code: "FL1", score: 52.01 },
+            { major: "Tiếng Anh chuyên nghiệp quốc tế", code: "FL2", score: 50.29 },
+            { major: "Kỹ thuật Nhiệt", code: "HE1", score: 56.67 },
+            { major: "CNTT: Khoa học Máy tính", code: "IT1", score: 83.82 },
+            { major: "CNTT: Kỹ thuật Máy tính", code: "IT2", score: 82.08 },
+            { major: "Khoa học dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)", code: "IT-E10", score: 81.60 },
+            { major: "An toàn không gian số - Cyber security (CT tiên tiến)", code: "IT-E15", score: 74.88 },
+            { major: "Công nghệ Thông tin Việt – Nhật (CT tiên tiến)", code: "IT-E6", score: 71.05 },
+            { major: "Công nghệ Thông tin Global ICT (CT tiên tiến)", code: "IT-E7", score: 74.88 },
+            { major: "Công nghệ Thông tin Việt-Pháp (CT tiên tiến)", code: "IT-EP", score: 70.66 },
+            { major: "Kỹ thuật Cơ điện tử", code: "ME1", score: 68.02 },
+            { major: "Kỹ thuật Cơ khí", code: "ME2", score: 61.36 },
+            { major: "Kỹ thuật Cơ điện tử (CT tiên tiến)", code: "ME-E1", score: 61.36 },
+            { major: "Cơ khí Chế tạo máy – hợp tác với trường ĐH Griffith (Úc)", code: "ME-GU", score: 56.19 },
+            { major: "Cơ điện tử - hợp tác với ĐH Leibniz Hannover (CHLB Đức)", code: "ME-LUH", score: 56.53 },
+            { major: "Cơ điện tử - hợp tác với ĐHCN Nagaoka (Nhật Bản)", code: "ME-NUT", score: 56.19 },
+            { major: "Toán-Tin", code: "MI1", score: 70.60 },
+            { major: "Hệ thống Thông tin quản lý", code: "MI2", score: 68.45 },
+            { major: "Kỹ thuật Vật liệu", code: "MS1", score: 56.55 },
+            { major: "Kỹ thuật Vi điện tử và Công nghệ nano", code: "MS2", score: 71.68 },
+            { major: "Công nghệ vật liệu Polyme và Compozit", code: "MS3", score: 56.55 },
+            { major: "Khoa học và Kỹ thuật Vật liệu (CT tiên tiến)", code: "MS-E3", score: 52.53 },
+            { major: "Kỹ thuật In", code: "MS5", score: 53.42 },
+            { major: "Vật lý Kỹ thuật", code: "PH1", score: 56.66 },
+            { major: "Kỹ thuật Hạt nhân", code: "PH2", score: 53.28 },
+            { major: "Vật lý Y khoa", code: "PH3", score: 55.28 },
+            { major: "Kỹ thuật Ô tô", code: "TE1", score: 64.36 },
+            { major: "Kỹ thuật Cơ khí động lực", code: "TE2", score: 59.89 },
+            { major: "Kỹ thuật Hàng không", code: "TE3", score: 62.36 },
+            { major: "Kỹ thuật Ô tô (CT tiên tiến)", code: "TE-E2", score: 60.68 },
+            { major: "Cơ khí hàng không (CT Việt - Pháp PFIEV)", code: "TE-EP", score: 54.68 },
+            { major: "Quản trị Kinh doanh - ĐH Troy (Hoa Kỳ)", code: "TROY-BA", score: 50.29 },
+            { major: "Khoa học Máy tính - ĐH Troy (Hoa Kỳ)", code: "TROY-IT", score: 50.29 },
+            { major: "Công nghệ Dệt May", code: "TX1", score: 50.68 }
+        ];
+
+        function getScoreStatus(userScore, benchmarkScore) {
+            const diff = userScore - benchmarkScore;
+            if (diff >= 5) return { class: 'safe', text: 'Rất an toàn' };
+            if (diff >= 2) return { class: 'safe', text: 'An toàn' };
+            if (diff >= 0) return { class: 'risky', text: 'Có cơ hội' };
+            return { class: 'unsafe', text: 'Khó khăn' };
+        }
+
+        function updateBenchmarkTable(userScore, searchTerm = '') {
+            const tbody = document.getElementById('benchmarkTableBody');
+            tbody.innerHTML = '';
+
+            const filteredData = benchmarkData.filter(item => 
+                item.major.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                item.code.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            filteredData.forEach(item => {
+                const status = getScoreStatus(userScore, item.score);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.major}</td>
+                    <td>${item.code}</td>
+                    <td>${item.score}</td>
+                    <td>${userScore}</td>
+                    <td><span class="score-status ${status.class}">${status.text}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Add search functionality
+        document.getElementById('majorSearch').addEventListener('input', function(e) {
+            const userScore = parseFloat(diemInput.value);
+            if (!isNaN(userScore)) {
+                updateBenchmarkTable(userScore, e.target.value);
+            }
+        });
+
+        // Update benchmark table when form is submitted
+        form.addEventListener('submit', function(e) {
+            // ... existing form submit code ...
+            
+            // After getting the converted score, update benchmark table
+            fetch(`${API_URL}?action=convertScore&truong=${encodeURIComponent(truong)}&method=${encodeURIComponent(method)}&score=${score}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        // ... existing error handling ...
+                        return;
+                    }
+
+                    // ... existing result table generation ...
+
+                    // Update benchmark table with the converted score
+                    const convertedScore = parseFloat(data[method]);
+                    if (!isNaN(convertedScore)) {
+                        updateBenchmarkTable(convertedScore);
+                    }
+                })
+                .catch(error => {
+                    // ... existing error handling ...
+                });
+        });
+    </script>
+</body>
+</html> 
