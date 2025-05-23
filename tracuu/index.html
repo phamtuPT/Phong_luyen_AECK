@@ -757,10 +757,38 @@
 
                             <div class="mb-4">
                                 <label for="diem" class="form-label">
-                                    <i class="fas fa-star me-2"></i>Nhập điểm
+                                    <i class="fas fa-star me-2"></i>Nhập điểm (Điểm gốc trên bảng điểm)
                                 </label>
                                 <input type="number" class="form-control" id="diem" name="diem" 
                                        placeholder="Nhập điểm cần quy đổi" step="0.01" required>
+                            </div>
+
+                            <div class="mb-4" id="ccnn-group" style="display:none;">
+                                <label for="ccnn" class="form-label">
+                                    <i class="fas fa-certificate me-2"></i>Chứng chỉ ngoại ngữ (nếu có)
+                                </label>
+                                <select class="form-select" id="ccnn" name="ccnn">
+                                    <option value="0">Không có</option>
+                                    <option value="1">5.0</option>
+                                    <option value="2">5.5</option>
+                                    <option value="3">6.0</option>
+                                    <option value="4">6.5</option>
+                                    <option value="5">7.0</option>
+                                    <option value="6">7.5</option>
+                                    <option value="7">Từ 8.0 trở lên</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4" id="diemvung-group" style="display:none;">
+                                <label for="diemvung" class="form-label">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Điểm vùng (Thí sinh chọn theo trường THPT đang theo học)
+                                </label>
+                                <select class="form-select" id="diemvung" name="diemvung">
+                                    <option value="0">Khu vực 3</option>
+                                    <option value="2.5">Khu vực 1</option>
+                                    <option value="0.83">Khu vực 2</option>
+                                    <option value="1.67">Khu vực 2 - Nông Thôn</option>
+                                </select>
                             </div>
 
                             <div class="text-center">
@@ -833,6 +861,10 @@
             const truongSelect = document.getElementById('truong');
             const phuongthucSelect = document.getElementById('phuongthuc');
             const diemInput = document.getElementById('diem');
+            const ccnnGroup = document.getElementById('ccnn-group');
+            const ccnnSelect = document.getElementById('ccnn');
+            const diemvungGroup = document.getElementById('diemvung-group');
+            const diemvungSelect = document.getElementById('diemvung');
             const form = document.getElementById('conversionForm');
             const resultCard = document.getElementById('resultCard');
             const resultContent = document.getElementById('resultContent');
@@ -880,12 +912,34 @@
                     });
             });
 
+            // Xử lý khi chọn phương thức
+            phuongthucSelect.addEventListener('change', function() {
+                const methodValue = this.value.toLowerCase();
+                const showExtra = (methodValue.includes('tsa') || methodValue.includes('đgtd') || methodValue.includes('dgtd')) && truongSelect.value.toLowerCase().includes('bách khoa');
+                ccnnGroup.style.display = showExtra ? '' : 'none';
+                diemvungGroup.style.display = showExtra ? '' : 'none';
+                if (!showExtra) {
+                    ccnnSelect.value = '0';
+                    diemvungSelect.value = '0';
+                }
+            });
+
             // Xử lý form submit
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const truong = truongSelect.value;
                 const method = phuongthucSelect.value;
-                const score = parseFloat(diemInput.value);
+                let score = parseFloat(diemInput.value);
+                // Nếu có input chứng chỉ và đang hiển thị, cộng điểm tương ứng
+                if (ccnnGroup.style.display !== 'none') {
+                    const bonus = parseInt(ccnnSelect.value) || 0;
+                    score += bonus;
+                }
+                // Nếu có input điểm vùng và đang hiển thị, cộng điểm vùng
+                if (diemvungGroup.style.display !== 'none') {
+                    const vung = parseFloat(diemvungSelect.value) || 0;
+                    score += vung;
+                }
 
                 if (!truong || !method || isNaN(score)) {
                     alert('Vui lòng điền đầy đủ thông tin!');
