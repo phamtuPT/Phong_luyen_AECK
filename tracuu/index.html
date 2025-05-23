@@ -641,19 +641,25 @@
             font-weight: 500;
         }
 
-        .score-status.safe {
-            background-color: #D1FAE5;
-            color: #065F46;
+        .score-status.low {
+            background-color: #fee2e2;
+            color: #b91c1c;
         }
 
         .score-status.risky {
-            background-color: #FEF3C7;
-            color: #92400E;
+            background-color: #fef9c3;
+            color: #b45309;
         }
 
-        .score-status.unsafe {
-            background-color: #FEE2E2;
-            color: #991B1B;
+        .score-status.safe {
+            background-color: #d1fae5;
+            color: #047857;
+        }
+
+        .score-status.very-safe {
+            background-color: #10b981;
+            color: #fff;
+            font-weight: bold;
         }
 
         .search-box {
@@ -746,6 +752,24 @@
                                 </select>
                             </div>
 
+                            <div class="mb-4" id="vnu-school-group" style="display:none;">
+                                <label for="vnu-school" class="form-label">
+                                    <i class="fas fa-building me-2"></i>Trường dự định xét tuyển
+                                </label>
+                                <select class="form-select" id="vnu-school" name="vnu-school">
+                                    <option value="">Chọn trường thành viên</option>
+                                    <option value="VNU-HUS">Trường Đại học Khoa học Tự nhiên (VNU-HUS)</option>
+                                    <option value="VNU-USSH">Trường Đại học Khoa học Xã hội và Nhân văn (VNU-USSH)</option>
+                                    <option value="VNU-ULIS">Trường Đại học Ngoại ngữ (VNU-ULIS)</option>
+                                    <option value="VNU-UET">Trường Đại học Công nghệ (VNU-UET)</option>
+                                    <option value="VNU-UEB">Trường Đại học Kinh tế (VNU-UEB)</option>
+                                    <option value="VNU-UEd">Trường Đại học Giáo dục (VNU-UEd)</option>
+                                    <option value="VNU-VJU">Trường Đại học Việt - Nhật (VNU-VJU)</option>
+                                    <option value="VNU-UMP">Trường Đại học Y Dược (VNU-UMP)</option>
+                                    <option value="VNU-UL">Trường Đại học Luật (VNU-UL)</option>
+                                </select>
+                            </div>
+
                             <div class="mb-4">
                                 <label for="phuongthuc" class="form-label">
                                     <i class="fas fa-list-alt me-2"></i>Chọn phương thức xét tuyển
@@ -807,8 +831,8 @@
                         </h4>
                         <div id="resultContent"></div>
                         <div class="text-center mt-4">
-                            <button id="shareBtn" class="share-btn">
-                                <i class="fas fa-share-alt me-2"></i>Chia sẻ kết quả
+                            <button id="printBtn" class="share-btn">
+                                <i class="fas fa-print me-2"></i>In kết quả
                             </button>
                         </div>
                     </div>
@@ -868,7 +892,7 @@
             const form = document.getElementById('conversionForm');
             const resultCard = document.getElementById('resultCard');
             const resultContent = document.getElementById('resultContent');
-            const shareBtn = document.getElementById('shareBtn');
+            const printBtn = document.getElementById('printBtn');
 
             // Lấy danh sách trường
             fetch(`${API_URL}?action=getTruongs`)
@@ -893,6 +917,15 @@
                 diemInput.value = '';
                 phuongthucSelect.disabled = true;
                 phuongthucSelect.innerHTML = '<option value="">Đang tải danh sách các phương thức quy đổi...</option>';
+                
+                // Hiển thị/ẩn select box trường VNU
+                const vnuSchoolGroup = document.getElementById('vnu-school-group');
+                if (truong.toLowerCase().includes('quốc gia hà nội')) {
+                    vnuSchoolGroup.style.display = '';
+                } else {
+                    vnuSchoolGroup.style.display = 'none';
+                    document.getElementById('vnu-school').value = '';
+                }
 
                 fetch(`${API_URL}?action=getPhuongThuc&truong=${encodeURIComponent(truong)}`)
                     .then(res => res.json())
@@ -1021,37 +1054,215 @@
                             </div>
                         `;
 
-                        // Thêm phần gợi ý ngành học nếu là điểm ĐGTD/TSA
-                        let tsaScore = null;
-                        if (method.toLowerCase().includes('tsa') || method.toLowerCase().includes('đgtd') || method.toLowerCase().includes('dgtd')) {
-                            tsaScore = parseFloat(score);
-                        } else if (data['TSA']) {
-                            tsaScore = parseFloat(data['TSA']);
+                        // Gợi ý ngành dựa trên điểm THPT thang 30 trong output
+                        let suggestScore = null;
+                        let thpt30Key = Object.keys(data).find(k => k.toLowerCase().includes('thpt') && k.includes('30'));
+                        if (thpt30Key) {
+                            suggestScore = parseFloat(data[thpt30Key]);
+                        } else if (method.toLowerCase().includes('thpt')) {
+                            suggestScore = parseFloat(score);
                         }
-                        if (!isNaN(tsaScore)) {
-                            if (tsaScore > 87) {
+                        if (!isNaN(suggestScore)) {
+                            const suggestedMajors = benchmarkData
+                                .filter(item => (suggestScore - item.diem_thpt_2024) >= -0.4)
+                                .sort((a, b) => b.diem_thpt_2024 - a.diem_thpt_2024);
+                            if (suggestedMajors.length > 0) {
                                 html += `
                                     <div class="benchmark-card mt-4">
                                         <div class="benchmark-title">
-                                            <i class="fas fa-trophy me-2"></i>Chúc mừng!
+                                            <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm của bạn (Số liệu điểm chuẩn năm 2024)
                                         </div>
                                         <div class="result-summary">
-                                            <p><i class="fas fa-info-circle me-2"></i>Với điểm ĐGTD (TSA) <b>${tsaScore}</b>, bạn có thể gần như chắc chắn đỗ hết các ngành học của Đại học Bách Khoa Hà Nội!</p>
+                                            <p><i class="fas fa-info-circle me-2"></i>Với điểm THPT <b>${suggestScore}</b>, bạn có thể xét tuyển vào các ngành sau của Đại học Bách Khoa Hà Nội:</p>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table class="benchmark-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Ngành</th>
+                                                        <th>Mã ngành</th>
+                                                        <th>Điểm chuẩn THPT 2024</th>
+                                                        <th>Điểm của bạn</th>
+                                                        <th>Đánh giá</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                `;
+                                suggestedMajors.forEach(item => {
+                                    const status = getAdmissionStatus(suggestScore, item.diem_thpt_2024);
+                                    html += `
+                                        <tr>
+                                            <td>${item.major}</td>
+                                            <td>${item.code}</td>
+                                            <td>${item.diem_thpt_2024}</td>
+                                            <td>${suggestScore}</td>
+                                            <td><span class="score-status ${status.class}">${status.text}</span></td>
+                                        </tr>
+                                    `;
+                                });
+                                html += `
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 `;
                             } else {
+                                html += `
+                                    <div class="benchmark-card mt-4">
+                                        <div class="benchmark-title">
+                                            <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm THPT 2024 của bạn
+                                        </div>
+                                        <div class="result-summary">
+                                            <p><i class="fas fa-info-circle me-2"></i>Rất tiếc, hiện không có ngành nào phù hợp với điểm THPT của bạn.</p>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }
+
+                        // Dữ liệu ngành UET
+                        const uetMajors = [
+                            { code: 'CN1', name: 'Công nghệ thông tin', tohop: 'A00; A01; D01', diem: 27.8 },
+                            { code: 'CN10', name: 'Công nghệ nông nghiệp', tohop: 'A00; A01; B00', diem: 22.5 },
+                            { code: 'CN11', name: 'Kỹ thuật điều khiển và tự động hoá', tohop: 'A00; A01; D01', diem: 27.05 },
+                            { code: 'CN12', name: 'Trí tuệ nhân tạo', tohop: 'A00; A01; D01', diem: 27.12 },
+                            { code: 'CN13', name: 'Kỹ thuật năng lượng', tohop: 'A00; A01; D01', diem: 24.59 },
+                            { code: 'CN14', name: 'Hệ thống thông tin', tohop: 'A00; A01; D01', diem: 26.87 },
+                            { code: 'CN15', name: 'Mạng máy tính và truyền thông dữ liệu', tohop: 'A00; A01; D01', diem: 26.92 },
+                            { code: 'CN17', name: 'Kỹ thuật Robot', tohop: 'A00; A01; D01', diem: 25.99 },
+                            { code: 'CN18', name: 'Thiết kế công nghiệp và đồ họa', tohop: 'A00; A01; D01', diem: 24.64 },
+                            { code: 'CN2', name: 'Kỹ thuật máy tính', tohop: 'A00; A01; D01', diem: 26.97 },
+                            { code: 'CN3', name: 'Vật lý kỹ thuật', tohop: 'A00; A01; D01', diem: 25.24 },
+                            { code: 'CN4', name: 'Cơ kỹ thuật', tohop: 'A00; A01; D01', diem: 26.03 },
+                            { code: 'CN5', name: 'Công nghệ kỹ thuật xây dựng', tohop: 'A00; A01; D01', diem: 23.91 },
+                            { code: 'CN6', name: 'Công nghệ kỹ thuật cơ – điện tử', tohop: 'A00; A01; D01', diem: 26.27 },
+                            { code: 'CN7', name: 'Công nghệ hàng không vũ trụ', tohop: 'A00; A01; D01', diem: 24.61 },
+                            { code: 'CN8', name: 'Khoa học máy tính', tohop: 'A00; A01; D01', diem: 27.58 },
+                            { code: 'CN9', name: 'Công nghệ kỹ thuật điện tử – viễn thông', tohop: 'A00; A01; D01', diem: 26.3 }
+                        ];
+
+                        // Tìm điểm THPT cao nhất trong các khối A00, A01, D01 từ output
+                        let maxBlockScore = null;
+                        let maxBlockName = '';
+                        if (truongSelect.value.toLowerCase().includes('quốc gia hà nội') && document.getElementById('vnu-school').value === 'VNU-UET') {
+                            const blockNames = ['A00', 'A01', 'D01'];
+                            for (const block of blockNames) {
+                                const key = Object.keys(data).find(k => k.toUpperCase().includes(block));
+                                if (key && !isNaN(parseFloat(data[key]))) {
+                                    const val = parseFloat(data[key]);
+                                    if (maxBlockScore === null || val > maxBlockScore) {
+                                        maxBlockScore = val;
+                                        maxBlockName = block;
+                                    }
+                                }
+                            }
+                        }
+
+                        // Hàm render bảng ngành UET
+                        function renderUetMajorTable(userScore, blockName) {
+                            const sortedMajors = [...uetMajors].sort((a, b) => b.diem - a.diem);
+                            let html = `<div class="benchmark-card mt-4">
+                                <div class="benchmark-title">
+                                    <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm của bạn (Trường Đại học Công nghệ - ĐHQGHN)
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="benchmark-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Mã ngành</th>
+                                                <th>Tên ngành</th>
+                                                <th>Tổ hợp môn</th>
+                                                <th>Điểm chuẩn 2024</th>
+                                                <th>Điểm của bạn</th>
+                                                <th>Đánh giá</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>`;
+                            sortedMajors.forEach(item => {
+                                const status = getAdmissionStatus(userScore, item.diem);
+                                html += `<tr>
+                                    <td>${item.code}</td>
+                                    <td>${item.name}</td>
+                                    <td>${item.tohop}</td>
+                                    <td>${item.diem}</td>
+                                    <td>${(userScore !== null && userScore !== undefined && !isNaN(userScore)) ? userScore + (blockName ? ' (' + blockName + ')' : '') : ''}</td>
+                                    <td><span class="score-status ${status.class}">${status.text}</span></td>
+                                </tr>`;
+                            });
+                            html += `</tbody></table></div></div>`;
+                            return html;
+                        }
+
+                        // Thêm vào sau khi có suggestScore (điểm THPT)
+                        let showUetMajorTable = (
+                            truongSelect.value.toLowerCase().includes('quốc gia hà nội') &&
+                            document.getElementById('vnu-school').value === 'VNU-UET' &&
+                            maxBlockScore !== null
+                        );
+
+                        if (showUetMajorTable) {
+                            html += renderUetMajorTable(maxBlockScore, maxBlockName);
+                        } else {
+                            // Gợi ý ngành chung như cũ
+                            // Tạo bảng kết quả
+                            html = `
+                                <div class="result-animation">
+                                    <div class="result-header">
+                                        <h4><i class="fas fa-chart-line me-2"></i>Kết quả quy đổi điểm</h4>
+                                    </div>
+                                    <div class="result-summary">
+                                        <p><i class="fas fa-info-circle me-2"></i>Điểm ${score} của phương thức ${method} được quy đổi sang các phương thức khác như sau:</p>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Phương thức</th>
+                                                    <th class="text-end">Điểm tương đương</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                            `;
+
+                            let delay = 0;
+                            for (let key in data) {
+                                html += `
+                                    <tr class="result-row" style="animation-delay: ${delay}s">
+                                        <td class="method-name">${key}</td>
+                                        <td class="text-end"><span class="score-value">${data[key]}</span></td>
+                                    </tr>
+                                `;
+                                delay += 0.1;
+                            }
+
+                            html += `
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            `;
+
+                            // Gợi ý ngành chung (benchmarkData)
+                            let suggestScore = null;
+                            let thpt30Key = Object.keys(data).find(k => k.toLowerCase().includes('thpt') && k.includes('30'));
+                            if (thpt30Key) {
+                                suggestScore = parseFloat(data[thpt30Key]);
+                            } else if (method.toLowerCase().includes('thpt')) {
+                                suggestScore = parseFloat(score);
+                            }
+                            if (!isNaN(suggestScore)) {
                                 const suggestedMajors = benchmarkData
-                                    .filter(item => tsaScore >= item.score)
-                                    .sort((a, b) => b.score - a.score);
+                                    .filter(item => (suggestScore - item.diem_thpt_2024) >= -0.4)
+                                    .sort((a, b) => b.diem_thpt_2024 - a.diem_thpt_2024);
                                 if (suggestedMajors.length > 0) {
                                     html += `
                                         <div class="benchmark-card mt-4">
                                             <div class="benchmark-title">
-                                                <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm ĐGTD (TSA) của bạn
+                                                <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm của bạn (Số liệu điểm chuẩn năm 2024)
                                             </div>
                                             <div class="result-summary">
-                                                <p><i class="fas fa-info-circle me-2"></i>Với điểm ĐGTD (TSA) <b>${tsaScore}</b>, bạn có thể xét tuyển vào các ngành sau:</p>
+                                                <p><i class="fas fa-info-circle me-2"></i>Với điểm THPT <b>${suggestScore}</b>, bạn có thể xét tuyển vào các ngành sau của Đại học Bách Khoa Hà Nội:</p>
                                             </div>
                                             <div class="table-responsive">
                                                 <table class="benchmark-table">
@@ -1059,7 +1270,7 @@
                                                         <tr>
                                                             <th>Ngành</th>
                                                             <th>Mã ngành</th>
-                                                            <th>Điểm chuẩn TSA 2024</th>
+                                                            <th>Điểm chuẩn THPT 2024</th>
                                                             <th>Điểm của bạn</th>
                                                             <th>Đánh giá</th>
                                                         </tr>
@@ -1067,13 +1278,13 @@
                                                     <tbody>
                                     `;
                                     suggestedMajors.forEach(item => {
-                                        const status = getScoreStatus(tsaScore, item.score);
+                                        const status = getAdmissionStatus(suggestScore, item.diem_thpt_2024);
                                         html += `
                                             <tr>
                                                 <td>${item.major}</td>
                                                 <td>${item.code}</td>
-                                                <td>${item.score}</td>
-                                                <td>${tsaScore}</td>
+                                                <td>${item.diem_thpt_2024}</td>
+                                                <td>${suggestScore}</td>
                                                 <td><span class="score-status ${status.class}">${status.text}</span></td>
                                             </tr>
                                         `;
@@ -1088,10 +1299,10 @@
                                     html += `
                                         <div class="benchmark-card mt-4">
                                             <div class="benchmark-title">
-                                                <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm ĐGTD (TSA) của bạn
+                                                <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm THPT 2024 của bạn
                                             </div>
                                             <div class="result-summary">
-                                                <p><i class="fas fa-info-circle me-2"></i>Rất tiếc, hiện nay hệ thống chỉ có thể gợi ý các ngành tuyển sinh bằng điểm TSA.</p>
+                                                <p><i class="fas fa-info-circle me-2"></i>Rất tiếc, hiện không có ngành nào phù hợp với điểm THPT của bạn.</p>
                                             </div>
                                         </div>
                                     `;
@@ -1101,20 +1312,9 @@
 
                         resultContent.innerHTML = html;
 
-                        // Cập nhật sự kiện chia sẻ
-                        shareBtn.onclick = function() {
-                            // Lấy lại giá trị mới nhất từ input/select
-                            const truongValue = truongSelect.value;
-                            const methodValue = phuongthucSelect.value;
-                            const diemValue = diemInput.value;
-                            if (!truongValue || !methodValue || !diemValue) {
-                                alert('Không thể tạo link chia sẻ vì thiếu thông tin.');
-                                return;
-                            }
-                            const shareLink = `${window.location.origin}${window.location.pathname}?truong=${toSlug(truongValue)}&phuongthuc=${toSlug(methodValue)}&diem=${encodeURIComponent(diemValue)}`;
-                            navigator.clipboard.writeText(shareLink)
-                                .then(() => alert('Đã sao chép link chia sẻ vào clipboard!'))
-                                .catch(err => console.error('Không thể sao chép link:', err));
+                        // Cập nhật sự kiện in kết quả
+                        printBtn.onclick = function() {
+                            window.print();
                         };
                     })
                     .catch(error => {
@@ -1158,77 +1358,77 @@
 
         // Add the benchmark data and functions
         const benchmarkData = [
-            { major: "Kỹ thuật Sinh học", code: "BF1", score: 50.29 },
-            { major: "Kỹ thuật Thực phẩm", code: "BF2", score: 50.29 },
-            { major: "Kỹ thuật Thực phẩm (CT tiên tiến)", code: "BF-E12", score: 52.55 },
-            { major: "Kỹ thuật sinh học (CT tiên tiến)", code: "BF-E19", score: 50.29 },
-            { major: "Kỹ thuật Hóa học", code: "CH1", score: 51.85 },
-            { major: "Hóa học", code: "CH2", score: 50.29 },
-            { major: "Công nghệ Giáo dục", code: "ED2", score: 52.07 },
-            { major: "Quản lý giáo dục", code: "ED3", score: 50.29 },
-            { major: "Kỹ thuật điện", code: "EE1", score: 65.25 },
-            { major: "Kỹ thuật điều khiển & Tự động hóa", code: "EE2", score: 73.77 },
-            { major: "Hệ thống điện và năng lượng tái tạo (CT tiên tiến)", code: "EE-E18", score: 58.18 },
-            { major: "Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)", code: "EE-E8", score: 69.13 },
-            { major: "Tin học công nghiệp và Tự động hóa (CT Việt - Pháp PFIEV)", code: "EE-EP", score: 62.48 },
-            { major: "Quản lý Năng lượng", code: "EM1", score: 52.68 },
-            { major: "Quản lý Công nghiệp", code: "EM2", score: 52.68 },
-            { major: "Quản trị Kinh doanh", code: "EM3", score: 55.65 },
-            { major: "Kế toán", code: "EM4", score: 54.62 },
-            { major: "Tài chính-Ngân hàng", code: "EM5", score: 56.17 },
-            { major: "Phân tích kinh doanh (CT tiên tiến)", code: "EM-E13", score: 53.81 },
-            { major: "Logistics và Quản lý chuỗi cung ứng (CT tiên tiến)", code: "EM-E14", score: 55.92 },
-            { major: "Kỹ thuật Điện tử-Viễn thông", code: "ET1", score: 68.88 },
-            { major: "Kỹ thuật Y sinh", code: "ET2", score: 59.98 },
-            { major: "Truyền thông số và Kỹ thuật đa phương tiện (CT tiên tiến)", code: "ET-E16", score: 64.98 },
-            { major: "Kỹ thuật Điện tử - Viễn thông (CT tiên tiến)", code: "ET-E4", score: 65.00 },
-            { major: "Kỹ thuật Y sinh (CT tiên tiến)", code: "ET-E5", score: 53.67 },
-            { major: "Hệ thống nhúng thông minh và IoT (CT tiên tiến)", code: "ET-E9", score: 69.07 },
-            { major: "Điện tử - Viễn thông - ĐH Leibniz Hannover (CHLB Đức)", code: "ET-LUH", score: 56.68 },
-            { major: "Kỹ thuật Môi trường", code: "EV1", score: 50.72 },
-            { major: "Quản lý Tài nguyên và Môi trường", code: "EV2", score: 50.33 },
-            { major: "Tiếng Anh KHKT và Công nghệ", code: "FL1", score: 52.01 },
-            { major: "Tiếng Anh chuyên nghiệp quốc tế", code: "FL2", score: 50.29 },
-            { major: "Kỹ thuật Nhiệt", code: "HE1", score: 56.67 },
-            { major: "CNTT: Khoa học Máy tính", code: "IT1", score: 83.82 },
-            { major: "CNTT: Kỹ thuật Máy tính", code: "IT2", score: 82.08 },
-            { major: "Khoa học dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)", code: "IT-E10", score: 81.60 },
-            { major: "An toàn không gian số - Cyber security (CT tiên tiến)", code: "IT-E15", score: 74.88 },
-            { major: "Công nghệ Thông tin Việt – Nhật (CT tiên tiến)", code: "IT-E6", score: 71.05 },
-            { major: "Công nghệ Thông tin Global ICT (CT tiên tiến)", code: "IT-E7", score: 74.88 },
-            { major: "Công nghệ Thông tin Việt-Pháp (CT tiên tiến)", code: "IT-EP", score: 70.66 },
-            { major: "Kỹ thuật Cơ điện tử", code: "ME1", score: 68.02 },
-            { major: "Kỹ thuật Cơ khí", code: "ME2", score: 61.36 },
-            { major: "Kỹ thuật Cơ điện tử (CT tiên tiến)", code: "ME-E1", score: 61.36 },
-            { major: "Cơ khí Chế tạo máy – hợp tác với trường ĐH Griffith (Úc)", code: "ME-GU", score: 56.19 },
-            { major: "Cơ điện tử - hợp tác với ĐH Leibniz Hannover (CHLB Đức)", code: "ME-LUH", score: 56.53 },
-            { major: "Cơ điện tử - hợp tác với ĐHCN Nagaoka (Nhật Bản)", code: "ME-NUT", score: 56.19 },
-            { major: "Toán-Tin", code: "MI1", score: 70.60 },
-            { major: "Hệ thống Thông tin quản lý", code: "MI2", score: 68.45 },
-            { major: "Kỹ thuật Vật liệu", code: "MS1", score: 56.55 },
-            { major: "Kỹ thuật Vi điện tử và Công nghệ nano", code: "MS2", score: 71.68 },
-            { major: "Công nghệ vật liệu Polyme và Compozit", code: "MS3", score: 56.55 },
-            { major: "Khoa học và Kỹ thuật Vật liệu (CT tiên tiến)", code: "MS-E3", score: 52.53 },
-            { major: "Kỹ thuật In", code: "MS5", score: 53.42 },
-            { major: "Vật lý Kỹ thuật", code: "PH1", score: 56.66 },
-            { major: "Kỹ thuật Hạt nhân", code: "PH2", score: 53.28 },
-            { major: "Vật lý Y khoa", code: "PH3", score: 55.28 },
-            { major: "Kỹ thuật Ô tô", code: "TE1", score: 64.36 },
-            { major: "Kỹ thuật Cơ khí động lực", code: "TE2", score: 59.89 },
-            { major: "Kỹ thuật Hàng không", code: "TE3", score: 62.36 },
-            { major: "Kỹ thuật Ô tô (CT tiên tiến)", code: "TE-E2", score: 60.68 },
-            { major: "Cơ khí hàng không (CT Việt - Pháp PFIEV)", code: "TE-EP", score: 54.68 },
-            { major: "Quản trị Kinh doanh - ĐH Troy (Hoa Kỳ)", code: "TROY-BA", score: 50.29 },
-            { major: "Khoa học Máy tính - ĐH Troy (Hoa Kỳ)", code: "TROY-IT", score: 50.29 },
-            { major: "Công nghệ Dệt May", code: "TX1", score: 50.68 }
+            { major: "Kỹ thuật Sinh học", code: "BF1", diem_thpt_2024: 24.00 },
+            { major: "Kỹ thuật Thực phẩm", code: "BF2", diem_thpt_2024: 24.54 },
+            { major: "Kỹ thuật Thực phẩm (CT tiên tiến)", code: "BF-E12", diem_thpt_2024: 22.00 },
+            { major: "Kỹ thuật sinh học (CT tiên tiến)", code: "BF-E19", diem_thpt_2024: 22.00 },
+            { major: "Kỹ thuật Hóa học", code: "CH1", diem_thpt_2024: 24.38 },
+            { major: "Hóa học", code: "CH2", diem_thpt_2024: 23.81 },
+            { major: "Công nghệ Giáo dục", code: "ED2", diem_thpt_2024: 25.30 },
+            { major: "Quản lý giáo dục", code: "ED3", diem_thpt_2024: 24.78 },
+            { major: "Kỹ thuật điện", code: "EE1", diem_thpt_2024: 26.81 },
+            { major: "Kỹ thuật điều khiển & Tự động hóa", code: "EE2", diem_thpt_2024: 28.16 },
+            { major: "Hệ thống điện và năng lượng tái tạo (CT tiên tiến)", code: "EE-E18", diem_thpt_2024: 25.80 },
+            { major: "Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)", code: "EE-E8", diem_thpt_2024: 27.54 },
+            { major: "Tin học công nghiệp và Tự động hóa (CT Việt - Pháp PFIEV)", code: "EE-EP", diem_thpt_2024: 26.22 },
+            { major: "Quản lý Năng lượng", code: "EM1", diem_thpt_2024: 25.40 },
+            { major: "Quản lý Công nghiệp", code: "EM2", diem_thpt_2024: 25.60 },
+            { major: "Quản trị Kinh doanh", code: "EM3", diem_thpt_2024: 25.77 },
+            { major: "Kế toán", code: "EM4", diem_thpt_2024: 25.80 },
+            { major: "Tài chính-Ngân hàng", code: "EM5", diem_thpt_2024: 25.91 },
+            { major: "Phân tích kinh doanh (CT tiên tiến)", code: "EM-E13", diem_thpt_2024: 25.50 },
+            { major: "Logistics và Quản lý chuỗi cung ứng (CT tiên tiến)", code: "EM-E14", diem_thpt_2024: 26.06 },
+            { major: "Kỹ thuật Điện tử-Viễn thông", code: "ET1", diem_thpt_2024: 27.41 },
+            { major: "Kỹ thuật Y sinh", code: "ET2", diem_thpt_2024: 25.80 },
+            { major: "Truyền thông số và Kỹ thuật đa phương tiện (CT tiên tiến)", code: "ET-E16", diem_thpt_2024: 26.61 },
+            { major: "Kỹ thuật Điện tử - Viễn thông (CT tiên tiến)", code: "ET-E4", diem_thpt_2024: 27.03 },
+            { major: "Kỹ thuật Y sinh (CT tiên tiến)", code: "ET-E5", diem_thpt_2024: 25.08 },
+            { major: "Hệ thống nhúng thông minh và IoT (CT tiên tiến)", code: "ET-E9", diem_thpt_2024: 27.21 },
+            { major: "Điện tử - Viễn thông - ĐH Leibniz Hannover (CHLB Đức)", code: "ET-LUH", diem_thpt_2024: 25.65 },
+            { major: "Kỹ thuật Môi trường", code: "EV1", diem_thpt_2024: 22.10 },
+            { major: "Quản lý Tài nguyên và Môi trường", code: "EV2", diem_thpt_2024: 21.78 },
+            { major: "Tiếng Anh KHKT và Công nghệ", code: "FL1", diem_thpt_2024: 25.00 },
+            { major: "Tiếng Anh chuyên nghiệp quốc tế", code: "FL2", diem_thpt_2024: 23.81 },
+            { major: "Kỹ thuật Nhiệt", code: "HE1", diem_thpt_2024: 25.20 },
+            { major: "CNTT: Khoa học Máy tính", code: "IT1", diem_thpt_2024: 28.53 },
+            { major: "CNTT: Kỹ thuật Máy tính", code: "IT2", diem_thpt_2024: 28.48 },
+            { major: "Khoa học dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)", code: "IT-E10", diem_thpt_2024: 28.22 },
+            { major: "An toàn không gian số - Cyber security (CT tiên tiến)", code: "IT-E15", diem_thpt_2024: 27.90 },
+            { major: "Công nghệ Thông tin Việt – Nhật (CT tiên tiến)", code: "IT-E6", diem_thpt_2024: 27.35 },
+            { major: "Công nghệ Thông tin Global ICT (CT tiên tiến)", code: "IT-E7", diem_thpt_2024: 28.01 },
+            { major: "Công nghệ Thông tin Việt-Pháp (CT tiên tiến)", code: "IT-EP", diem_thpt_2024: 27.35 },
+            { major: "Kỹ thuật Cơ điện tử", code: "ME1", diem_thpt_2024: 27.49 },
+            { major: "Kỹ thuật Cơ khí", code: "ME2", diem_thpt_2024: 25.80 },
+            { major: "Kỹ thuật Cơ điện tử (CT tiên tiến)", code: "ME-E1", diem_thpt_2024: 26.38 },
+            { major: "Cơ khí Chế tạo máy – hợp tác với trường ĐH Griffith (Úc)", code: "ME-GU", diem_thpt_2024: 24.89 },
+            { major: "Cơ điện tử - hợp tác với ĐH Leibniz Hannover (CHLB Đức)", code: "ME-LUH", diem_thpt_2024: 25.24 },
+            { major: "Cơ điện tử - hợp tác với ĐHCN Nagaoka (Nhật Bản)", code: "ME-NUT", diem_thpt_2024: 25.11 },
+            { major: "Toán-Tin", code: "MI1", diem_thpt_2024: 27.35 },
+            { major: "Hệ thống Thông tin quản lý", code: "MI2", diem_thpt_2024: 27.34 },
+            { major: "Kỹ thuật Vật liệu", code: "MS1", diem_thpt_2024: 24.90 },
+            { major: "Kỹ thuật Vi điện tử và Công nghệ nano", code: "MS2", diem_thpt_2024: 27.64 },
+            { major: "Công nghệ vật liệu Polyme và Compozit", code: "MS3", diem_thpt_2024: 25.00 },
+            { major: "Khoa học và Kỹ thuật Vật liệu (CT tiên tiến)", code: "MS-E3", diem_thpt_2024: 24.00 },
+            { major: "Kỹ thuật In", code: "MS5", diem_thpt_2024: 24.00 },
+            { major: "Vật lý Kỹ thuật", code: "PH1", diem_thpt_2024: 25.87 },
+            { major: "Kỹ thuật Hạt nhân", code: "PH2", diem_thpt_2024: 24.64 },
+            { major: "Vật lý Y khoa", code: "PH3", diem_thpt_2024: 25.31 },
+            { major: "Kỹ thuật Ô tô", code: "TE1", diem_thpt_2024: 26.99 },
+            { major: "Kỹ thuật Cơ khí động lực", code: "TE2", diem_thpt_2024: 26.12 },
+            { major: "Kỹ thuật Hàng không", code: "TE3", diem_thpt_2024: 26.22 },
+            { major: "Kỹ thuật Ô tô (CT tiên tiến)", code: "TE-E2", diem_thpt_2024: 25.90 },
+            { major: "Cơ khí hàng không (CT Việt - Pháp PFIEV)", code: "TE-EP", diem_thpt_2024: 24.86 },
+            { major: "Quản trị Kinh doanh - ĐH Troy (Hoa Kỳ)", code: "TROY-BA", diem_thpt_2024: 21.00 },
+            { major: "Khoa học Máy tính - ĐH Troy (Hoa Kỳ)", code: "TROY-IT", diem_thpt_2024: 21.00 },
+            { major: "Công nghệ Dệt May", code: "TX1", diem_thpt_2024: 22.50 }
         ];
 
-        function getScoreStatus(userScore, benchmarkScore) {
+        function getAdmissionStatus(userScore, benchmarkScore) {
             const diff = userScore - benchmarkScore;
-            if (diff >= 5) return { class: 'safe', text: 'Rất an toàn' };
-            if (diff >= 2) return { class: 'safe', text: 'An toàn' };
-            if (diff >= 0) return { class: 'risky', text: 'Có cơ hội' };
-            return { class: 'unsafe', text: 'Khó khăn' };
+            if (diff >= 1.5) return { class: 'very-safe', text: 'Rất an toàn' };
+            if (diff >= 0.8) return { class: 'safe', text: 'An toàn' };
+            if (diff >= -0.1) return { class: 'risky', text: 'Có cơ hội' };
+            return { class: 'low', text: 'Cơ hội thấp' };
         }
 
         function updateBenchmarkTable(userScore, searchTerm = '') {
@@ -1241,12 +1441,12 @@
             );
 
             filteredData.forEach(item => {
-                const status = getScoreStatus(userScore, item.score);
+                const status = getAdmissionStatus(userScore, item.diem_thpt_2024);
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${item.major}</td>
                     <td>${item.code}</td>
-                    <td>${item.score}</td>
+                    <td>${item.diem_thpt_2024}</td>
                     <td>${userScore}</td>
                     <td><span class="score-status ${status.class}">${status.text}</span></td>
                 `;
