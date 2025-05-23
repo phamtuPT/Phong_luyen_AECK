@@ -315,6 +315,96 @@
             .btn-primary {
                 width: 100%;
             }
+
+            body, .container, .card, .form-label, .form-control, .form-select, .btn, .result-header h4, .result-summary, .benchmark-title, .benchmark-table, .benchmark-table th, .benchmark-table td, .score-status {
+                font-size: 13px !important;
+            }
+            .header h1, .header .display-4 {
+                font-size: 1.3rem !important;
+            }
+            .header p.lead {
+                font-size: 1rem !important;
+            }
+            .form-label {
+                font-size: 12px !important;
+            }
+            .form-control, .form-select {
+                font-size: 13px !important;
+                padding: 8px 10px;
+            }
+            .btn, .btn-primary, .btn-outline-primary, .btn-outline-success, .share-btn {
+                font-size: 13px !important;
+                padding: 0.6rem 1.2rem;
+            }
+            .result-header {
+                padding: 1rem;
+            }
+            .result-summary {
+                padding: 0.7rem;
+                margin-bottom: 1rem;
+            }
+            .benchmark-title {
+                font-size: 1rem !important;
+                margin-bottom: 0.5rem;
+            }
+            .benchmark-card {
+                padding: 1rem;
+            }
+            .benchmark-table th, .benchmark-table td {
+                font-size: 12px !important;
+                padding: 0.4rem 0.2rem;
+            }
+            .score-status {
+                font-size: 12px !important;
+                padding: 0.15rem 0.5rem;
+            }
+            .table-responsive, .benchmark-table {
+                margin-bottom: 0.5rem;
+            }
+            .info-text {
+                font-size: 12px !important;
+            }
+            .card-title, h4, h5 {
+                font-size: 1rem !important;
+            }
+            .result-card {
+                padding: 1rem;
+            }
+            .mt-4, .mb-4 {
+                margin-top: 1rem !important;
+                margin-bottom: 1rem !important;
+            }
+
+            /* Tối ưu bảng ngành cho mobile */
+            .benchmark-table th:first-child,
+            .benchmark-table td:first-child {
+                display: none;
+            }
+            .benchmark-table th, .benchmark-table td {
+                font-size: 13px;
+                padding: 0.5rem 0.3rem;
+            }
+            .benchmark-table {
+                font-size: 13px;
+            }
+            .benchmark-table th, .benchmark-table td {
+                white-space: nowrap;
+            }
+            .benchmark-table {
+                overflow-x: auto;
+                display: block;
+            }
+
+            /* Ẩn cột "Điểm của bạn" trên mobile */
+            .benchmark-table th:nth-child(4),
+            .benchmark-table td:nth-child(4) {
+                display: none;
+            }
+
+            /* Ẩn cột "Điểm của bạn" trên mobile bằng class */
+            .user-score-col {
+                display: none;
+            }
         }
 
         /* Enhanced Result Display */
@@ -697,6 +787,10 @@
         </div>
     </div>
 
+    <div style="width: 100%; text-align: center; margin: 40px 0 20px 0;">
+        <img src="AECK.svg" alt="Thương hiệu" style="max-width: 340px; height: auto; opacity: 0.95;">
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -850,60 +944,71 @@
                             tsaScore = parseFloat(data['TSA']);
                         }
                         if (!isNaN(tsaScore)) {
-                            const suggestedMajors = benchmarkData
-                                .filter(item => tsaScore >= item.score)
-                                .sort((a, b) => b.score - a.score);
-                            if (suggestedMajors.length > 0) {
+                            if (tsaScore > 87) {
                                 html += `
                                     <div class="benchmark-card mt-4">
                                         <div class="benchmark-title">
-                                            <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm ĐGTD (TSA) của bạn
+                                            <i class="fas fa-trophy me-2"></i>Chúc mừng!
                                         </div>
                                         <div class="result-summary">
-                                            <p><i class="fas fa-info-circle me-2"></i>Với điểm ĐGTD (TSA) <b>${tsaScore}</b>, bạn có thể xét tuyển vào các ngành sau:</p>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="benchmark-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Ngành</th>
-                                                        <th>Mã ngành</th>
-                                                        <th>Điểm chuẩn TSA 2024</th>
-                                                        <th>Điểm của bạn</th>
-                                                        <th>Đánh giá</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                `;
-                                suggestedMajors.forEach(item => {
-                                    const status = getScoreStatus(tsaScore, item.score);
-                                    html += `
-                                        <tr>
-                                            <td>${item.major}</td>
-                                            <td>${item.code}</td>
-                                            <td>${item.score}</td>
-                                            <td>${tsaScore}</td>
-                                            <td><span class="score-status ${status.class}">${status.text}</span></td>
-                                        </tr>
-                                    `;
-                                });
-                                html += `
-                                                </tbody>
-                                            </table>
+                                            <p><i class="fas fa-info-circle me-2"></i>Với điểm ĐGTD (TSA) <b>${tsaScore}</b>, bạn có thể gần như chắc chắn đỗ hết các ngành học của Đại học Bách Khoa Hà Nội!</p>
                                         </div>
                                     </div>
                                 `;
                             } else {
-                                html += `
-                                    <div class="benchmark-card mt-4">
-                                        <div class="benchmark-title">
-                                            <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm ĐGTD (TSA) của bạn
+                                const suggestedMajors = benchmarkData
+                                    .filter(item => tsaScore >= item.score)
+                                    .sort((a, b) => b.score - a.score);
+                                if (suggestedMajors.length > 0) {
+                                    html += `
+                                        <div class="benchmark-card mt-4">
+                                            <div class="benchmark-title">
+                                                <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm ĐGTD (TSA) của bạn
+                                            </div>
+                                            <div class="result-summary">
+                                                <p><i class="fas fa-info-circle me-2"></i>Với điểm ĐGTD (TSA) <b>${tsaScore}</b>, bạn có thể xét tuyển vào các ngành sau:</p>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="benchmark-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Ngành</th>
+                                                            <th>Mã ngành</th>
+                                                            <th>Điểm chuẩn TSA 2024</th>
+                                                            <th>Đánh giá</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                    `;
+                                    suggestedMajors.forEach(item => {
+                                        const status = getScoreStatus(tsaScore, item.score);
+                                        html += `
+                                            <tr>
+                                                <td>${item.major}</td>
+                                                <td>${item.code}</td>
+                                                <td>${item.score}</td>
+                                                <td><span class="score-status ${status.class}">${status.text}</span></td>
+                                            </tr>
+                                        `;
+                                    });
+                                    html += `
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                        <div class="result-summary">
-                                            <p><i class="fas fa-info-circle me-2"></i>Rất tiếc, với điểm ĐGTD (TSA) <b>${tsaScore}</b> hiện tại bạn chưa đủ điều kiện xét tuyển vào ngành nào theo điểm chuẩn TSA 2024.</p>
+                                    `;
+                                } else {
+                                    html += `
+                                        <div class="benchmark-card mt-4">
+                                            <div class="benchmark-title">
+                                                <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm ĐGTD (TSA) của bạn
+                                            </div>
+                                            <div class="result-summary">
+                                                <p><i class="fas fa-info-circle me-2"></i>Rất tiếc, hiện nay hệ thống chỉ có thể gợi ý các ngành tuyển sinh bằng điểm TSA.</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                `;
+                                    `;
+                                }
                             }
                         }
 
@@ -911,9 +1016,17 @@
 
                         // Cập nhật sự kiện chia sẻ
                         shareBtn.onclick = function() {
-                            const shareLink = `${window.location.origin}${window.location.pathname}?truong=${toSlug(truong)}&phuongthuc=${toSlug(method)}&diem=${encodeURIComponent(diemInput.value)}`;
+                            // Lấy lại giá trị mới nhất từ input/select
+                            const truongValue = truongSelect.value;
+                            const methodValue = phuongthucSelect.value;
+                            const diemValue = diemInput.value;
+                            if (!truongValue || !methodValue || !diemValue) {
+                                alert('Không thể tạo link chia sẻ vì thiếu thông tin.');
+                                return;
+                            }
+                            const shareLink = `${window.location.origin}${window.location.pathname}?truong=${toSlug(truongValue)}&phuongthuc=${toSlug(methodValue)}&diem=${encodeURIComponent(diemValue)}`;
                             navigator.clipboard.writeText(shareLink)
-                                .then(() => alert('Đã sao chép link chia sẻ!'))
+                                .then(() => alert('Đã sao chép link chia sẻ vào clipboard!'))
                                 .catch(err => console.error('Không thể sao chép link:', err));
                         };
                     })
@@ -1047,7 +1160,6 @@
                     <td>${item.major}</td>
                     <td>${item.code}</td>
                     <td>${item.score}</td>
-                    <td>${userScore}</td>
                     <td><span class="score-status ${status.class}">${status.text}</span></td>
                 `;
                 tbody.appendChild(row);
