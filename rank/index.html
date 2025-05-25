@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra cứu xếp hạng điểm thi</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <style>
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .loading-overlay.active {
+            opacity: 1;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1976d2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <h1 class="text-3xl font-bold text-gray-900">Tra cứu xếp hạng điểm thi</h1>
+            <p class="mt-2 text-gray-600">Cập nhật tra cứu % thứ hạng điểm thi của các thí sinh tham dự kì thi TSA 2025</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Search Form -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <form id="searchForm" class="space-y-6">
+                <!-- Ẩn container chọn phương thức và đợt thi -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center hidden">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="methodSelect">Phương thức thi</label>
+                        <select id="methodSelect" title="Chọn phương thức" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">Chọn phương thức</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2" for="examRound">Đợt thi</label>
+                        <select id="examRound" title="Chọn đợt thi" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="">Chọn đợt thi</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2" for="score">Tổng điểm</label>
+                    <input type="number" id="score" step="0.01" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" placeholder="Nhập điểm">
+                </div>
+                <div class="flex justify-center">
+                    <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                        Tra cứu
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Output Section: Thông tin ở trên, 2 biểu đồ nằm cạnh nhau -->
+        <div id="outputSection" class="flex flex-col gap-6" style="display: none;">
+            <!-- Thông tin nhập và kết quả xếp hạng: nằm cùng 1 dòng -->
+            <div class="flex flex-col md:flex-row justify-center items-start gap-6 w-full">
+                <div id="submittedInfo" class="w-full md:w-[320px]" style="display: none; margin-top: 0; margin-bottom: 0; padding: 16px; border-radius: 12px; background: #eaf6ff; border: 1px solid #b8e0f2;">
+                    <h3 style="font-size: 18px; margin-bottom: 12px;">
+                        📝 <strong>Thông tin bạn vừa nhập</strong>
+                    </h3>
+                    <ul style="list-style: none; padding: 0; font-size: 15px; line-height: 1.8; color: #333;">
+                        <li>
+                            🚩 Nguồn dữ liệu khai thác: <strong id="info-type" style="color: #0056b3;"></strong>
+                        </li>
+                        <li>
+                            📍 Phạm vi: <strong id="info-round" style="color: #0056b3;"></strong>
+                        </li>
+                        <li>
+                            🎓 Tổng điểm: <strong id="info-score" style="color: #d60000;"></strong>
+                        </li>
+                    </ul>
+                </div>
+                <div id="scoreResult" class="w-full md:w-[520px]" style="display: none; background-color: #f7fbff; border: 1px solid #cce5ff; border-radius: 16px; padding: 28px 32px; max-width: 680px; margin: 0 auto; font-family: 'Segoe UI', Roboto, sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                    <h2 style="margin-bottom: 20px; font-size: 24px; font-weight: 700; color: #1a1a1a; text-align: center;">💹 DỮ LIỆU MÔ PHỎNG ĐIỂM THI</h2>
+                    <p style="font-style: italic; color: #666; font-size: 15px; margin-bottom: 20px; text-align: center;">* Dữ liệu thô, không bao gồm điểm thưởng</p>
+                    <ul style="list-style-type: none; padding-left: 0; font-size: 18px; line-height: 1.8; color: #333;">
+                        <li>
+                            <strong>📍 Khoảng điểm của bạn:</strong>
+                            <span id="range" style="color: #d60000; font-weight: bold;"></span>
+                        </li>
+                        <li>
+                            <strong>👥 Cùng khoảng điểm:</strong>
+                            <span id="sameCount" style="color: #d60000; font-weight: bold;"></span>
+                            thí sinh
+                        </li>
+                        <li>
+                            <strong>📉 Thấp hơn bạn:</strong>
+                            <span id="lowerCount" style="color: #d60000; font-weight: bold;"></span>
+                            thí sinh
+                        </li>
+                        <li>
+                            <strong>📈 Cao hơn bạn:</strong>
+                            <span id="higherCount" style="color: #d60000; font-weight: bold;"></span>
+                            thí sinh
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Hai biểu đồ nằm cạnh nhau -->
+            <div class="w-full flex flex-col md:flex-row gap-8 justify-center items-stretch">
+                <!-- Gauge Chart -->
+                <div id="gaugeSection" class="flex flex-col items-center md:justify-center md:mt-16" style="display: none; min-width:240px;">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-2">% thí sinh bạn đã vượt qua</h2>
+                    <div style="width:200px; height:200px; display:flex; align-items:center; justify-content:center;">
+                        <canvas id="gaugeChart" width="200" height="200"></canvas>
+                    </div>
+                </div>
+                <!-- Biểu đồ phổ điểm -->
+                <div id="chartBox" class="bg-white rounded-lg shadow-md p-6 flex flex-col justify-center" style="display: none;">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Biểu đồ phổ điểm</h2>
+                    <div class="h-[500px] w-full md:w-[700px] mx-auto">
+                        <canvas id="scoreChart" width="700" height="500"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="tsa-ranking.js"></script>
+</body>
+</html>
