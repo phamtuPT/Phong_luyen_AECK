@@ -5167,7 +5167,7 @@ input.main-search-input::placeholder {
   height: 30px;
   border: 1px solid var(--ot-primary-color);
   -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+          box-sizing: border-box;
   z-index: 10000000;
   opacity: 0.5;
   -webkit-transition: all 0.08s ease-out;
@@ -6387,6 +6387,41 @@ input.main-search-input::placeholder {
   z-index: -1;
   opacity: 0.75;
 }
+
+/* Responsive custom for AECK homepage */
+@media (max-width: 991px) {
+  .container, .container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .main-menu {
+    font-size: 16px;
+  }
+}
+@media (max-width: 767px) {
+  body {
+    font-size: 15px;
+  }
+  .main-menu {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-area, .footer-area {
+    padding: 10px 0;
+  }
+}
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+  .container, .container-fluid {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .main-menu {
+    font-size: 14px;
+  }
+}
 @media (max-width: 767px) {
   .banner__inner-page {
     padding: 80px 0;
@@ -7164,6 +7199,8 @@ input.main-search-input::placeholder {
   color: var(--ot-secondary-color);
   color: var(--white);
   transition: var(--transition);
+  -moz-appearance: none;
+  appearance: none;
 }
 .case__btn::after {
   position: absolute;
