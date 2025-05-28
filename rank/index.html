@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tra cứu xếp hạng điểm thi</title>
+    <title>Tra cứu tỉ lệ điểm thi</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -48,8 +48,8 @@
     <!-- Header -->
     <header class="bg-white shadow-sm">
         <div class="max-w-7xl mx-auto px-4 py-6">
-            <h1 class="text-3xl font-bold text-gray-900">Tra cứu xếp hạng điểm thi</h1>
-            <p class="mt-2 text-gray-600">Cập nhật tra cứu % thứ hạng điểm thi của các thí sinh tham dự kì thi TSA 2025</p>
+            <h1 class="text-3xl font-bold text-gray-900">Tra cứu tỉ lệ điểm thi</h1>
+            <p class="mt-2 text-gray-600">Tra cứu % thứ hạng điểm thi dự kiến của các thí sinh tham dự kì thi TSA 2025</p>
         </div>
     </header>
 
@@ -114,17 +114,17 @@
                             <span id="range" style="color: #d60000; font-weight: bold;"></span>
                         </li>
                         <li>
-                            <strong>👥 Cùng khoảng điểm:</strong>
+                            <strong>🤜🤛 Cùng khoảng điểm (tham khảo):</strong>
                             <span id="sameCount" style="color: #d60000; font-weight: bold;"></span>
                             thí sinh
                         </li>
                         <li>
-                            <strong>📉 Thấp hơn bạn:</strong>
+                            <strong>📉 Thấp hơn (tham khảo):</strong>
                             <span id="lowerCount" style="color: #d60000; font-weight: bold;"></span>
                             thí sinh
                         </li>
                         <li>
-                            <strong>📈 Cao hơn bạn:</strong>
+                            <strong>📈 Cao hơn (tham khảo):</strong>
                             <span id="higherCount" style="color: #d60000; font-weight: bold;"></span>
                             thí sinh
                         </li>
@@ -149,6 +149,22 @@
                 </div>
             </div>
         </div>
+
+        <div>
+            <h1>________________________________</h1>
+        </div>
+
+        <div> 
+            <h4><b>Phương pháp tính toán dữ liệu</b></h4>
+            <p>________________________________</p>
+            <p>*Đa số dữ liệu sẽ được đưa về khoảng so sánh. Tỉ lệ tương đối sẽ được tính theo thí sinh có điểm thấp nhất trong khoảng đó.</p>
+            <p>*Số thí sinh thấp hơn: Số lượng thí sinh có điểm thấp hơn điểm của thí sinh thấp nhất trong khoảng đó.</p>
+            <p>*Số thí sinh cao hơn: Số lượng thí sinh có điểm cao hơn điểm của thí sinh cao nhất trong khoảng đó.</p>
+            <p>*Dữ liệu mang tính chất tham khảo, không nhằm mục đích <b>HOANG MANG DƯ LUẬN</b>. </p>
+            <p>*Điểm nhập vào là điểm gốc của thí sinh, không kèm điểm thưởng, điểm vùng,....</p>
+            <p>*Hệ thống có sử dụng dữ liệu của các bên liên quan.</p>
+        </div>
+
     </main>
 
     <script src="tsa-ranking.js"></script>
