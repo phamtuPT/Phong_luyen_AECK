@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AECK EXAM</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    iframe {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false">
+  <iframe src="https://demo-aeck-exam.vercel.app/exams" allowfullscreen></iframe>
+
+  <script>
+    // Chặn chuột phải
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // Chặn các phím tắt DevTools phổ biến
+    document.addEventListener('keydown', function (e) {
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
+        (e.ctrlKey && (e.key === "U" || e.key === "S" || e.key === "P"))
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    });
+  </script>
+</body>
+</html>
