@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AECK Noti</title>
+    <link rel="icon" href="./1.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: black;
+        }
+        video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            pointer-events: none; /* Ngăn chặn tương tác */
+        }
+    </style>
+</head>
+<body>
+    <video autoplay loop muted playsinline>
+        <source src="video.mp4" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ video.
+    </video>
+
+    <script>
+        // Chặn các tổ hợp phím F12, Ctrl+Shift+I, Ctrl+U, Ctrl+S
+        document.addEventListener("keydown", function (event) {
+            if (
+                event.key === "F12" || 
+                (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === "i") || 
+                (event.ctrlKey && event.key.toLowerCase() === "u") || 
+                (event.ctrlKey && event.key.toLowerCase() === "s")
+            ) {
+                event.preventDefault();
+            }
+        });
+
+        // Chặn chuột phải
+        document.addEventListener("contextmenu", function (event) {
+            event.preventDefault();
+        });
+    </script>
+</body>
+</html>
