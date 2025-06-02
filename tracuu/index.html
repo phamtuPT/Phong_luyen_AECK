@@ -688,6 +688,91 @@
             transform: translateY(-50%);
             color: #9CA3AF;
         }
+
+        /* Percentile Card Styles */
+        .percentile-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .percentile-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(230, 57, 70, 0.1);
+        }
+
+        /* New Percentile Range Display */
+        .percentile-result-card {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
+        }
+
+        .percentile-range {
+            margin: 20px 0;
+        }
+
+        .percentile-text {
+            display: block;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .percentile-numbers {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .percentile-from, .percentile-to {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.2em;
+            box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+            min-width: 80px;
+        }
+
+        .percentile-separator {
+            font-weight: bold;
+            color: #6c757d;
+            font-size: 1.1em;
+        }
+
+        .percentile-description {
+            display: block;
+            font-size: 1em;
+            color: #6c757d;
+            margin-top: 10px;
+        }
+
+        .percentile-info {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .percentile-info li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .percentile-info li:last-child {
+            border-bottom: none;
+        }
     </style>
     <script>
         ['keydown', 'keyup', 'keypress'].forEach(function(evt) {
@@ -831,7 +916,7 @@
                         </h4>
                         <div id="resultContent"></div>
                         <div class="text-center mt-4">
-                            <button id="printBtn" class="share-btn">
+                            <button type="button" id="printBtn" class="share-btn">
                                 <i class="fas fa-print me-2"></i>In kết quả
                             </button>
                         </div>
@@ -851,8 +936,8 @@
                             <a href="https://aeck.io.vn/rank/" target="_blank" rel="noopener" class="btn btn-outline-primary me-2">
                                 <i class="fas fa-search me-2"></i>Tra cứu tỉ lệ
                             </a>
-                            <a href="https://www.facebook.com/anhemcaykhetsahsa" target="_blank" rel="noopener" class="btn btn-outline-success">
-                                <i class="fas fa-graduation-cap me-2"></i>Xuất phát sớm
+                            <a href="https://aeck.io.vn/exam" target="_blank" rel="noopener" class="btn btn-outline-success">
+                                <i class="fas fa-graduation-cap me-2"></i>Trải nghiệm hệ thống AECK
                             </a>
                         </div>
                     </div>
@@ -865,8 +950,51 @@
         <img src="AECK.svg" alt="Thương hiệu" style="max-width: 340px; height: auto; opacity: 0.95;">
     </div>
 
+    <!-- Modal Bảng Phân Vị -->
+    <div class="modal fade" id="percentileTableModal" tabindex="-1" aria-labelledby="percentileTableModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="percentileTableModalLabel">
+                        <i class="fas fa-chart-bar me-2"></i>Bảng Phân Vị TSA - Đại học Bách Khoa Hà Nội 2024-2025
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Giải thích:</strong> Bảng dưới đây hiển thị phân vị điểm TSA với hai mức ước tính (cận trên và cận dưới) cho mỗi phần trăm thí sinh.
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="percentileTable">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Phân vị (%)</th>
+                                    <th>Mức điểm cận trên</th>
+                                    <th>Mức điểm cận dưới</th>
+                                    <th>Ý nghĩa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="percentileTableBody">
+                                <!-- Dữ liệu sẽ được tạo bằng JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="exportPercentileTable()">
+                        <i class="fas fa-download me-2"></i>Xuất Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbxbtIj7OMS6FK_o3PXWOvUrrypJocnFTFE0mVdq2z99jdMOe-Rkh1DLV4h2wuPT5fmK/exec";
         
@@ -1054,6 +1182,62 @@
                             </div>
                         `;
 
+                        // Hiển thị thông tin phân vị TSA nếu có
+                        console.log('Debug TSA:', {
+                            method: method.toLowerCase(),
+                            truong: truong.toLowerCase(),
+                            score: score,
+                            methodCheck: method.toLowerCase().includes('tsa') || method.toLowerCase().includes('đgtd') || method.toLowerCase().includes('dgtd'),
+                            truongCheck: truong.toLowerCase().includes('bách khoa') || truong.toLowerCase().includes('bach khoa')
+                        });
+
+                        // LUÔN hiển thị phân vị TSA để test
+                        const shouldShowTSA = true;
+
+                        console.log('Should show TSA:', shouldShowTSA);
+                        console.log('Current score for TSA:', score);
+
+                        if (shouldShowTSA) {
+                            const tsaPercentileInfo = calculateTSAPercentile(score);
+                            console.log('TSA Percentile Info:', tsaPercentileInfo);
+                            if (tsaPercentileInfo) {
+                                html += `
+                                    <div class="benchmark-card mt-4">
+                                        <div class="benchmark-title">
+                                            <i class="fas fa-chart-bar me-2"></i>Phân vị điểm TSA của bạn
+                                        </div>
+                                        <div class="result-summary">
+                                            <div class="percentile-result-card">
+                                                <div class="percentile-main-info">
+                                                    <h5 class="mb-3"><i class="fas fa-trophy me-2 text-warning"></i>Phân vị điểm TSA của bạn</h5>
+                                                    <div class="percentile-range">
+                                                        <span class="percentile-text">Điểm <strong>${tsaPercentileInfo.score}</strong> của bạn nằm trong khoảng</span>
+                                                        <div class="percentile-numbers">
+                                                            <span class="percentile-from">Top ${tsaPercentileInfo.lower}%</span>
+                                                            <span class="percentile-separator">đến</span>
+                                                            <span class="percentile-to">Top ${tsaPercentileInfo.upper}%</span>
+                                                        </div>
+                                                        <span class="percentile-description">thí sinh trong kỳ thi TSA</span>
+                                                    </div>
+                                                </div>
+                                                <div class="alert alert-success mt-3">
+                                                    <i class="fas fa-lightbulb me-2"></i>
+                                                    <strong>Ý nghĩa:</strong> Bạn đã vượt qua ${100 - tsaPercentileInfo.upper}% đến ${100 - tsaPercentileInfo.lower}% thí sinh khác trong kỳ thi TSA.
+                                                </div>
+
+                                                <div class="text-center mt-3">
+                                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#percentileTableModal">
+                                                        <i class="fas fa-table me-2"></i>Xem bảng phân vị đầy đủ
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <p class="small text-muted mt-2">Dữ liệu phân vị dựa trên thống kê của Đại học Bách Khoa Hà Nội năm 2024-2025</p>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }
+
                         // Gợi ý ngành dựa trên điểm THPT thang 30 trong output
                         let suggestScore = null;
                         let thpt30Key = Object.keys(data).find(k => k.toLowerCase().includes('thpt') && k.includes('30'));
@@ -1203,45 +1387,8 @@
                         if (showUetMajorTable) {
                             html += renderUetMajorTable(maxBlockScore, maxBlockName);
                         } else {
-                            // Gợi ý ngành chung như cũ
-                            // Tạo bảng kết quả
-                            html = `
-                                <div class="result-animation">
-                                    <div class="result-header">
-                                        <h4><i class="fas fa-chart-line me-2"></i>Kết quả quy đổi điểm</h4>
-                                    </div>
-                                    <div class="result-summary">
-                                        <p><i class="fas fa-info-circle me-2"></i>Điểm ${score} của phương thức ${method} được quy đổi sang các phương thức khác như sau:</p>
-                                    </div>
-
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Phương thức</th>
-                                                    <th class="text-end">Điểm tương đương</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                            `;
-
-                            let delay = 0;
-                            for (let key in data) {
-                                html += `
-                                    <tr class="result-row" style="animation-delay: ${delay}s">
-                                        <td class="method-name">${key}</td>
-                                        <td class="text-end"><span class="score-value">${data[key]}</span></td>
-                                    </tr>
-                                `;
-                                delay += 0.1;
-                            }
-
-                            html += `
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            `;
+                            // Không ghi đè html, chỉ thêm vào phần gợi ý ngành
+                            // Phần bảng kết quả và phân vị TSA đã được thêm ở trên
 
                             // Gợi ý ngành chung (benchmarkData)
                             let suggestScore = null;
@@ -1356,6 +1503,159 @@
             }
         });
 
+        // Dữ liệu phân vị TSA Đại học Bách Khoa Hà Nội 2024-2025
+        const tsaPercentileData = {
+            upper: [
+                { percentile: 1, score: 98.61 }, { percentile: 2, score: 78.41 }, { percentile: 3, score: 75.44 },
+                { percentile: 4, score: 73.38 }, { percentile: 5, score: 72.01 }, { percentile: 6, score: 70.85 },
+                { percentile: 7, score: 69.91 }, { percentile: 8, score: 69.02 }, { percentile: 9, score: 68.31 },
+                { percentile: 10, score: 67.64 }, { percentile: 11, score: 67.04 }, { percentile: 12, score: 66.49 },
+                { percentile: 13, score: 65.99 }, { percentile: 14, score: 65.52 }, { percentile: 15, score: 65.04 },
+                { percentile: 16, score: 64.59 }, { percentile: 17, score: 64.17 }, { percentile: 18, score: 63.78 },
+                { percentile: 19, score: 63.39 }, { percentile: 20, score: 63.05 }, { percentile: 21, score: 62.68 },
+                { percentile: 22, score: 62.33 }, { percentile: 23, score: 61.98 }, { percentile: 24, score: 61.67 },
+                { percentile: 25, score: 61.35 }, { percentile: 26, score: 61.05 }, { percentile: 27, score: 60.75 },
+                { percentile: 28, score: 60.45 }, { percentile: 29, score: 60.17 }, { percentile: 30, score: 59.87 },
+                { percentile: 31, score: 59.59 }, { percentile: 32, score: 59.33 }, { percentile: 33, score: 59.05 },
+                { percentile: 34, score: 58.79 }, { percentile: 35, score: 58.52 }, { percentile: 36, score: 58.24 },
+                { percentile: 37, score: 57.98 }, { percentile: 38, score: 57.72 }, { percentile: 39, score: 57.48 },
+                { percentile: 40, score: 57.23 }, { percentile: 41, score: 57.00 }, { percentile: 42, score: 56.76 },
+                { percentile: 43, score: 56.53 }, { percentile: 44, score: 56.31 }, { percentile: 45, score: 56.06 },
+                { percentile: 46, score: 55.81 }, { percentile: 47, score: 55.56 }, { percentile: 48, score: 55.33 },
+                { percentile: 49, score: 55.08 }, { percentile: 50, score: 54.85 }, { percentile: 51, score: 54.62 },
+                { percentile: 52, score: 54.39 }, { percentile: 53, score: 54.16 }, { percentile: 54, score: 53.91 },
+                { percentile: 55, score: 53.68 }, { percentile: 56, score: 53.45 }, { percentile: 57, score: 53.20 },
+                { percentile: 58, score: 52.99 }, { percentile: 59, score: 52.75 }, { percentile: 60, score: 52.50 },
+                { percentile: 61, score: 52.27 }, { percentile: 62, score: 52.03 }, { percentile: 63, score: 51.79 },
+                { percentile: 64, score: 51.53 }, { percentile: 65, score: 51.28 }, { percentile: 66, score: 51.03 },
+                { percentile: 67, score: 50.80 }, { percentile: 68, score: 50.55 }, { percentile: 69, score: 50.27 },
+                { percentile: 70, score: 50.01 }, { percentile: 71, score: 49.75 }, { percentile: 72, score: 49.47 },
+                { percentile: 73, score: 49.18 }, { percentile: 74, score: 48.91 }, { percentile: 75, score: 48.61 },
+                { percentile: 76, score: 48.32 }, { percentile: 77, score: 48.00 }, { percentile: 78, score: 47.70 },
+                { percentile: 79, score: 47.38 }, { percentile: 80, score: 47.06 }, { percentile: 81, score: 46.73 },
+                { percentile: 82, score: 46.38 }, { percentile: 83, score: 46.05 }, { percentile: 84, score: 45.64 },
+                { percentile: 85, score: 45.24 }, { percentile: 86, score: 44.83 }, { percentile: 87, score: 44.42 },
+                { percentile: 88, score: 43.98 }, { percentile: 89, score: 43.51 }, { percentile: 90, score: 43.00 },
+                { percentile: 91, score: 42.48 }, { percentile: 92, score: 41.91 }, { percentile: 93, score: 41.24 },
+                { percentile: 94, score: 40.49 }, { percentile: 95, score: 39.70 }, { percentile: 96, score: 38.75 },
+                { percentile: 97, score: 37.70 }, { percentile: 98, score: 36.38 }, { percentile: 99, score: 34.36 },
+                { percentile: 100, score: 31.51 }
+            ],
+            lower: [
+                { percentile: 1, score: 78.54 }, { percentile: 2, score: 75.59 }, { percentile: 3, score: 73.55 },
+                { percentile: 4, score: 72.17 }, { percentile: 5, score: 71.02 }, { percentile: 6, score: 70.06 },
+                { percentile: 7, score: 69.21 }, { percentile: 8, score: 68.47 }, { percentile: 9, score: 67.83 },
+                { percentile: 10, score: 67.21 }, { percentile: 11, score: 66.66 }, { percentile: 12, score: 66.14 },
+                { percentile: 13, score: 65.67 }, { percentile: 14, score: 65.22 }, { percentile: 15, score: 64.79 },
+                { percentile: 16, score: 64.35 }, { percentile: 17, score: 63.95 }, { percentile: 18, score: 63.57 },
+                { percentile: 19, score: 63.21 }, { percentile: 20, score: 62.84 }, { percentile: 21, score: 62.50 },
+                { percentile: 22, score: 62.17 }, { percentile: 23, score: 61.83 }, { percentile: 24, score: 61.53 },
+                { percentile: 25, score: 61.23 }, { percentile: 26, score: 60.93 }, { percentile: 27, score: 60.61 },
+                { percentile: 28, score: 60.33 }, { percentile: 29, score: 60.06 }, { percentile: 30, score: 59.78 },
+                { percentile: 31, score: 59.50 }, { percentile: 32, score: 59.24 }, { percentile: 33, score: 58.97 },
+                { percentile: 34, score: 58.70 }, { percentile: 35, score: 58.43 }, { percentile: 36, score: 58.17 },
+                { percentile: 37, score: 57.89 }, { percentile: 38, score: 57.65 }, { percentile: 39, score: 57.42 },
+                { percentile: 40, score: 57.18 }, { percentile: 41, score: 56.95 }, { percentile: 42, score: 56.71 },
+                { percentile: 43, score: 56.48 }, { percentile: 44, score: 56.26 }, { percentile: 45, score: 56.01 },
+                { percentile: 46, score: 55.76 }, { percentile: 47, score: 55.51 }, { percentile: 48, score: 55.28 },
+                { percentile: 49, score: 55.03 }, { percentile: 50, score: 54.80 }, { percentile: 51, score: 54.57 },
+                { percentile: 52, score: 54.34 }, { percentile: 53, score: 54.12 }, { percentile: 54, score: 53.86 },
+                { percentile: 55, score: 53.63 }, { percentile: 56, score: 53.40 }, { percentile: 57, score: 53.16 },
+                { percentile: 58, score: 52.94 }, { percentile: 59, score: 52.70 }, { percentile: 60, score: 52.46 },
+                { percentile: 61, score: 52.23 }, { percentile: 62, score: 51.98 }, { percentile: 63, score: 51.74 },
+                { percentile: 64, score: 51.49 }, { percentile: 65, score: 51.23 }, { percentile: 66, score: 50.98 },
+                { percentile: 67, score: 50.74 }, { percentile: 68, score: 50.48 }, { percentile: 69, score: 50.21 },
+                { percentile: 70, score: 49.95 }, { percentile: 71, score: 49.68 }, { percentile: 72, score: 49.40 },
+                { percentile: 73, score: 49.10 }, { percentile: 74, score: 48.82 }, { percentile: 75, score: 48.50 },
+                { percentile: 76, score: 48.20 }, { percentile: 77, score: 47.87 }, { percentile: 78, score: 47.55 },
+                { percentile: 79, score: 47.25 }, { percentile: 80, score: 46.90 }, { percentile: 81, score: 46.54 },
+                { percentile: 82, score: 46.20 }, { percentile: 83, score: 45.83 }, { percentile: 84, score: 45.41 },
+                { percentile: 85, score: 45.01 }, { percentile: 86, score: 44.57 }, { percentile: 87, score: 44.16 },
+                { percentile: 88, score: 43.67 }, { percentile: 89, score: 43.15 }, { percentile: 90, score: 42.63 },
+                { percentile: 91, score: 42.07 }, { percentile: 92, score: 41.41 }, { percentile: 93, score: 40.61 },
+                { percentile: 94, score: 39.85 }, { percentile: 95, score: 38.93 }, { percentile: 96, score: 37.86 },
+                { percentile: 97, score: 36.52 }, { percentile: 98, score: 34.56 }, { percentile: 99, score: 31.62 },
+                { percentile: 100, score: 20.00 }
+            ]
+        };
+
+        // Hàm tính phân vị TSA
+        function calculateTSAPercentile(userScore) {
+            console.log('calculateTSAPercentile called with score:', userScore);
+            if (!userScore || isNaN(userScore)) {
+                console.log('Invalid score, returning null');
+                return null;
+            }
+
+            // Hàm tìm phân vị chính xác
+            function findPercentile(data, score, isUpperTable = false) {
+                // Nếu điểm cao hơn điểm cao nhất
+                if (score > data[0].score) {
+                    return 0; // Trả về 0% cho điểm cao hơn mức cao nhất
+                }
+
+                // Nếu điểm thấp hơn điểm thấp nhất
+                if (score < data[data.length - 1].score) {
+                    return 100;
+                }
+
+                // Tìm vị trí chính xác
+                for (let i = 0; i < data.length - 1; i++) {
+                    const current = data[i];
+                    const next = data[i + 1];
+
+                    // Nếu điểm bằng chính xác một mức nào đó
+                    if (score === current.score) {
+                        return current.percentile;
+                    }
+
+                    // Nếu điểm nằm giữa hai mức
+                    if (score < current.score && score > next.score) {
+                        // Trả về phân vị của mức cao hơn (thận trọng hơn)
+                        return current.percentile;
+                    }
+                }
+
+                // Nếu bằng điểm cuối cùng
+                if (score === data[data.length - 1].score) {
+                    return data[data.length - 1].percentile;
+                }
+
+                return 100; // Fallback
+            }
+
+            let upperPercentile = findPercentile(tsaPercentileData.upper, userScore, true);
+            let lowerPercentile = findPercentile(tsaPercentileData.lower, userScore, false);
+
+            // Xử lý trường hợp đặc biệt cho điểm rất cao
+            if (upperPercentile === 0 || lowerPercentile === 0) {
+                // Nếu có phân vị 0%, đặt khoảng là 0-1%
+                upperPercentile = 1;
+                lowerPercentile = 0;
+            } else {
+                // Đảm bảo luôn có sự khác biệt ít nhất 1 đơn vị
+                if (upperPercentile === lowerPercentile) {
+                    // Nếu cả hai bằng nhau, điều chỉnh để có sự khác biệt
+                    if (upperPercentile > 1) {
+                        lowerPercentile = upperPercentile - 1;
+                    } else {
+                        upperPercentile = lowerPercentile + 1;
+                    }
+                }
+            }
+
+            const result = {
+                score: userScore,
+                upper: Math.max(upperPercentile, lowerPercentile),  // Phân vị thận trọng (cao hơn)
+                lower: Math.min(upperPercentile, lowerPercentile)   // Phân vị tốt nhất (thấp hơn)
+            };
+
+            console.log('calculateTSAPercentile result:', result);
+            console.log('Upper table percentile:', upperPercentile);
+            console.log('Lower table percentile:', lowerPercentile);
+            return result;
+        }
+
         // Add the benchmark data and functions
         const benchmarkData = [
             { major: "Kỹ thuật Sinh học", code: "BF1", diem_thpt_2024: 24.00 },
@@ -1433,9 +1733,11 @@
 
         function updateBenchmarkTable(userScore, searchTerm = '') {
             const tbody = document.getElementById('benchmarkTableBody');
+            if (!tbody) return; // Kiểm tra element tồn tại
+
             tbody.innerHTML = '';
 
-            const filteredData = benchmarkData.filter(item => 
+            const filteredData = benchmarkData.filter(item =>
                 item.major.toLowerCase().includes(searchTerm.toLowerCase()) ||
                 item.code.toLowerCase().includes(searchTerm.toLowerCase())
             );
@@ -1454,38 +1756,132 @@
             });
         }
 
-        // Add search functionality
-        document.getElementById('majorSearch').addEventListener('input', function(e) {
-            const userScore = parseFloat(diemInput.value);
-            if (!isNaN(userScore)) {
-                updateBenchmarkTable(userScore, e.target.value);
+        // Add search functionality (chỉ khi element tồn tại)
+        const majorSearchElement = document.getElementById('majorSearch');
+        if (majorSearchElement) {
+            majorSearchElement.addEventListener('input', function(e) {
+                const userScore = parseFloat(diemInput.value);
+                if (!isNaN(userScore)) {
+                    updateBenchmarkTable(userScore, e.target.value);
+                }
+            });
+        }
+
+        // Hàm tạo bảng phân vị đầy đủ
+        function generatePercentileTable() {
+            const tbody = document.getElementById('percentileTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            // Tạo dữ liệu cho từng phân vị từ 1% đến 100%
+            for (let percentile = 1; percentile <= 100; percentile++) {
+                const upperData = tsaPercentileData.upper.find(item => item.percentile === percentile);
+                const lowerData = tsaPercentileData.lower.find(item => item.percentile === percentile);
+
+                const upperScore = upperData ? upperData.score : 'N/A';
+                const lowerScore = lowerData ? lowerData.score : 'N/A';
+
+                let meaning = '';
+                if (percentile <= 5) {
+                    meaning = 'Xuất sắc';
+                } else if (percentile <= 15) {
+                    meaning = 'Rất tốt';
+                } else if (percentile <= 30) {
+                    meaning = 'Tốt';
+                } else if (percentile <= 50) {
+                    meaning = 'Khá';
+                } else if (percentile <= 70) {
+                    meaning = 'Trung bình';
+                } else {
+                    meaning = 'Cần cải thiện';
+                }
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="fw-bold">Top ${percentile}%</td>
+                    <td>${upperScore}</td>
+                    <td>${lowerScore}</td>
+                    <td><span class="badge ${getPercentileBadgeClass(percentile)}">${meaning}</span></td>
+                `;
+                tbody.appendChild(row);
             }
-        });
+        }
 
-        // Update benchmark table when form is submitted
-        form.addEventListener('submit', function(e) {
-            // ... existing form submit code ...
-            
-            // After getting the converted score, update benchmark table
-            fetch(`${API_URL}?action=convertScore&truong=${encodeURIComponent(truong)}&method=${encodeURIComponent(method)}&score=${score}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.error) {
-                        // ... existing error handling ...
-                        return;
-                    }
+        // Hàm lấy class badge cho phân vị
+        function getPercentileBadgeClass(percentile) {
+            if (percentile <= 5) return 'bg-success';
+            if (percentile <= 15) return 'bg-primary';
+            if (percentile <= 30) return 'bg-info';
+            if (percentile <= 50) return 'bg-warning';
+            if (percentile <= 70) return 'bg-secondary';
+            return 'bg-danger';
+        }
 
-                    // ... existing result table generation ...
+        // Hàm xuất Excel
+        function exportPercentileTable() {
+            // Tạo dữ liệu cho Excel
+            const excelData = [];
 
-                    // Update benchmark table with the converted score
-                    const convertedScore = parseFloat(data[method]);
-                    if (!isNaN(convertedScore)) {
-                        updateBenchmarkTable(convertedScore);
-                    }
-                })
-                .catch(error => {
-                    // ... existing error handling ...
-                });
+            // Thêm header
+            excelData.push(['Phân vị (%)', 'Mức điểm cận trên', 'Mức điểm cận dưới', 'Ý nghĩa']);
+
+            // Thêm dữ liệu cho từng phân vị
+            for (let percentile = 1; percentile <= 100; percentile++) {
+                const upperData = tsaPercentileData.upper.find(item => item.percentile === percentile);
+                const lowerData = tsaPercentileData.lower.find(item => item.percentile === percentile);
+
+                const upperScore = upperData ? upperData.score : 'N/A';
+                const lowerScore = lowerData ? lowerData.score : 'N/A';
+
+                let meaning = '';
+                if (percentile <= 5) meaning = 'Xuất sắc';
+                else if (percentile <= 15) meaning = 'Rất tốt';
+                else if (percentile <= 30) meaning = 'Tốt';
+                else if (percentile <= 50) meaning = 'Khá';
+                else if (percentile <= 70) meaning = 'Trung bình';
+                else meaning = 'Cần cải thiện';
+
+                excelData.push([`Top ${percentile}%`, upperScore, lowerScore, meaning]);
+            }
+
+            // Tạo workbook và worksheet
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(excelData);
+
+            // Định dạng cột
+            const colWidths = [
+                { wch: 15 }, // Phân vị (%)
+                { wch: 20 }, // Mức điểm cận trên
+                { wch: 20 }, // Mức điểm cận dưới
+                { wch: 15 }  // Ý nghĩa
+            ];
+            ws['!cols'] = colWidths;
+
+            // Định dạng header
+            const headerStyle = {
+                font: { bold: true, color: { rgb: "FFFFFF" } },
+                fill: { fgColor: { rgb: "366092" } },
+                alignment: { horizontal: "center", vertical: "center" }
+            };
+
+            // Áp dụng style cho header (dòng đầu tiên)
+            ['A1', 'B1', 'C1', 'D1'].forEach(cell => {
+                if (ws[cell]) {
+                    ws[cell].s = headerStyle;
+                }
+            });
+
+            // Thêm worksheet vào workbook
+            XLSX.utils.book_append_sheet(wb, ws, "Bảng Phân Vị TSA 2024");
+
+            // Xuất file Excel
+            XLSX.writeFile(wb, "Bang_Phan_Vi_TSA_2024.xlsx");
+        }
+
+        // Khởi tạo bảng phân vị khi modal được mở
+        document.getElementById('percentileTableModal').addEventListener('shown.bs.modal', function () {
+            generatePercentileTable();
         });
     </script>
 </body>
