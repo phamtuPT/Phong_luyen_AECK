@@ -889,15 +889,33 @@
                             </div>
 
                             <div class="mb-4" id="diemvung-group" style="display:none;">
-                                <label for="diemvung" class="form-label">
-                                    <i class="fas fa-map-marker-alt me-2"></i>Điểm vùng (Thí sinh chọn theo trường THPT đang theo học)
+                                <label class="form-label">
+                                    <i class="fas fa-plus-circle me-2"></i>Điểm ưu tiên
                                 </label>
-                                <select class="form-select" id="diemvung" name="diemvung">
-                                    <option value="0">Khu vực 3</option>
-                                    <option value="2.5">Khu vực 1</option>
-                                    <option value="0.83">Khu vực 2</option>
-                                    <option value="1.67">Khu vực 2 - Nông Thôn</option>
-                                </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="diemvung" class="form-label small">Điểm vùng (theo trường THPT)</label>
+                                        <select class="form-select" id="diemvung" name="diemvung">
+                                            <option value="0">Khu vực 3</option>
+                                            <option value="0.75">Khu vực 1</option>
+                                            <option value="0.25">Khu vực 2</option>
+                                            <option value="0.5">Khu vực 2 - Nông Thôn</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="doituong" class="form-label small">Đối tượng ưu tiên</label>
+                                        <select class="form-select" id="doituong" name="doituong">
+                                            <option value="0">Không có</option>
+                                            <option value="2">Đối tượng 1</option>
+                                            <option value="2">Đối tượng 2</option>
+                                            <option value="2">Đối tượng 3</option>
+                                            <option value="2">Đối tượng 4</option>
+                                            <option value="1">Đối tượng 5</option>
+                                            <option value="1">Đối tượng 6</option>
+                                            <option value="1">Đối tượng 7</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="text-center">
@@ -1017,6 +1035,7 @@
             const ccnnSelect = document.getElementById('ccnn');
             const diemvungGroup = document.getElementById('diemvung-group');
             const diemvungSelect = document.getElementById('diemvung');
+            const doituongSelect = document.getElementById('doituong');
             const form = document.getElementById('conversionForm');
             const resultCard = document.getElementById('resultCard');
             const resultContent = document.getElementById('resultContent');
@@ -1082,6 +1101,7 @@
                 if (!showExtra) {
                     ccnnSelect.value = '0';
                     diemvungSelect.value = '0';
+                    doituongSelect.value = '0';
                 }
             });
 
@@ -1093,13 +1113,17 @@
                 let score = parseFloat(diemInput.value);
                 let bonus = 0;
                 let vung = 0;
+                let doituong = 0;
                 // Nếu có input chứng chỉ và đang hiển thị, cộng điểm tương ứng
                 if (ccnnGroup.style.display !== 'none') {
                     bonus = parseInt(ccnnSelect.value) || 0;
                 }
-                // Nếu có input điểm vùng và đang hiển thị, lấy điểm vùng
+                // Nếu có input điểm vùng và đang hiển thị, lấy điểm vùng và đối tượng ưu tiên
                 if (diemvungGroup.style.display !== 'none') {
                     vung = parseFloat(diemvungSelect.value) || 0;
+                    doituong = parseFloat(doituongSelect.value) || 0;
+                    // Cộng điểm đối tượng ưu tiên vào điểm vùng
+                    vung = 10*(vung + doituong)/3;
                 }
                 let tong = score + bonus;
                 if (diemvungGroup.style.display !== 'none') {
@@ -1222,7 +1246,7 @@
                                                 </div>
                                                 <div class="alert alert-success mt-3">
                                                     <i class="fas fa-lightbulb me-2"></i>
-                                                    <strong>Ý nghĩa:</strong> Bạn đã vượt qua hơn ${100 - tsaPercentileInfo.upper}% thí sinh khác trong kỳ thi TSA (dự kiến).
+                                                    <strong>Ý nghĩa:</strong> Bạn đã vượt qua ${100 - tsaPercentileInfo.upper}% đến ${100 - tsaPercentileInfo.lower}% thí sinh khác trong kỳ thi TSA.
                                                 </div>
 
                                                 <div class="text-center mt-3">
