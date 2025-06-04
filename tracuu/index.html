@@ -886,6 +886,242 @@
         .region-modal .search-box {
             margin-bottom: 1.5rem;
         }
+
+        /* Certificate Modal Styles */
+        #viewMoreCertificate {
+            transition: all 0.3s ease;
+        }
+
+        #viewMoreCertificate:hover {
+            color: var(--secondary-color) !important;
+            transform: translateY(-1px);
+        }
+
+        .certificate-modal .table {
+            font-size: 0.85rem;
+        }
+
+        .certificate-modal .table th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 0.75rem 0.5rem;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .certificate-modal .table td {
+            padding: 0.6rem 0.4rem;
+            border-bottom: 1px solid #FFE4E6;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .certificate-modal .table tbody tr:hover {
+            background-color: rgba(230, 57, 70, 0.05);
+        }
+
+        .certificate-modal .table tbody tr:first-child {
+            background-color: rgba(40, 167, 69, 0.1);
+        }
+
+        .certificate-modal .table tbody tr:first-child:hover {
+            background-color: rgba(40, 167, 69, 0.15);
+        }
+
+        /* Certificate table grouping styles */
+        .certificate-modal .table th,
+        .certificate-modal .table td {
+            border: 1px solid #dee2e6;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .certificate-modal .table thead th {
+            border: 2px solid #fff;
+        }
+
+        /* Group borders for better readability */
+        .certificate-modal .table th:nth-child(1),
+        .certificate-modal .table td:nth-child(1) {
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .certificate-modal .table th:nth-child(4),
+        .certificate-modal .table td:nth-child(4) {
+            border-left: 2px solid #6c757d;
+        }
+
+        .certificate-modal .table th:nth-child(6),
+        .certificate-modal .table td:nth-child(6) {
+            border-left: 2px solid #6c757d;
+        }
+
+        .certificate-modal .table th:nth-child(8),
+        .certificate-modal .table td:nth-child(8) {
+            border-left: 2px solid #6c757d;
+        }
+
+        .certificate-modal .table th:nth-child(10),
+        .certificate-modal .table td:nth-child(10) {
+            border-left: 2px solid #6c757d;
+        }
+
+        .certificate-modal .table th:nth-child(11),
+        .certificate-modal .table td:nth-child(11) {
+            border-left: 3px solid #28a745;
+        }
+
+        .certificate-modal .table th:nth-child(15),
+        .certificate-modal .table td:nth-child(15) {
+            border-left: 2px solid #6c757d;
+        }
+
+        /* Alternating row colors for better readability */
+        .certificate-modal .table tbody tr:nth-child(odd) {
+            background-color: rgba(248, 249, 250, 0.5);
+        }
+
+        .certificate-modal .table tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Highlight important score rows */
+        .certificate-modal .table tbody tr:nth-child(1),
+        .certificate-modal .table tbody tr:nth-child(3),
+        .certificate-modal .table tbody tr:nth-child(6),
+        .certificate-modal .table tbody tr:nth-child(9) {
+            background-color: rgba(40, 167, 69, 0.08);
+            font-weight: 500;
+        }
+
+        .certificate-modal .table tbody tr:nth-child(1):hover,
+        .certificate-modal .table tbody tr:nth-child(3):hover,
+        .certificate-modal .table tbody tr:nth-child(6):hover,
+        .certificate-modal .table tbody tr:nth-child(9):hover {
+            background-color: rgba(40, 167, 69, 0.15);
+        }
+
+        /* Header grouping colors */
+        .certificate-modal .table thead th:nth-child(1) {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+
+        .certificate-modal .table thead th:nth-child(2),
+        .certificate-modal .table thead th:nth-child(3) {
+            background: linear-gradient(135deg, #fd7e14, #e55a00);
+        }
+
+        .certificate-modal .table thead th:nth-child(4),
+        .certificate-modal .table thead th:nth-child(5) {
+            background: linear-gradient(135deg, #6f42c1, #5a2d91);
+        }
+
+        .certificate-modal .table thead th:nth-child(6),
+        .certificate-modal .table thead th:nth-child(7) {
+            background: linear-gradient(135deg, #20c997, #17a085);
+        }
+
+        .certificate-modal .table thead th:nth-child(8),
+        .certificate-modal .table thead th:nth-child(9) {
+            background: linear-gradient(135deg, #0dcaf0, #0aa2c0);
+        }
+
+        .certificate-modal .table thead th:nth-child(10) {
+            background: linear-gradient(135deg, #6610f2, #520dc2);
+        }
+
+        .certificate-modal .table thead th:nth-child(11),
+        .certificate-modal .table thead th:nth-child(12),
+        .certificate-modal .table thead th:nth-child(13),
+        .certificate-modal .table thead th:nth-child(14) {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+        }
+
+        .certificate-modal .table thead th:nth-child(15),
+        .certificate-modal .table thead th:nth-child(16) {
+            background: linear-gradient(135deg, #ffc107, #d39e00);
+        }
+
+        /* Responsive improvements for certificate table */
+        @media (max-width: 768px) {
+            .certificate-modal .table {
+                font-size: 0.7rem;
+            }
+
+            .certificate-modal .table th,
+            .certificate-modal .table td {
+                padding: 0.3rem 0.2rem;
+                white-space: nowrap;
+            }
+
+            .certificate-modal .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* Tooltip styles for certificate table */
+        .certificate-tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .certificate-tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .certificate-tooltip:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 95%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        /* Merged cells styling */
+        .certificate-modal .table td[rowspan] {
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.05));
+            border: 2px solid rgba(40, 167, 69, 0.3);
+            position: relative;
+        }
+
+        .certificate-modal .table td[rowspan]:hover {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.15), rgba(40, 167, 69, 0.08));
+            transform: scale(1.02);
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+        }
+
+        /* Special styling for level indicators */
+        .certificate-modal .table td[rowspan]:contains("Bậc") {
+            background: linear-gradient(135deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.05));
+            border-color: rgba(0, 123, 255, 0.3);
+        }
+
+        /* Empty cells styling */
+        .certificate-modal .table td:empty {
+            background-color: rgba(248, 249, 250, 0.8);
+            border-color: #e9ecef;
+        }
     </style>
     <script>
         ['keydown', 'keyup', 'keypress'].forEach(function(evt) {
@@ -988,6 +1224,9 @@
                             <div class="mb-4" id="ccnn-group" style="display:none;">
                                 <label for="ccnn" class="form-label">
                                     <i class="fas fa-certificate me-2"></i>Chứng chỉ ngoại ngữ (nếu có)
+                                    <a href="#" id="viewMoreCertificate" class="text-primary ms-2" style="font-size: 0.9em; text-decoration: none;">
+                                        <i class="fas fa-info-circle me-1"></i>Xem thêm
+                                    </a>
                                 </label>
                                 <select class="form-select" id="ccnn" name="ccnn">
                                     <option value="0">Không có</option>
@@ -1307,6 +1546,179 @@
         </div>
     </div>
 
+    <!-- Modal Chứng chỉ ngoại ngữ -->
+    <div class="modal fade certificate-modal" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="certificateModalLabel">
+                        <i class="fas fa-certificate me-2"></i>Bảng quy đổi chứng chỉ ngoại ngữ
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Thông tin:</strong> Bảng dưới đây hiển thị mức điểm quy đổi cho các loại chứng chỉ ngoại ngữ quốc tế được công nhận (Dữ liệu chưa hoàn thiện, đang cập nhật...).
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="certificateTable">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">IELTS Academic</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">KNLNN VN</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">Khung Năng lực Châu Âu</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">VSTEP</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">Aptis ESOL</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">PTE Academic</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">PTE</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">Linguaskill</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">Cambridge Assessment English</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">Cambridge English Tests</th>
+                                    <th colspan="4" style="text-align: center;">TOEIC</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">TOEFL iBT (*)</th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center;">TOEFL ITP</th>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: center;">Nghe</th>
+                                    <th style="text-align: center;">Nói</th>
+                                    <th style="text-align: center;">Đọc</th>
+                                    <th style="text-align: center;">Viết</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>5.0</td>
+                                    <td>Bậc 3</td>
+                                    <td>B1</td>
+                                    <td>5.5</td>
+                                    <td>B1</td>
+                                    <td>Level 2</td>
+                                    <td>43 - 58</td>
+                                    <td>140 - 159</td>
+                                    <td>B1 Preliminary<br>B1 Business Preliminary</td>
+                                    <td>PET<br>(140 - 159)</td>
+                                    <td>275 - 395</td>
+                                    <td>275 - 380</td>
+                                    <td>120 - 150</td>
+                                    <td>120 - 140</td>
+                                    <td>30 - 45</td>
+                                    <td>450 - 499</td>
+                                </tr>
+                                <tr>
+                                    <td>5.5</td>
+                                    <td rowspan="3">Bậc 4</td>
+                                    <td rowspan="3">B2</td>
+                                    <td rowspan="2">6.0 - 6.5</td>
+                                    <td rowspan="3">B2</td>
+                                    <td rowspan="3">Level 3</td>
+                                    <td rowspan="3">59 - 75</td>
+                                    <td rowspan="3">160 - 179</td>
+                                    <td rowspan="3">B2 First/B2<br>Business Vantage</td>
+                                    <td rowspan="3">FCE<br>(160 - 179)</td>
+                                    <td rowspan="3">400 - 485</td>
+                                    <td rowspan="3">385 - 450</td>
+                                    <td rowspan="3">160 - 170</td>
+                                    <td rowspan="3">150 - 170</td>
+                                    <td rowspan="3">46 - 93</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>6.0</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>6.5</td>
+                                    <td>7.0 - 7.5</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>7.0</td>
+                                    <td rowspan="3">Bậc 5</td>
+                                    <td rowspan="3">C1</td>
+                                    <td>8.5</td>
+                                    <td rowspan="3">C1</td>
+                                    <td rowspan="3">Level 4</td>
+                                    <td rowspan="3">76 - 84</td>
+                                    <td rowspan="3">>180</td>
+                                    <td rowspan="3">C1 Advanced/<br>C1 Business Higher</td>
+                                    <td rowspan="3">CAE<br>(180 - 199)</td>
+                                    <td>490</td>
+                                    <td>455</td>
+                                    <td rowspan="3">180 - 200</td>
+                                    <td rowspan="3">180 - 200</td>
+                                    <td rowspan="3">94 - 114</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>7.5</td>
+                                    <td rowspan="2">9.0</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>8.0</td>
+                                    <td rowspan="2">9.5 - 10</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>8.5</td>
+                                    <td rowspan="2">Bậc 6</td>
+                                    <td rowspan="2">C2</td>
+                                    <td></td>
+                                    <td rowspan="2">C2</td>
+                                    <td rowspan="2">Level 5</td>
+                                    <td rowspan="2">85 - 90</td>
+                                    <td></td>
+                                    <td rowspan="2">C2 Proficiency</td>
+                                    <td rowspan="2">CPE<br>(200 - 230)</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td rowspan="2">115 - 120</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>9.0</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-warning mt-3">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Lưu ý:</strong>
+                        <ul class="mb-0 mt-2">
+                            <li>Bảng quy đổi này áp dụng cho các chứng chỉ ngoại ngữ quốc tế được Bộ Giáo dục và Đào tạo công nhận.</li>
+                            <li>Chứng chỉ phải còn hiệu lực tại thời điểm nộp hồ sơ xét tuyển.</li>
+                            <li>Thí sinh chỉ được sử dụng một loại chứng chỉ để xét tuyển.</li>
+                            <li>(*) TOEFL iBT: Điểm tối thiểu mỗi kỹ năng phải đạt từ 6.0 trở lên.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="exportCertificateTable()">
+                        <i class="fas fa-download me-2"></i>Xuất Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1339,6 +1751,7 @@
             const printBtn = document.getElementById('printBtn');
             const viewMorePriorityBtn = document.getElementById('viewMorePriority');
             const viewMoreRegionBtn = document.getElementById('viewMoreRegion');
+            const viewMoreCertificateBtn = document.getElementById('viewMoreCertificate');
 
             // Xử lý sự kiện click vào "Xem thêm" đối tượng ưu tiên
             viewMorePriorityBtn.addEventListener('click', function(e) {
@@ -1353,6 +1766,13 @@
                 loadRegionData();
                 const regionModal = new bootstrap.Modal(document.getElementById('regionModal'));
                 regionModal.show();
+            });
+
+            // Xử lý sự kiện click vào "Xem thêm" chứng chỉ ngoại ngữ
+            viewMoreCertificateBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const certificateModal = new bootstrap.Modal(document.getElementById('certificateModal'));
+                certificateModal.show();
             });
 
             // Lấy danh sách trường
@@ -2486,6 +2906,29 @@
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, 'Khu vực ưu tiên');
             XLSX.writeFile(wb, 'khu_vuc_uu_tien.xlsx');
+        }
+
+        // Hàm xuất Excel cho bảng chứng chỉ ngoại ngữ
+        function exportCertificateTable() {
+            const data = [
+                ['IELTS Academic', 'KNLNN VN', 'Khung Năng lực Châu Âu', 'VSTEP', 'Aptis ESOL', 'PTE Academic', 'PTE', 'Linguaskill', 'Cambridge Assessment English', 'Cambridge English Tests', 'TOEIC Nghe', 'TOEIC Nói', 'TOEIC Đọc', 'TOEIC Viết', 'TOEFL iBT (*)', 'TOEFL ITP'],
+                ['5.0', 'Bậc 3', 'B1', '5.5', 'B1', 'Level 2', '43 - 58', '140 - 159', 'B1 Preliminary/B1 Business Preliminary', 'PET (140 - 159)', '275 - 395', '275 - 380', '120 - 150', '120 - 140', '30 - 45', '450 - 499'],
+                ['5.5', '', '6.0 - 6.5', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                ['6.0', 'Bậc 4', 'B2', '7.0 - 7.5', 'B2', 'Level 3', '59 - 75', '160 - 179', 'B2 First/B2 Business Vantage', 'FCE (160 - 179)', '400 - 485', '385 - 450', '160 - 170', '150 - 170', '46 - 93', ''],
+                ['6.5', '', '8.0', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                ['7.0', '', '8.5', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                ['7.5', 'Bậc 5', 'C1', '9.0', 'C1', 'Level 4', '76 - 84', '>180', 'C1 Advanced/C1 Business Higher', 'CAE (180 - 199)', '490', '455', '180 - 200', '180 - 200', '94 - 114', ''],
+                ['8.0', '', '9.5 - 10', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                ['8.5', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''],
+                ['9.0', 'Bậc 6', 'C2', '', 'C2', 'Level 5', '85 - 90', '', 'C2 Proficiency', 'CPE (200 - 230)', '', '', '', '', '115 - 120', '']
+            ];
+
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Chứng chỉ ngoại ngữ");
+
+            // Xuất file
+            XLSX.writeFile(wb, "bang_quy_doi_chung_chi_ngoai_ngu.xlsx");
         }
     </script>
 </body>
