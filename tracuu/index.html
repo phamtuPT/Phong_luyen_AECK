@@ -820,6 +820,72 @@
         .priority-modal .priority-text-2 {
             color: #DC3545;
         }
+
+        /* Region Modal Styles */
+        #viewMoreRegion {
+            transition: all 0.3s ease;
+        }
+
+        #viewMoreRegion:hover {
+            color: var(--secondary-color) !important;
+            transform: translateY(-1px);
+        }
+
+        .region-modal .table {
+            font-size: 0.9rem;
+        }
+
+        .region-modal .table th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-weight: 600;
+            border: none;
+            padding: 1rem 0.75rem;
+        }
+
+        .region-modal .table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #FFE4E6;
+            vertical-align: top;
+        }
+
+        .region-modal .table tbody tr:hover {
+            background-color: rgba(230, 57, 70, 0.05);
+        }
+
+        .region-modal .kv-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .region-modal .kv1 {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .region-modal .kv2nt {
+            background: linear-gradient(135deg, #FFA726, #FF8F00);
+            color: white;
+        }
+
+        .region-modal .kv2 {
+            background: linear-gradient(135deg, #66BB6A, #43A047);
+            color: white;
+        }
+
+        .region-modal .kv3 {
+            background: linear-gradient(135deg, #42A5F5, #1E88E5);
+            color: white;
+        }
+
+        .region-modal .search-box {
+            margin-bottom: 1.5rem;
+        }
     </style>
     <script>
         ['keydown', 'keyup', 'keypress'].forEach(function(evt) {
@@ -941,7 +1007,12 @@
                                 </label>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <label for="diemvung" class="form-label small">Điểm vùng (theo trường THPT)</label>
+                                        <label for="diemvung" class="form-label small">
+                                            Điểm vùng (theo trường THPT)
+                                            <a href="#" id="viewMoreRegion" class="text-primary ms-2" style="font-size: 0.9em; text-decoration: none;">
+                                                <i class="fas fa-info-circle me-1"></i>Xem thêm
+                                            </a>
+                                        </label>
                                         <select class="form-select" id="diemvung" name="diemvung">
                                             <option value="0">Khu vực 3</option>
                                             <option value="0.75">Khu vực 1</option>
@@ -1160,6 +1231,82 @@
         </div>
     </div>
 
+    <!-- Modal Điểm vùng -->
+    <div class="modal fade region-modal" id="regionModal" tabindex="-1" aria-labelledby="regionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="regionModalLabel">
+                        <i class="fas fa-map-marker-alt me-2"></i>Phân chia khu vực ưu tiên theo tỉnh thành
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Thông tin:</strong> Bảng dưới đây hiển thị phân chia khu vực ưu tiên (KV1, KV2-NT, KV2, KV3) cho từng tỉnh thành và các đơn vị hành chính thuộc từng khu vực.
+                    </div>
+
+                    <!-- Search box -->
+                    <div class="search-box">
+                        <div class="position-relative">
+                            <i class="fas fa-search position-absolute" style="left: 1rem; top: 50%; transform: translateY(-50%); color: #9CA3AF;"></i>
+                            <input type="text" id="regionSearch" class="form-control" placeholder="Tìm kiếm theo tên tỉnh hoặc đơn vị hành chính..." style="padding-left: 2.5rem;">
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h6 class="text-primary mb-2">Chú thích khu vực:</h6>
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="d-flex align-items-center">
+                                    <span class="kv-badge kv1 me-2">KV1</span>
+                                    <span class="small">Khu vực 1 (+0.75 điểm)</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <span class="kv-badge kv2-nt me-2">KV2-NT</span>
+                                    <span class="small">Khu vực 2 - Nông thôn (+0.5 điểm)</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <span class="kv-badge kv2 me-2">KV2</span>
+                                    <span class="small">Khu vực 2 (+0.25 điểm)</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <span class="kv-badge kv3 me-2">KV3</span>
+                                    <span class="small">Khu vực 3 (0 điểm)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="regionTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 8%;">Mã</th>
+                                    <th style="width: 20%;">Tỉnh thành</th>
+                                    <th style="width: 12%;">Khu vực</th>
+                                    <th style="width: 60%;">Đơn vị hành chính</th>
+                                </tr>
+                            </thead>
+                            <tbody id="regionTableBody">
+                                <!-- Dữ liệu sẽ được tạo bằng JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="exportRegionTable()">
+                        <i class="fas fa-download me-2"></i>Xuất Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -1191,12 +1338,21 @@
             const resultContent = document.getElementById('resultContent');
             const printBtn = document.getElementById('printBtn');
             const viewMorePriorityBtn = document.getElementById('viewMorePriority');
+            const viewMoreRegionBtn = document.getElementById('viewMoreRegion');
 
             // Xử lý sự kiện click vào "Xem thêm" đối tượng ưu tiên
             viewMorePriorityBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 const priorityModal = new bootstrap.Modal(document.getElementById('priorityObjectModal'));
                 priorityModal.show();
+            });
+
+            // Xử lý sự kiện click vào "Xem thêm" điểm vùng
+            viewMoreRegionBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                loadRegionData();
+                const regionModal = new bootstrap.Modal(document.getElementById('regionModal'));
+                regionModal.show();
             });
 
             // Lấy danh sách trường
@@ -2065,6 +2221,272 @@
         document.getElementById('percentileTableModal').addEventListener('shown.bs.modal', function () {
             generatePercentileTable();
         });
+
+        // Dữ liệu khu vực ưu tiên (mẫu - sẽ được mở rộng)
+        const regionData = [
+
+            {code: "1", province: "Hà Nội", region: "KV1", details: "Gồm: 7 xã: Ba Trại, Ba Vì, Khánh Thượng, Minh Quang, Tản Lĩnh, Vân Hòa, Yên Bài (thuộc huyện Ba Vì); 3 xã: Tiến Xuân, Yên Bình, Yên Trung (thuộc huyện Thạch Thất); 2 xã: Đông Xuân, Phú Mãn (thuộc huyện Quốc Oai); 1 xã: Trần Phú (thuộc huyện Chương Mỹ); 1 xã: An Phú (thuộc huyện Mỹ Đức)."},
+
+            {code: "1", province: "Hà Nội", region: "KV2", details: "Gồm: Thị xã Sơn Tây; huyện: Thanh Trì, Gia Lâm, Đông Anh, Sóc Sơn, Ba Vì, Phúc Thọ, Thạch Thất, Quốc Oai, Chương Mỹ, Đan Phượng, Hoài Đức, Thanh Oai, Mỹ Đức, Ứng Hoà, Thường Tín, Phú Xuyên, Mê Linh. (Trừ một số xã ở khu vực 1 thuộc KV1 của 5 huyện: Ba Vì, Thạch Thất, Quốc Oai, Chương Mỹ, Mỹ Đức đã ghi ở trên)."},
+            {code: "1", province: "Hà Nội", region: "KV3", details: "Gồm các quận: Ba Đình, Hoàn Kiếm, Hai Bà Trưng, Đống Đa, Tây Hồ, Cầu Giấy, Thanh Xuân, Hoàng Mai, Long Biên, Bắc Từ Liêm, Hà Đông, Nam Từ Liêm."},
+
+            {code: "2", province: "TP. HCM", region: "KV2", details: "Gồm các huyện: Bình Chánh, Cần Giờ, Củ Chi, Hóc Môn, Nhà Bè"},
+            {code: "2", province: "TP. HCM", region: "KV3", details: "Gồm các quận: 1, 2, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, Bình Thạnh, Gò Vấp, Phú Nhuận, Tân Bình, Thủ Đức, Tân Phú, Bình Tân"},
+            {code: "3", province: "Hải phòng", region: "KV1", details: "Huyện Thủy Nguyên gồm các xã: Xã Lại Xuân; Xã Kỳ Sơn; Xã An Sơn; Xã Liên Khê; Xã Lưu Kiếm; Xã Lưu Kỳ; Xã Minh Tân.  Huyện Cát Hải gồm các xã:Thị trấn Cát Bà; Xã Trân Châu; Xã Xuân Đán; Xã Hiền Hào; Xã Gia Luận; Xã Phù Long; Xã Việt Hải, Đồng Bài, Hoàng Châu, Nghĩa Lộ, Văn Phong, Thị Trấn Cát Hải."},
+
+            {code: "3", province: "Hải phòng", region: "KV2", details: "Gồm các huyện: An Lão; Kiến Thụy; Thủy Nguyên (trừ các xã KV1); An Dương; Tiên Lãng; Vĩnh Bảo; Bạch Long Vĩ."},
+            {code: "3", province: "Hải phòng", region: "KV3", details: "Gồm các quận: Hồng Bàng; Lê Chân; Ngô Quyền; Kiến An; Hải An; Đồ Sơn; Dương Kinh."},
+            {code: "4", province: "Đà Nẵng", region: "KV1", details: "Huyện đảo Hoàng Sa"},
+            {code: "4", province: "Đà Nẵng", region: "KV2", details: "Gồm các xã thuộc huyện Hòa Vang"},
+            {code: "4", province: "Đà Nẵng", region: "KV3", details: "Gồm các quận: Hải Châu, Thanh Khê, Sơn Trà, Ngũ Hành Sơn, Liên Chiểu, Cẩm Lệ"},
+            {code: "5", province: "Hà Giang", region: "KV1", details: "Toàn tỉnh"},
+            {code: "6", province: "Cao Bằng", region: "KV1", details: "Toàn tỉnh"},,
+            {code: "7", province: "Lai Châu", region: "KV1", details: "Toàn tỉnh"},
+            {code: "8", province: "Lào Cai", region: "KV1", details: "Toàn tỉnh"},
+            {code: "9", province: "Tuyên Quang", region: "KV1", details: "Toàn tỉnh"},
+            {code: "10", province: "Lạng Sơn", region: "KV1", details: "Toàn tỉnh"},
+            {code: "11", province: "Bắc Kạn", region: "KV1", details: "Toàn tỉnh"},
+            {code: "12", province: "Thái Nguyên", region: "KV1", details: "Gồm các huyện: Võ Nhai, Định Hoá, Đại Từ, Phú Lương, Đồng Hỷ và các xã: Phúc Thuận, Minh Đức, Phúc Tân, Thành Công, Vạn Phái, Tiên Phong và thị trấn Bắc Sơn (thuộc TX Phổ Yên), Tân Thành, Tân Kim, Tân Hoà, Tân Khánh, Tân Đức, Bàn Đạt, Kha Sơn (thuộc huyện Phú Bình), xã Bình Sơn (Thành phố xã Sông Công), Tân Cương, Phúc Trìu, Phúc Xuân, Phúc Hà, Thịnh Đức, Đồng Bẩm, Cao Ngạn, Đồng Liên, Sơn Cẩm, Chùa Hang, Linh Sơn, Huống Thượng (thuộc TP.Thái Nguyên"},
+
+            {code: "12", province: "Thái Nguyên", region: "KV2-NT", details: "Gồm huyện Phú Bình (trừ các xã thuộc KV1)."},
+            {code: "12", province: "Thái Nguyên", region: "KV2", details: "Gồm các xã, phường của Thành phố Sông Công, Thành phố Thái Nguyên, Thị xã Phổ Yên (trừ các xã, phường thuộc KV1)."},
+            {code: "13", province: "Yên Bái", region: "KV1", details: "Toàn tỉnh"},
+            {code: "14", province: "Sơn La", region: "KV1", details: "Toàn tỉnh"},
+            {code: "15", province: "Phú Thọ", region: "KV1", details: "Gồm các xã thuộc huyện: Đoan Hùng, Thanh Ba (Trừ các xã: Đỗ Sơn, Đỗ Xuyên, Lương Lỗ, Thanh Hà, Vũ Yển), Hạ Hòa (Trừ các xã Vụ Cầu), Cẩm Khê (Trừ các xã: Phương Xá, Đồng Cam, Sai Nga, Hiền Đa, Cát Trù), Yên Lập, Thanh Sơn, Phù Ninh (Trừ các xã: Bình Bộ, Tử Đà, Vĩnh Phú), Tam Nông (Trừ các xã: Hồng Đà, Tam Cường, Vực Trường), Thanh Thủy (Trừ các xã: Bảo Yên, Đoan Hạ, Đồng Luận, Xuân Lộc), Tân Sơn; xã Chu Hóa, xã Hy Cương, xã Kim Đức, xã Thanh Đình (thuộc thành phố Việt Trì), xã Hà Thạch, xã Phú Hộ (thuộc thị xã Phú Thọ), thị trấn Hùng Sơn, xã Tiên Kiên, xã Xuân Lũng (thuộc huyện Lâm Thao)"},
+            {code: "15", province: "Phú Thọ", region: "KV2-NT", details: "Huyện: Thanh Ba, Hạ Hòa, Cẩm Khê, Phù Ninh, Lâm Thao, Tam Nông, Thanh Thủy (Trừ các xã thuộc KV1)"},
+
+            {code: "15", province: "Phú Thọ", region: "KV2", details: "Thành phố Việt Trì, Thị xã Phú Thọ (Trừ các xã thuộc KV1)"},
+            {code: "16", province: "Vĩnh Phúc", region: "KV1", details: "Gồm: huyện Tam Đảo; xã Đồng Tĩnh, Hoàng Hoa, Hướng Đạo (thuộc huyện Tam Dương); Xã Bàn Giản, Bắc Bình, Hợp Lý, Liên Hòa, Liễn Sơn, Ngọc Mỹ, Quang Sơn, Tử Du, Thái Hòa, Vân Trục, Xuân Hòa, Xuân Lôi, thị trấn Hoa Sơn, thị trấn Lập Thạch (thuộc huyện Lập Thạch); xã Trung Mỹ (thuộc huyện Bình Xuyên); xã Bạch Lưu, Đôn Nhân, Đồng Quế, Đồng Thịnh, Hải Lựu, Lãng Công, Nhạo Sơn, Nhân Đạo, Phương Khoan, Quang Yên, Tân Lập, Yên Thạch (thuộc huyện Sông Lô); xã Ngọc Thanh (thuộc thành phố Phúc Yên)."},
+            {code: "16", province: "Vĩnh Phúc", region: "KV2-NT", details: "Gồm các huyện: Yên Lạc, Vĩnh Tường, Tam Dương, Sông Lô, Lập Thạch, Bình Xuyên (trừ các xã ở KV1 thuộc huyện Tam Dương, Sông Lô, Lập Thạch, Bình Xuyên đã ghi ở trên)."},
+            {code: "16", province: "Vĩnh Phúc", region: "KV2", details: "Thành phố Vĩnh Yên, Thành phố Phúc Yên (Trừ xã ở KV1 thuộc"},
+            {code: "", province: "", region: "", details: "thành phố Phúc Yên)."},
+            {code: "17", province: "Quảng Ninh", region: "KV1", details: "Gồm các huyện: Ba Chẽ, Bình Liêu, Cô Tô; các phường Đại Yên, Hà Khánh, Hà Phong, Hà Trung, Việt Hưng (thuộc Thành phố Hạ Long); các phường Mông Dương, Quang Hanh, các xã Cẩm Hải, Cộng Hòa, Dương Huy (thuộc Thành phố Cẩm Phả); các phường Bắc Sơn, Nam Khê, Phương Đông, Vàng Danh, Yên Thanh, xã Thượng Yên Công (thuộc Thành phố Uông Bí); các phường Hải Hòa, Hải Yên, Ninh Dương, các xã Bắc Sơn, Hải Đông, Hải Sơn, Hải Tiến, Hải Xuân, Quảng Nghĩa, Vĩnh Thực, Vĩnh Trung (thuộc Thành phố Móng Cái); các xã Đại Bình, Đầm Hà, Dực Yên, Quảng An, Quảng Lâm, Quảng Lợi, Quảng Tân, Tân Bình, Tân Lập (thuộc huyện Đầm Hà); các xã Cái Chiên, Đường Hoa, Quảng Đức, Quảng Long, Quảng Phong, Quảng Sơn, Quảng Thành, Quảng Thịnh, Tiến Tới (thuộc huyện Hải Hà); các xã Đại Dực, Đại Thành, Điền Xá, Đông Hải, Đông Ngũ, Đồng Rui, Hà Lâu, Hải Lạng, Phong Dụ, Tiên Lãng, Yên Than (thuộc huyện Tiên Yên); các xã An Sinh, Bình Dương, Bình Khê, Hoàng Quế, Hồng Thái Đông, Hồng Thái Tây, Nguyễn Huệ, Tân Việt, Thủy An, Tràng Lương, Việt Dân, Yên Đức, Yên Thọ, phường Mạo Khê (thuộc Thị xã Đông Triều); các phường Đông Mai, Minh Thành, xã Hoàng Tân (thuộc Thị xã Quảng Yên); các xã Bằng Cả, Dân Chủ, Đồng Lâm, Đồng Sơn, Hòa Bình, Kỳ Thượng, Quảng La, Sơn Dương, Tân Dân, Thống Nhất, Vũ Oai (thuộc huyện Hoành Bồ); các xã Bình Dân, Đài Xuyên, Đoàn Kết, Đông Xá, Minh Châu, Quan Lạn, Thắng Lợi, Vạn Yên (thuộc huyện Vân Đồn)."},
+            {code: "17", province: "Quảng Ninh", region: "KV2-NT", details: "Gồm các huyện: Đầm Hà, Hải Hà, Tiên Yên, Hoành Bồ, Vân Đồn (trừ các xã thuộc KV1)"},
+
+            {code: "17", province: "Quảng Ninh", region: "KV2", details: "Gồm các thành phố: Hạ Long, Cẩm Phả, Uông Bí, Móng Cái; các Thị xã Quảng Yên, Đông Triều (trừ các xã, phường thuộc KV1)."},
+            {code: "18", province: "Bắc Giang", region: "KV1", details: "Gồm các huyện: Sơn Động; Lục Ngạn; Lục Nam; Yên Thế; Tân Yên; Yên Dũng; các xã An Hà, Đại Lâm, Đào Mỹ, Dương Đức, Hương Lạc, Hương Sơn, Mỹ Hà, Mỹ Thái, Nghĩa Hòa, Nghĩa Hưng, Phi Mô, Quang Thịnh, Tân Dĩnh, Tân Hưng, Tân Thanh, Tân Thịnh, Thái Đào, Tiên Lục, Xuân Hương, Xương Lâm, Yên Mỹ (thuộc huyện Lạng Giang); các xã Danh Thắng, Đồng Tân, Đức Thắng, Hòa Sơn, Hoàng An, Hoàng Thanh, Hoàng Vân, Hùng Sơn, Lương Phong, Ngọc Sơn, Thái Sơn, Thanh Vân, Thường Thắng, Mai Đình, Hương Lâm, Hợp Thịnh,Quang Minh, Mai Trung, Xuân Cẩm, Đại Thành (thuộc huyện Hiệp Hòa); các xã Minh Đức, Nghĩa Trung, Tiên Sơn, Thượng Lan,Trung Sơn, Vân Trung (thuộc huyện Việt Yên); các xã Dĩnh Trì, Đồng Sơn (thuộc TP. Bắc Giang)."},
+
+            {code: "18", province: "Bắc Giang", region: "KV2-NT", details: "Gồm các huyện: Hiệp Hòa; Việt Yên; Lạng Giang (trừ các xã, thị trấn thuộc KV1)"},
+            {code: "18", province: "Bắc Giang", region: "KV2", details: "Gồm các xã, phường thuộc TP Bắc Giang (trừ các xã thuộc KV1)"},
+            {code: "19", province: "Bắc Ninh", region: "KV2-NT", details: "Gồm các huyện: Yên Phong, Tiên Du, Quế Võ, Thuận Thành, Gia Bình, Lương Tài"},
+            {code: "19", province: "Bắc Ninh", region: "KV2", details: "Gồm: Thị xã Từ Sơn, TP. Bắc Ninh"},
+            {code: "21", province: "Hải Dương", region: "KV1", details: "Huyện Chí Linh, bao gồm các xã: An Lạc, Bắc An, Cổ Thành, Đồng Lạc, Hoàng Hoa Thám, Hoàng Tiến, Hưng Đạo, Lê Lợi, Nhân Huệ, Tân Dân, Văn Đức, Kênh Giang (Riêng thôn Tân Lập). Huyện Kinh môn, bao gồm các xã: Hiệp An, Phúc Thành, An Phụ, Hiệp Hòa, Thượng Quận, Phạm Mệnh, An Sinh, Thất Hùng, Thái Sơn, Hiệp Sơn, Bạch Đằng, Lê Ninh, Duy Tân, Thị trấn Phú Thứ, Tân Dân, Hoành Sơn; thị trấn Minh Tân, thị trấn Kinh Môn."},
+            {code: "21", province: "Hải Dương", region: "KV2-NT", details: "Gồm các huyện của tỉnh (trừ các xã thuộc KV1)"},
+            {code: "21", province: "Hải Dương", region: "KV2", details: "Gồm các xã, phường của thành phố Hải Dương, bao gồm các phường, xã: Tân Bình, Thanh Bình, Ngọc Châu, Nhị Châu, Hải Tân, Quang Trung, Bình Hàn, Cẩm Thượng, Phạm Ngũ Lão, Lê Thanh Nghị, Nguyễn Trãi, Trần Phú, Trần Hưng Đạo, Tứ Minh, Việt Hoà, và các xã Nam Đồng, Ái Quốc, An Châu, Thượng Đạt, Thạch Khôi, Tân Hưng. Các phường thuộc thị xã Chí Linh."},
+            {code: "22", province: "Hưng Yên", region: "KV2-NT", details: "Gồm các huyện Tiên Lữ, Ân Thi, Phù Cừ, Mỹ Hào, Yên Mỹ, Kim Động, Khoái Châu, Văn Giang, Văn Lâm."},
+
+            {code: "22", province: "Hưng Yên", region: "KV2", details: "Các phường, xã thuộc Thành phố Hưng Yên."},
+            {code: "23", province: "Hoà Bình", region: "KV1", details: "Toàn tỉnh"},
+            {code: "24", province: "Hà Nam", region: "KV2-NT", details: "Gồm tất cả các huyện: Duy Tiên, Kim Bảng, Lý Nhân, Thanh Liêm, Bình Lục"},
+            {code: "24", province: "Hà Nam", region: "KV2", details: "Gồm các xã, phường của thành phố Phủ Lý"},
+            {code: "25", province: "Nam Định", region: "KV2-NT", details: "Gồm tất cả các huyện: Mỹ Lộc, Vụ Bản, Ý Yên, Nam Trực, Trực Ninh, Xuân Trường, Giao Thủy, Hải Hậu, Nghĩa Hưng"},
+
+            {code: "25", province: "Nam Định", region: "KV2", details: "Thành phố Nam Định"},
+            {code: "26", province: "Thái Bình", region: "KV2-NT", details: "Gồm các huyện: Quỳnh Phụ, Hưng Hà, Đông Hưng, Vũ Thư, Kiến Xương, Tiền Hải, Thái Thụy"},
+            {code: "26", province: "Thái Bình", region: "KV2", details: "Thành phố Thái Bình"},
+            {code: "27", province: "Ninh Bình", region: "KV1", details: "Toàn bộ các xã, phường của thành phố Tam Điệp; Toàn bộ các xã, thị trấn của huyện Nho Quan; Các xã: Gia Hòa, Gia Hưng, Gia Sinh, Gia Thanh, Gia Vân, Gia Thịnh, Gia Vượng, Gia phương, Gia Minh, Liên Sơn (thuộc huyện Gia Viễn); Các xã: Ninh Hải, Ninh Hòa, Ninh Thắng, Ninh Vân, Ninh Xuân, Trường Yên (thuộc huyện Hoa Lư); Các xã: Khánh Thượng, Mai Sơn, Yên Đồng,Yên Hòa, Yên Lâm, Yên Mạc, Yên Thắng, Yên Thành, Yên Thái (thuộc huyện Yên Mô); Các xã: Cồn Thoi, Kim Tân, Kim Mỹ, Kim Hải, Kim Trung (thuộc huyện Kim Sơn); xã Ninh Nhất (thuộc TP. Ninh Bình)."},
+            {code: "27", province: "Ninh Bình", region: "KV2-NT", details: "Huyện Gia Viễn; Huyện Hoa Lư, Huyện Yên Mô, Huyện Kim Sơn, Huyện Yên Khánh. (trừ một số xã ở thuộc KV1 của 4 huyện sau: Gia Viễn, Hoa Lư, Yên Mô, Kim Sơn)."},
+            {code: "27", province: "Ninh Bình", region: "KV2", details: "Thành phố Ninh Bình (trừ xã Ninh Nhất)."},
+            {code: "28", province: "Thanh Hóa", region: "KV1", details: "Gồm 11 huyện miền núi: Mường Lát, Quan Sơn, Quan Hóa, Lang Chánh, Bá Thước, Cẩm Thủy, Ngọc Lặc, Thường Xuân, Như Xuân, Như Thanh, Thạch Thành; các xã: xã Quảng Phú, Thọ Lâm, Xuân Châu, Xuân Phú, Xuân Thắng (thuộc huyện Thọ Xuân); xã Thọ Sơn, Triệu Thành, Bình Sơn, Thọ Bình (thuộc huyện Triệu Sơn); xã Vĩnh An, Vĩnh Hùng, Vĩnh Hưng, Vĩnh Long, Vĩnh Quang, Vĩnh Thịnh (thuộc huyện Vĩnh Lộc); xã Phú Lâm, Trường Lâm, Phú Sơn, Tân Trường, Tân Dân, Hải Ninh, Hải Thanh, Ninh Hải, Hải Lĩnh, Hải Hòa, Hải Bình, Tĩnh Hải, Hải Yến, Hải Hà, Hải Thượng, Nghi Sơn, Hải An (thuộc huyện Tĩnh Gia); xã Hà Đông, Hà Lĩnh, Hà Long, Hà Sơn, Hà Tân, Hà Tiến (thuộc huyện Hà Trung); xã Yên Lâm (thuộc huyện Yên Định); phường Bắc Sơn (thuộc Thị xã Bỉm Sơn); các xã Hưng Lộc, Ngư Lộc, Đa Lộc, Hải Lộc (thuộc Huyện Hậu Lộc); các xã: Hoằng Châu, Hoằng Hải, Hoằng Thanh, Hoằng Trường, Hoằng Tiến, Hoằng Phụ, Hoằng Yến, (Thuộc Huyện Hoằng Hóa); Quảng Hùng, Quảng Vinh (thuộc Thành phố Sầm Sơn); các xã: Nga Thủy, Nga Tiến, Nga Tân (thuộc huyện Nga Sơn)."},
+            {code: "28", province: "Thanh Hóa", region: "KV2-NT", details: "Gồm tất cả các huyện: Vĩnh Lộc, Yên Định, Thiệu Hóa, Đông Sơn,Triệu Sơn, Thọ Xuân, Nông Cống, Tĩnh Gia, Quảng Xương, Hoằng Hóa, Hậu Lộc, Hà Trung, Nga Sơn (trừ một số xã thuộc KV1 của huyện Vĩnh Lộc, Yên Định, Triệu Sơn, Thọ Xuân, Tĩnh Gia, Hà Trung đã ghi ở trên)."},
+            {code: "28", province: "Thanh Hóa", region: "KV2", details: "Thành phố Thanh Hóa, Thành phố Sầm Sơn, thị xã Bỉm Sơn (trừ phường Bắc Sơn thuộc KV1 của Thị xã Bỉm Sơn đã ghi ở trên)."},
+            {code: "29", province: "Nghệ An", region: "KV1", details: "Gồm toàn bộ các huyện: Kỳ Sơn, Quế Phong, Tương Dương, Con Cuông, Quỳ Châu, Quỳ Hợp, Tân Kỳ, Anh Sơn, Nghĩa Đàn; Các xã: Đông Hiếu, Long Sơn, Nghĩa Hòa, Nghĩa Tiến, Quang Long, Quang Tiến, Tây Hiếu (thuộc thị xã Thái Hòa); Các xã: Cát Văn, Phong Thịnh, Ngọc Sơn, Thanh Dương, Thanh Hòa, Thanh Lĩnh, Thanh Lương, Thanh Ngọc, Thanh Nho, Thanh Phong, Võ Liệt, Xuân Tường, Hạnh Lâm, Thanh Chi, Thanh Đức, Thanh Hà, Thanh Hương, Thanh Khê, Thanh Lâm, Thanh Long, Thanh Tiên, Thanh Thịnh, Thanh Thuỷ, Thanh An, Thanh Mai, Thanh Mỹ, Thanh Tùng, Thanh Xuân, Thanh Liên, Ngọc Lâm, Thanh Sơn, (thuộc huyện Thanh Chương); Các xã: Đồng Thành, Hậu Thành, Hùng Thành, Lăng Thành, Mã Thành, Mỹ Thành, Phúc Thành, Sơn Thành, Đại Thành, Đức Thành, Kim Thành, Lý Thành, Minh Thành, Quang Thành, Tân Thành, Tây Thành, Thịnh Thành, Tiến Thành, (thuộc huyện Yên Thành);"},
+            {code: "29", province: "Nghệ An", region: "KV1", details: "Gồm toàn bộ các huyện: Kỳ Sơn, Quế Phong, Tương Dương, Con Cuông, Quỳ Châu, Quỳ Hợp, Tân Kỳ, Anh Sơn, Nghĩa Đàn; Các xã, phường: xã Đông Hiếu, phường Long Sơn, xã Nghĩa Hòa, xã Nghĩa Tiến, phường Quang Long, phường Quang Tiến, xã Tây Hiếu (thuộc thị xã Thái Hòa); Các xã: Cát Văn, Phong Thịnh, Ngọc Sơn, Thanh Dương, Thanh Hòa, Thanh Lĩnh, Thanh Lương, Thanh Ngọc, Thanh Nho, Thanh Phong, Võ Liệt, Xuân Tường, Hạnh Lâm, Thanh Chi, Thanh Đức, Thanh Hà, Thanh Hương, Thanh Khê, Thanh Lâm, Thanh Long, Thanh Tiên, Thanh Thịnh, Thanh Thuỷ, Thanh An, Thanh Mai, Thanh Mỹ, Thanh Tùng, Thanh Xuân, Thanh Liên, Ngọc Lâm, Thanh Sơn, (thuộc huyện Thanh Chương); Các xã: Đồng Thành, Hậu Thành, Hùng Thành, Lăng Thành, Mã Thành, Mỹ Thành, Phúc Thành, Sơn Thành, Đại Thành, Đức Thành, Kim Thành, Lý Thành, Minh Thành, Quang Thành, Tân Thành, Tây Thành, Thịnh Thành, Tiến Thành, (thuộc huyện Yên Thành);"},
+            {code: "29", province: "Nghệ An", region: "KV1", details: "Các xã: Bài Sơn, Giang Sơn Đông, Giang Sơn Tây, Hồng Sơn, Lam Sơn, Nam Sơn, Ngọc Sơn (thuộc huyện Đô Lương); Các xã: Diễn Lâm, Diễn Vạn, Diễn Trung, Diễn Bích, Diễn Hải, Diễn Kim (thuộc huyện Diễn Châu); Các xã Nam Hưng, Nam Thái, Nam Tân, Nam Lộc, Nam Thượng (thuộc huyện Nam Đàn); Các xã Nghi Hưng, Nghi Văn, Nghi Kiều, Nghi Công Bắc, Nghi Công Nam, Nghi Lâm, Nghi Yên, Nghi Tiến, Nghi Thiết, Nghi Quang (thuộc huyện Nghi Lộc); Các xã: Ngọc Sơn, Quỳnh Châu, Quỳnh Hoa, Quỳnh Tam, Tân Sơn, Quỳnh Thắng, Quỳnh Tân, Tân Thắng, Quỳnh Thọ, Quỳnh Long (thuộc huyện Quỳnh Lưu); Xã Quỳnh Lộc, Quỳnh Trang (thuộc TX Hoàng Mai)."},
+            {code: "29", province: "Nghệ An", region: "KV2-NT", details: "Gồm các huyện: Yên Thành, Diễn Châu, Quỳnh Lưu, Nghi Lộc, Nam Đàn, Hưng Nguyên, Đô Lương, Thanh Chương (trừ các xã thuộc KV1)"},
+            {code: "29", province: "Nghệ An", region: "KV2", details: "Gồm các phường, xã thuộc thành phố Vinh và Thị xã Cửa Lò; thị xã Thái Hòa (trừ các xã, phường có tên trên), Thị xã Hoàng Mai (trừ xã Quỳnh Lộc và Quỳnh Trang)"},
+            {code: "30", province: "Hà Tĩnh", region: "KV1", details: "Gồm các huyện: Vũ Quang, Hương Sơn, Hương Khê và các xã: Đức Đồng, Đức Lạng, Đức Lập, Tân Hương (thuộc huyện Đức Thọ); Hồng Lộc, Tân Lộc, Thịnh Lộc, Thạch Kim (thuộc huyện Lộc Hà); Gia Hanh, Mỹ Lộc, Sơn Lộc, Thuần Thiện, Thượng Lộc, Phú Lộc (thuộc huyện Can Lộc); Bắc Sơn, Ngọc Sơn, Thạch Điền, Thạch Xuân, Nam Hương, Thạch Lạc, Thạch Bàn, Thạch Hải, Thạch Trị, Thạch Hội, Thạch Đỉnh (thuộc huyện Thạch Hà); Cẩm Mỹ, Cẩm Quan, Cẩm Minh, Cẩm Sơn, Cẩm Thịnh, Cẩm Lĩnh, Cẩm Nhượng, Cẩm Lộc (thuộc huyện Cẩm Xuyên); Kỳ Bắc, Kỳ Đồng, Kỳ Giang, Kỳ Tân, Kỳ Tiến, Kỳ Văn, Kỳ Phong, Kỳ Lạc, Kỳ Lâm, Kỳ Sơn, Kỳ Tây, Kỳ Thượng, Kỳ Trung, Kỳ Hợp, Kỳ Phú, Kỳ Khang (thuộc huyện Kỳ Anh); Các xã, phường: Kỳ Hà, Kỳ Hoa, Kỳ Lợi, Kỳ Nam, Kỳ Thịnh (thuộc Thị xã Kỳ Anh)."},
+            {code: "30", province: "Hà Tĩnh", region: "KV2-NT", details: "Gồm các huyện: huyện Đức Thọ, huyện Nghi Xuân, huyện Can Lộc, huyện Thạch Hà, huyện Lộc Hà, huyện Cẩm Xuyên, huyện Kỳ Anh (trừ các xã, thị trấn thuộc KV1) ."},
+            {code: "30", province: "Hà Tĩnh", region: "KV2", details: "Gồm các xã, phường của Thành phố Hà Tĩnh; các xã, phường của Thị xã Hồng Lĩnh; các xã, phường của Thị xã Kỳ Anh (trừ các xã, phường thuộc KV1)"},
+            {code: "31", province: "Quảng Bình", region: "KV1", details: "Huyện Minh Hóa; Tuyên Hóa; xã Quảng Hợp, Quảng Thạch, Quảng Đông, Quảng Liên, Phù Hóa, Cảnh Hóa, Quảng Châu, Quảng Tiến, Quảng Kim (thuộc huyện Quảng Trạch); xã Quảng Văn, Quảng Sơn, Quảng Minh (thuộc thị xã Ba Đồn); xã Tân Trạch, Thượng Trạch, Xuân Trạch, Lâm Trạch, Liên Trạch, Phúc Trạch, Hưng Trạch, Phú Định, Sơn Trạch, Sơn Lộc, Mỹ Trạch, thị trấn nông trường Việt Trung, Phú Trạch (thuộc huyện Bố Trạch); xã Ngân Thủy, Kim Thủy, Lâm Thủy, Thái Thủy, Văn Thủy, Trường Thủy, thị trấn nông trường Lệ Ninh, Hưng Thủy (thuộc huyện Lệ Thủy); xã Trường Xuân, Trường Sơn, Hải Ninh (thuộc huyện Quảng Ninh)."},
+            {code: "31", province: "Quảng Bình", region: "KV2-NT", details: "Huyện Quảng Trạch (trừ các xã thuộc KV1); Huyện Bố Trạch (trừ các xã thuộc KV1); Quảng Ninh (trừ các xã thuộc KV1); Lệ Thủy (trừ các xã thuộc KV1)."},
+            {code: "31", province: "Quảng Bình", region: "KV2", details: "Thành phố Đồng Hới; thị xã Ba Đồn (trừ các xã thuộc KV1)."},
+            {code: "32", province: "Quảng Trị", region: "KV1", details: "Gồm các huyện: Cồn Cỏ, Hướng Hoá, Đakrông; các xã: Vĩnh Ô, Vĩnh Khê, Vĩnh Hà, thị trấn Bến Quan (thuộc huyện Vĩnh Linh); Vĩnh Trường, Linh Thượng, Hải Thái (thuộc huyện Gio Linh); Cam Tuyền, Cam Thành, Cam Chính, Cam Nghĩa (thuộc huyện Cam Lộ); các xã bãi ngang gồm: Hải An, Hải Khê (thuộc huyện Hải Lăng); Vĩnh Thái, Vĩnh Thạch, Vĩnh Giang (thuộc huyện Vĩnh Linh); Trung Giang, Gio Hải, Gio Việt, Gio Mai (thuộc huyện Gio Linh); Triệu Vân, Triệu An, Triệu Lăng, Triệu Phước, Triệu Độ (thuộc huyện Triệu Phong)."},
+            {code: "32", province: "Quảng Trị", region: "KV2-NT", details: "Gồm các huyện: Vĩnh Linh, Gio Linh, Cam Lộ, Triệu Phong, Hải Lăng (trừ các xã thuộc KV1)."},
+
+            {code: "32", province: "Quảng Trị", region: "KV2", details: "Gồm các xã, phường của thành phố Đông Hà và thị xã Quảng Trị."},
+            {code: "33", province: "Thừa Thiên Huế", region: "KV1", details: "Các xã thuộc huyện A Lưới, huyện Nam Đông; các xã Phong Sơn, Phong Xuân, Phong Mỹ, Phong Chương, Điền Hương, Phong Bình, Điền Hòa, Điền Môn (thuộc huyện Phong Điền); các xã Quảng Lợi, Quảng An, Quảng Phước, Quảng Thái, Quảng Công, Quảng Ngạn, Quảng Thành (thuộc huyện Quảng Điền); các xã Bình Điền, Bình Thành, Hồng Tiến, Hương Thọ, Hương Bình (thuộc thị xã Hương Trà); các xã Phú An, Vinh An, Vinh Thái, Vinh Phú, Vinh Hà, Phú Xuân, Phú Diên, Vinh Xuân (thuộc huyện Phú Vang); các xã Phú Sơn, Dương Hòa (thuộc thị xã Hương Thủy), các xã Lộc Bình, Lộc Bổn, Lộc Hòa, Lộc Trì, Lộc Vĩnh, Vinh Giang, Vinh Hải, Vinh Mỹ, Vinh Hiền, Xuân Lộc, Thị trấn Lăng Cô (thuộc huyện Phú Lộc)."},
+            {code: "33", province: "Thừa Thiên", region: "KV2-NT", details: "Các xã thuộc huyện Phong Điền, Quảng Điền, Phú Vang, Phú Lộc (Trừ các xã thuộc KV1)"},
+            {code: "33", province: "Thừa Thiên", region: "KV2", details: "Thành phố Huế; Thị xã Hương Trà; Hương Thủy (Trừ các xã thuộc KV1 của thị xã Hương Trà, thị xã Hương Thủy)"},
+            {code: "34", province: "Quảng Nam", region: "KV1", details: "Gồm các huyện: Nam Giang, Đông Giang, Tây Giang, Phước Sơn, Bắc Trà My, Nam Trà My, Hiệp Đức, Tiên Phước, Nông Sơn và các xã: Tam Lãnh (thuộc huyện Phú Ninh); Đại Đồng, Đại Hồng, Đại Lãnh, Đại Quang, Đại Tân, Đại Hưng, Đại Chánh, Đại Sơn, Đại Thạnh (thuộc huyện Đại Lộc); Quế Phong (thuộc huyện Quế Sơn); Tam Mỹ Đông, Tam Mỹ Tây, Tam Sơn, Tam Thạnh, Tam Trà, Tam Tiến, Tam Hải (thuộc huyện Núi Thành); Duy Sơn, Duy Phú, Duy Vinh, Duy Nghĩa, Duy Hải (thuộc huyện Duy Xuyên); Bình Phú, Bình Lãnh, Bình Hải, Bình Nam, Bình Đào (thuộc huyện Thăng Bình)."},
+            {code: "34", province: "Quảng Nam", region: "KV2-NT", details: "Gồm các huyện: Duy Xuyên, Thăng Bình, Đại Lộc, Quế Sơn, Núi Thành, Phú Ninh (trừ các xã thuộc KV1)."},
+
+            {code: "34", province: "Quảng Nam", region: "KV2", details: "Gồm: Thị xã Điện Bàn; thành phố: Tam Kỳ, Hội An"},
+            {code: "35", province: "Quảng Ngãi", region: "KV1", details: "Gồm các xã, thị trấn thuộc các huyện: Sơn Tây, Sơn Hà, Minh Long, Ba Tơ, Trà Bồng, Tây Trà, Lý Sơn và các xã: Bình An, Bình Khương, Bình Hải, Bình Châu, Bình Thuận, Bình Thạnh, Bình Đông, Bình Chánh (thuộc huyện Bình Sơn); Tịnh Hiệp, Tịnh Đông, Tịnh Giang (thuộc huyện Sơn Tịnh); Nghĩa Lâm, Nghĩa Thọ, Nghĩa Sơn (thuộc huyện Tư Nghĩa); Hành Dũng, Hành Thiện, Hành Tín Tây, Hành Tín Đông, Hành Nhân (thuộc huyện Nghĩa Hành); Đức Phú, Đức Minh, Đức Lợi, Đức Thắng, Đức Chánh, Đức Phong (thuộc huyện Mộ Đức); Phổ Phong, Phổ Nhơn, Phổ An, Phổ Châu, Phổ Quang, Phổ Khánh (thuộc huyện Đức Phổ); Tịnh Kỳ (thuộc thành phố Quảng Ngãi)."},
+            {code: "35", province: "Quảng Ngãi", region: "KV2 -NT", details: "Gồm các huyện: Bình Sơn, Sơn Tịnh, Tư Nghĩa, Nghĩa Hành, Mộ Đức, Đức Phổ (trừ các xã thuộc KV1)."},
+            {code: "35", province: "Quảng Ngãi", region: "KV2", details: "Gồm các xã, phường của thành phố Quảng Ngãi (trừ các xã thuộc KV1)."},
+            {code: "36", province: "Kon Tum", region: "KV1", details: "Toàn tỉnh"},
+            {code: "37", province: "Bình Định", region: "KV1", details: "Gồm 03 huyện: An Lão; Vĩnh Thạnh; Vân Canh và các xã: Vĩnh An, Tây Giang, Bình Tân, Tây Phú, Tây Thuận, Tây Xuân, Bình Thuận (thuộc huyện Tây Sơn); Đắc Mang, Ân Sơn, Bok Tới, Ân Nghĩa, Ân Hữu, Ân Tường Đông, Ân Tường Tây, Ân Hảo Đông, Ân Hảo Tây (thuộc huyện Hoài Ân); Hoài Sơn (thuộc huyện Hoài Nhơn); Nhơn Châu, Phước Mỹ, phường Bùi Thị Xuân (thuộc thành phố Quy Nhơn); Cát Sơn, Cát Hải, Cát Tài, Cát Hưng, Cát Thành, Cát Khánh, Cát Minh, Cát Chánh, Cát Lâm, Cát Tiến (thuộc huyện Phù Cát); Mỹ Châu, Mỹ Đức, Mỹ Thọ, Mỹ Thắng, Mỹ An, Mỹ Thành, Mỹ Cát, Mỹ Lợi (thuộc huyện Phù Mỹ); Phước Thành, Phước Thắng (thuộc huyện Tuy Phước)."},
+            {code: "37", province: "Bình Định", region: "KV2-NT", details: "Gồm các huyện: Hoài Ân; Hoài Nhơn; Phù Mỹ; Phù Cát; Tây Sơn; Tuy Phước. (Trừ các xã thuộc KV1 đã ghi ở trên)."},
+            {code: "37", province: "Bình Định", region: "KV2", details: "Gồm: Thị xã An Nhơn; Thành phố Quy Nhơn. (Trừ 03 xã, phường thuộc KV1 của TP. Quy Nhơn đã ghi ở trên)"},
+
+            {code: "38", province: "Gia Lai", region: "KV1", details: "Toàn tỉnh"},
+
+            {code: "39", province: "Phú Yên", region: "KV1", details: "Gồm các huyện: Sơn Hòa, Sông Hinh, Đồng Xuân và các xã: Hòa Mỹ Tây, Hòa Thịnh, Sơn Thành Đông, Sơn Thành Tây (thuộc huyện Tây Hòa); các xã Xuân Lâm, Xuân Thịnh, Xuân Thọ 2, Xuân Phương, Xuân Bình, Xuân Hòa (thuộc thị xã Sông Cầu); An Hải, An Hòa, An Ninh Đông, An Ninh Tây, An Hiệp, An Lĩnh, An Thọ, An Xuân (thuộc huyện Tuy An); Hòa Tâm (thuộc huyện Đông Hòa); Hòa Hội (thuộc huyện Phú Hòa)."},
+
+            {code: "39", province: "Phú Yên", region: "KV2-NT", details: "Gồm các huyện: Tây Hòa, Tuy An, Phú Hòa, Đông Hòa; trừ các xã Hòa Mỹ Tây, Hòa Thịnh, Sơn Thành Đông, Sơn Thành Tây (thuộc huyện Tây Hòa); An Hải, An Hòa, An Ninh Đông, An Ninh Tây, An Hiệp, An Lĩnh, An Thọ, An Xuân ( thuộc huyện Tuy An); Hòa Tâm (thuộc huyện Đông Hòa); Hòa Hội (thuộc huyện Phú Hòa)."},
+            {code: "39", province: "Phú Yên", region: "KV2", details: "Gồm các xã, phường của thành phố Tuy Hòa và thị xã Sông Cầu; trừ các xã Xuân Lâm, Xuân Thịnh, Xuân Thọ 2, Xuân Phương, Xuân Bình, Xuân Hòa (thuộc thị xã Sông Cầu)."},
+
+            {code: "40", province: "Đắk Lắk", region: "KV1", details: "Toàn tỉnh"},
+
+            {code: "41", province: "Khánh Hoà", region: "KV1", details: "Các xã Sinh Tồn, xã Song Tử Tây và thị trấn Trường Sa (thuộc huyện đảo Trường Sa); thị trấn Khánh Vĩnh và các xã: Cầu Bà, Giang Ly, Khánh Bình, Khánh Đông, Khánh Hiệp, Khánh Nam, Khánh Phú, Khánh Thành, Khánh Thượng, Khánh Trung, Liên Sang, Sông Cầu, Sơn Thái (thuộc huyện Khánh Vĩnh); Thị trấn Tô Hạp và các xã: Ba Cụm Bắc, Ba Cụm Nam, Sơn Bình, Sơn Hiệp, Sơn Lâm, Sơn Trung, Thành Sơn (thuộc huyện Khánh Sơn); xã Cam An Bắc, Cam An Nam, Cam Hiệp Bắc, Cam Hòa, Cam Phước Tây, Cam Tân, Sơn Tân, Suối Cát, Suối Tân (thuộc Huyện Cam Lâm); xã Ninh Sơn, Ninh Tân, Ninh Tây, Ninh Thượng, Ninh Vân (thuộc thị xã Ninh Hòa); xã Cam Bình, Cam Phước Đông, Cam Thành Nam, Cam Thịnh Tây (thuộc thành phố Cam Ranh); xã Đại Lãnh, xã Vạn Bình, Vạn Khánh, Vạn Long, Vạn Lương, Vạn Phú, Vạn Phước, Vạn Thạnh, Vạn Thọ, Xuân Sơn (thuộc huyện Vạn Ninh); xã Diên Tân, Suối Tiên (thuộc huyện Diên Khánh); Phường Vĩnh Nguyên (thuộc Thành phố Nha Trang)"},
+            {code: "41", province: "Khánh Hoà", region: "KV2-NT", details: "Các huyện: Cam Lâm, Diên Khánh, Vạn Ninh (trừ các xã thuộc KV1)."},
+            {code: "41", province: "Khánh Hoà", region: "KV2", details: "Gồm các xã, phường của thành phố Nha Trang, thành phố Cam Ranh và thị xã Ninh Hòa (trừ các xã thuộc KV1)."},
+
+            {code: "42", province: "Lâm Đồng", region: "KV1", details: "Toàn tỉnh"},
+
+            {code: "43", province: "Bình Phước", region: "KV1", details: "Gồm các huyện: TP. Đồng Xoài, TX. Phước Long, TX. Bình Long, Đồng Phú, Bù Đăng, Phú Riềng, Bù Gia Mập, Bù Đốp, Lộc Ninh, Hớn Quản, Chơn Thành (trừ các xã Minh Hưng, Minh Long, Thành Tâm, TT. Chơn Thành)."},
+            {code: "43", province: "Bình Phước", region: "KV2-NT", details: "Gồm các xã: Minh Hưng, Minh Long, Thành Tâm, TT. Chơn Thành của huyện Chơn Thành"},
+
+            {code: "44", province: "Bình Dương", region: "KV2-NT", details: "Gồm tất cả các huyện: Bàu Bàng, Phú Giáo, Dầu Tiếng và Bắc Tân Uyên"},
+            {code: "44", province: "Bình Dương", region: "KV2", details: "Gồm Thành phố Thủ Dầu Một và các thị xã: Thuận An, Dĩ An, Bến Cát, Tân Uyên"},
+
+            {code: "45", province: "Ninh Thuận", region: "KV1", details: "Gồm các xã Thành Hải (TP. Phan Rang-Tháp Chàm), Phước Minh, Nhị Hà, Phước Hà, Phước Dinh; Phước Nam, Phước Ninh (thuộc huyện Thuận Nam), Thị trấn Phước Dân, An Hải, Phước Hậu, Phước Hữu, Phước Sơn, Phước Thuận, Phước Vinh, Phước Thái, Phước Hải (thuộc huyện Ninh Phước), Xuân Hải, Vĩnh Hải (thuộc huyện Ninh Hải), Phước Bình, Phước Chính, Phước Đại, Phước Hoà, Phước Tân, Phước Thắng, Phước Thành, Phước Tiến, Phước Trung (thuộc huyện Bác Ái), Nhơn Sơn, Lâm Sơn, Lương Sơn, Mỹ Sơn, Quảng Sơn, Hoà Sơn, Ma Nới (thuộc huyện Ninh Sơn); Công Hải, Lợi Hải, Bắc Sơn, Phước Chiến, Phước Kháng (thuộc huyện Thuận Bắc)."},
+            {code: "45", province: "Ninh Thuận", region: "KV2-NT", details: "Gồm các huyện Ninh Hải (trừ các xã thuộc KV1 ghi ở trên), Ninh Phước (trừ các xã thuộc KV1 ghi ở trên), Thuận Nam (trừ các xã thuộc KV1 ghi ở trên), Thuận Bắc (trừ các xã thuộc KV1 ghi ở trên), Ninh Sơn (trừ các xã thuộc KV1 ghi ở trên)."},
+            {code: "45", province: "Ninh Thuận", region: "KV2", details: "Gồm các phường của thành phố Phan Rang-Tháp Chàm."},
+            {code: "46", province: "Tây Ninh", region: "KV1", details: "Gồm các xã : Suối Ngô, Tân Hà, Suối Dây, Tân Đông, Tân Hòa, Tân Hội, Tân Thành, Tân Hưng, Tân Phú (huyện Tân Châu); Tân Bình, Hòa Hiệp (huyện Tân Biên); Phước Vinh, Biên Giới, Hòa Hội, Hòa Thạnh, Ninh Điền, Thành Long (huyện Châu Thành); Tiên Thuận, Lợi Thuận, Long Phước (huyện Bến Cầu); Suối Đá (huyện Dương Minh Châu); Phường 1, Ninh Thạnh, Tân Bình, Thạnh Tân (Tp.Tây Ninh); Trường Tây (huyện Hòa Thành); Phước Chỉ, Bình Thạnh (huyện Trảng Bàng)."},
+            {code: "46", province: "Tây Ninh", region: "KV2-NT", details: "Huyện Bến Cầu, Huyện Hòa Thành, Huyện Châu Thành, Huyện Dương Minh Châu, Huyện Gò Dầu, Huyện Trảng Bàng, Huyện Tân Châu, Huyện Tân Biên (Trừ các xã thuộc khu vực 1 thuộc 07 huyện Hòa Thành, Châu Thành, Dương Minh Châu, Trảng Bàng, Tân Châu, Tân Biên, Bến Cầu)"},
+
+            {code: "46", province: "Tây Ninh", region: "KV2", details: "Thành phố Tây Ninh (Trừ các phường thuộc KV1 của Thành phố Tây Ninh)"},
+
+            {code: "47", province: "Bình Thuận", region: "KV1", details: "Gồm các xã, thị trấn: Bình Thạnh, Phan Dũng, Phong Phú, Phú Lạc, Vĩnh Hảo, Vĩnh Tân, Phước Thể (huyện Tuy Phong); Bình An, Bình Tân, Chợ Lầu, Hải Ninh, Hòa Thắng, Hồng Phong, Hồng Thái, Lương Sơn, Phan Điền, Phan Hiệp, Phan Hòa, Phan Lâm, Phan Rí Thành, Phan Sơn, Phan Thanh, Phan Tiến, Sông Bình, Sông Luỹ (huyện Bắc Bình); Đa Mi, Đông Giang, Đông Tiến, Hàm Chính, Hàm Liêm, Hàm Phú, Hàm Trí, Hồng Liêm, Hồng Sơn, La Dạ, Thuận Hòa, Thuận Minh (huyện Hàm Thuận Bắc); Hàm Cần, Hàm Minh, Hàm Thạnh, Mương Mán, Mỹ Thạnh, Tân Lập, Tân Thuận, Thuận Nam, Thuận Quý (huyện Hàm Thuận Nam); Sơn Mỹ, Sông Phan, Tân Đức, Tân Hà, Tân Minh, Tân Nghĩa, Tân Phúc, Tân Thắng, Tân Xuân, Thắng Hải (huyện Hàm Tân); Bắc Ruộng, Đồng Kho, Đức Bình, Đức Phú, Đức Tân, Đức Thuận, Gia An, Gia Huynh, Huy Khiêm, La Ngâu, Lạc Tánh, Măng Tố, Nghị Đức, Suối Kiết (huyện Tánh Linh); Đa Kai, Đông Hà, Đức Chính, Đức Hạnh, Đức Tài, Đức Tín, Mê Pu, Nam Chính, Sùng Nhơn, Tân Hà, Trà Tân, Võ Xu, Vũ Hòa (huyện Đức Linh), Long Hải, Ngũ Phụng, Tam Thanh (huyện Phú Quý)."},
+            {code: "47", province: "Bình Thuận", region: "KV2-NT", details: "Gồm 14 xã, thị trấn: Chí Công, Hòa Minh, Hòa Phú, Liên Hương, Phan Rí Cửa, (huyện Tuy Phong); Hàm Đức, Hàm Hiệp, Hàm Thắng, Ma Lâm, Phú Long (huyện Hàm Thuận Bắc); Hàm Cường, Hàm Kiệm, Hàm Mỹ, Tân Thành (huyện Hàm Thuận Nam)"},
+            {code: "47", province: "Bình Thuận", region: "KV2", details: "Gồm 27 phường, xã: Bình Hưng, Đức Long, Đức Nghĩa, Đức Thắng, Hàm Tiến, Hưng Long, Lạc Đạo, Mũi Né, Phong Nẵm, Phú Hài, Phú Tài, Phú Thuỷ, Phú Trinh, Thanh Hải, Thiện Nghiệp, Tiến Lợi, Tiến Thành, Xuân An (TP. Phan Thiết); Bình Tân, Phước Hội, Phước Lộc, Tân An, Tân Bình, Tân Hải, Tân Phước, Tân Thiện, Tân Tiến (thị xã La Gi)"},
+
+            {code: "48", province: "Đồng Nai", region: "KV1", details: "Gồm các xã: Thị trấn Tân Phú, Đắc Lua, Nam Cát Tiên, Núi Tượng, Phú An, Phú Bình, Phú Điền, Phú Lập, Phú Lộc, Phú Sơn, Phú Thịnh, Phú Trung, Tà Lài, Thanh Sơn, Trà Cổ (thuộc huyện Tân Phú), Thị trấn Định Quán, Gia Canh, La Ngà, Ngọc Định, Phú Cường, Phú Hòa, Phú Lợi, Phú Ngọc, Phú Tân, Phú Túc, Phú Vinh, Suối Nho, Túc Trưng, Thanh Sơn (thuộc huyện Định Quán), Thị trấn Gia Ray, Bảo Hòa, Lang Minh, Suối Cao, Suối Cát, Xuân Bắc, Xuân Định, Xuân Hiệp, Xuân Hòa, Xuân Hưng, Xuân Phú, Xuân Tâm, Xuân Thành, Xuân Thọ, Xuân Trường (thuộc huyện Xuân Lộc), Bảo Bình, Lâm San, Long Giao, Nhân Nghĩa, Sông Nhạn, Sông Ray, Thừa Đức, Xuân Bảo, Xuân Đông, Xuân Đường, Xuân Mỹ, Xuân Quế, Xuân Tây (thuộc huyện Cẩm Mỹ), Bảo Quang, Bàu Sen, Bàu Trâm, Xuân Lập (thuộc Thị xã Long Khánh), An Viễn, Bàu Hàm, Cây Gáo, Đồi 61, Đông Hòa, Hố Nai 3, Hưng Thịnh, Sông Thao, Sông Trầu, Tây Hòa, Thanh Bình, Trung Hòa (thuộc huyện Trảng Bom), Bàu Hàm 2, Hưng Lộc, Lộ 25, Xuân Thạnh, Xuân Thiện (thuộc huyện Thống Nhất), Trị An, Vĩnh Tân, Thị trấn Vĩnh An, Hiếu Liêm, Phú Lý, Mã Đà (thuộc huyện Vĩnh Cửu), Bình Sơn, Phước Bình, Tân Hiệp (thuộc huyện Long Thành)."},
+            {code: "48", province: "Đồng Nai", region: "KV2-NT", details: "Gồm các huyện: Tân Phú, Định Quán, Xuân Lộc, Cẩm Mỹ, Trảng Bom, Thống Nhất, Vĩnh Cửu, Long Thành, Nhơn Trạch (trừ các xã, thị trấn thuộc KV1 của các huyện đã ghi ở trên)."},
+            {code: "48", province: "Đồng Nai", region: "KV2", details: "Gồm các xã, phường của thành phố Biên Hòa và thị xã Long Khánh (trừ các xã thuộc KV1 của thị xã Long Khánh đã ghi ở trên)."},
+            {code: "49", province: "Long An", region: "KV1", details: "Gồm các xã: Hưng Điền A, Thái Bình Trung, Thái Trị, Tuyên Bình (thuộc huyện Vĩnh Hưng); Bình Hòa Tây, Bình Thạnh (thuộc huyện Mộc Hóa); Tân Hiệp, Thuận Bình (thuộc huyện Thạnh Hóa); Bình Hòa Hưng, Mỹ Bình, Mỹ Quý Đông, Mỹ Quý Tây, Mỹ Thạnh Tây (thuộc huyện Đức Huệ); Phước Vĩnh Đông (thuộc huyện Cần Giuộc); Hưng Điền, Hưng Điền B, Hưng Hà (thuộc huyện Tân Hưng); Bình Tân (thuộc thị xã Kiến Tường)."},
+            {code: "49", province: "Long An", region: "KV2-NT", details: "Gồm các huyện: Vĩnh Hưng (trừ các xã thuộc KV1); Mộc Hóa (trừ các xã thuộc KV1); Tân Thạnh; Thạnh Hóa (trừ các xã thuộc KV1); Đức Huệ (trừ các xã thuộc KV1); Đức Hòa; Bến Lức; Thủ Thừa; Châu Thành; Tân Trụ; Cần Đước; Cần Giuộc (trừ các xã thuộc KV1); Tân Hưng (trừ các xã thuộc KV1)."},
+            {code: "49", province: "Long An", region: "KV2", details: "Gồm: Thành phố Tân An; Thị xã Kiến Tường (trừ các xã thuộc KV1)"},
+
+            {code: "50", province: "Đồng Tháp", region: "KV1", details: "Gồm các xã Thường Phước 1, Thường Thới Hậu A, Thường Thới Hậu B (thuộc huyện Hồng Ngự); Tân Hội, Bình Thạnh (thuộc thị xã Hồng Ngự); Tân Hộ Cơ, Thông Bình, Bình Phú (thuộc huyện Tân Hồng)"},
+            {code: "50", province: "Đồng Tháp", region: "KV2-NT", details: "Gồm tất cả các huyện: Châu Thành; Lai Vung; Lấp Vò; huyện Cao Lãnh; Tháp Mười; Tam Nông; Thanh Bình; huyện Hồng Ngự; Tân Hồng (trừ một số xã thuộc KV1 huyện Hồng Ngự; Tân Hồng)"},
+            {code: "50", province: "Đồng Tháp", region: "KV2", details: "Gồm: thành phố Cao Lãnh; thành phố Sa Đéc; thị xã Hồng Ngự (trừ một số xã thuộc KV1 của thị xã Hồng Ngự)."},
+
+            {code: "51", province: "An giang", region: "KV1", details: "Huyện An Phú (09 xã): Đa Phước, Vĩnh Trường, Khánh An, Khánh Bình, Nhơn Hội, Phú Hội, Phú Hữu, Quốc Thái, Vĩnh Hội Đông Thị xã Tân Châu (03 xã): Châu Phong, Phú Lộc, Vĩnh Xương Huyện Tịnh Biên (13 xã, thị trấn): thị trấn Chi Lăng, thị trấn Nhà Bàng, thị trấn Tịnh Biên, An Cư, An Hảo,Núi Voi, Tân Lợi, Thới Sơn, Vĩnh Trung, An Nông, An Phú, Nhơn Hưng, Văn Giáo Huyện Tri Tôn (12 xã, thị trấn): thị trấn Ba Chúc, thị trấn Tri Tôn, An Tức, Châu Lăng, Cô Tô, Lê Trì, Lương An Trà, Lương Phi, Ô Lâm, Lạc Quới, Núi Tô, Vĩnh Gia. Huyện Châu Phú (02 xã): Bình Mỹ, Khánh Hòa Huyện Châu Thành (04 xã): Cần Đăng, Hòa Bình Thạnh, Vĩnh Hanh, Vĩnh Thành Huyện Thoại Sơn (01 thị trấn): Óc Eo"},
+            {code: "51", province: "An giang", region: "KV2NT", details: "Gồm tất cả các huyện: Chợ Mới, Phú Tân, An Phú, Châu Phú, Châu Thành, Thoại Sơn, Tri Tôn, Tịnh Biên (trừ các xã, thị trấn thuộc KV1)"},
+            {code: "51", province: "An giang", region: "KV2", details: "Gồm: Thành phố Long Xuyên, Thành phố Châu Đốc và thị xã Tân Châu (trừ các xã, thuộc KV1)."},
+            {code: "52", province: "Bà Rịa - Vũng Tàu", region: "KV1", details: "Gồm các xã: Bông Trang, Bưng Riềng, Hòa Bình, Hòa Hội, Xuyên Mộc, Bàu Lâm, Bình Châu, Phước Tân, Tân Lâm, Hòa Hiệp (thuộc huyện Xuyên Mộc); TT Ngãi Giao, Bàu Chinh, Bình Ba, Bình Giã, Cù Bị, Kim Long, Láng Lớn, Nghĩa Thành, Quảng Thành, Sơn Bình, Suối Nghệ, Xà Bang, Xuân Sơn, Bình Trung, Đá Bạc, Suối Rao (thuộc Huyện Châu Đức); Châu Pha, Hắc Dịch, Sông Xoài, Tóc Tiên (thuộc Thị xã Phú Mỹ)."},
+            {code: "52", province: "Bà Rịa - Vũng Tàu", region: "KV2-NT", details: "Gồm tất cả các huyện: Châu Đức, Long Điền, Đất Đỏ, Xuyên Mộc, Côn Đảo (trừ một số xã thuộc KV1 của 2 huyện Xuyên Mộc, Châu Đức và Thị xã Phú Mỹ đã ghi ở trên)."},
+            {code: "52", province: "Bà Rịa - Vũng", region: "KV2", details: "Gồm: Thị xã Phú Mỹ, Thành phố Bà Rịa, Thành phố Vũng Tàu."},
+
+            {code: "53", province: "Tiền Giang", region: "KV1", details: "Toàn huyện Tân Phú Đông và các xã Bình Xuân, Bình Đông (thuộc thị xã Gò Công), Gia Thuận, Kiểng Phước, Phước Trung (thuộc huyện Gò Công Đông)."},
+            {code: "53", province: "Tiền Giang", region: "KV2-NT", details: "Các tất cả các huyện: Cái Bè; Cai Lậy; Châu Thành; Tân Phước; Chợ Gạo; Gò Công Tây; Gò Công Đông (trừ các xã Gia Thuận, Kiểng Phước, Phước Trung thuộc KV1)."},
+            {code: "53", province: "Tiền Giang", region: "KV2", details: "Thành phố Mỹ Tho, Thị xã Cai Lậy; Thị xã Gò Công (trừ các xã Bình Đông, Bình Xuân thuộc KV1)."},
+
+            {code: "54", province: "Kiên Giang", region: "KV1", details: "Gồm các huyện, xã, thị trấn: xã Phi Thông (thuộc TP Rạch Giá); xã Mỹ Đức, xã Tiên Hải (thuộc Thị xã Hà Tiên); Thị trấn Kiên Lương, xã Bình An, xã Dương Hòa, xã Hòa Điền, xã Sơn Hải, xã Hòn Nghệ (thuộc Huyện Kiên Lương); Thị trấn Sóc Sơn, xã Bình Giang, xã Lình Huỳnh, xã Sơn Kiên, xã Thổ Sơn (thuộc Huyện Hòn Đất); xã Thạnh Trị (thuộc Huyện Tân Hiệp); Thị trấn Minh Lương, xã Bình An, xã Mong Thọ B, xã Vĩnh Hoà Hiệp, xã Vĩnh Hoà Phú (thuộc Huyện Châu Thành); Huyện Giồng Riềng; Huyện Gò Quao; Thị trấn Thứ Ba, xã Đông Thái, xã Đông Yên, xã Nam Thái, xã Nam Thái A, xã Nam Yên, xã Tây Yên (thuộc Huyện An Biên); Xã Đông Hưng A, xã Thuận Hòa, xã Vân Khánh, xã Vân Khánh Đông, xã Vân Khánh Tây, xã Tân Thạnh (thuộc Huyện An Minh); Huyện Vĩnh Thuận, Huyện Phú Quốc; Huyện Kiên Hải; xã Hòa Chánh, xã Minh Thuận, xã Thạnh Yên, xã Thạnh Yên A, xã Vĩnh Hòa (thuộc Huyện U Minh"},
+            {code: "54", province: "Kiên Giang", region: "KV2-NT", details: "Gồm tất cả các huyện: Kiên Lương; Hòn Đất; Tân Hiệp; Châu Thành; An Biên; An Minh; U Minh Thượng (trừ các xã thuộc KV1)."},
+            {code: "54", province: "Kiên Giang", region: "KV2", details: "Gồm: Thành phố Rạch Giá; Thành phố Hà Tiên (trừ các xã thuộc KV1"},
+
+
+            {code: "55", province: "Cần Thơ", region: "KV1", details: "Gồm xã: Thới Xuân (thuộc huyện Cờ Đỏ)"},
+            {code: "55", province: "Cần Thơ", region: "KV2", details: "Gồm các xã, phường, thị trấn: Thị trấn Thạnh An, Vĩnh Bình, Thạnh Quới, Thị trấn Vĩnh Thạnh, Thạnh An, Thạnh Tiến, Thạnh Mỹ, Vĩnh Trinh, Thạnh Lộc, Thạnh Thắng, Thạnh Lợi (thuộc huyện Vĩnh Thạnh); Thị trấn Cờ Đỏ, Thới Hưng, Trung An, Trung Thạnh,Thới Đông, Đông Hiệp, Đông Thắng, Thạnh Phú, Trung Hưng (thuộc huyện Cờ Đỏ); Thị trấn Thới Lai, Thới Thạnh, Tân Thạnh, Định Môn, Xuân Thắng, Thới Tân, Trường Thành, Trường Xuân, Trường Xuân A, Trường Xuân B, Trường Thắng, Đông Thuận, Đông Bình (thuộc huyện Thới Lai); Tân Thới, Nhơn Nghĩa, Nhơn Ái, Thị trấn Phong Điền, Giai Xuân, Mỹ Khánh, Trường Long (thuộc huyện Phong Điền)."},
+            {code: "55", province: "Cần Thơ", region: "KV3", details: "Gồm các phường: Cái Khế, An Hòa, Thới Bình, An Nghiệp, An Cư, An Hội, Tân An, An Lạc, An Phú, Xuân Khánh, Hưng Lợi, An Bình, An Khánh (thuộc quận Ninh Kiều); Phường Thới An Đông, Long Tuyền, Long Hòa, Bình Thủy, An Thới, Bùi Hữu Nghĩa, Trà Nóc, Trà An (thuộc quận Bình Thủy); Phường Ba Láng, Lê Bình, Thường Thạnh, Phú Thứ, Tân Phú, Hưng Phú, Hưng Thạnh (thuộc quận Cái Răng); Trường Lạc, Thới Long, Long Hưng, Thới An, Phước Thới, Châu Văn Liêm, Thới Hòa (thuộc quận Ô Môn);Phường Thốt Nốt, Thới Thuận, Thuận An, Trung Kiên, Tân Lộc, Trung Nhứt, Thạnh Hòa, Thuận Hưng, Tân Hưng (thuộc quận Thốt Nốt)."},
+            {code: "56", province: "Bến Tre", region: "KV1", details: "Gồm các xã Thừa Đức, Phú Vang, Vang Quới Đông, Đại Hòa Lộc, Thạnh Trị, Phú Long (06 xã thuộc huyện Bình Đại); Tân Thủy, Bảo Thuận, An Thủy, Bảo Thạnh, An Hòa Tây, An Ngãi Tây, Tân Hưng, An hiệp, Tân Xuân, An Đức (10 xã thuộc huyện Ba Tri); Thạnh Phong, Thạnh Hải, An Điền, Giao Thạnh, Mỹ An, Bình Thạnh, An Nhơn, An Qui, An Thuận (09 xã thuộc huyện Thạnh Phú); Thành Thới A, Thành Thới B, Bình Khánh Đông (03 xã thuộc huyện Mỏ Cày Nam); Thạnh Phú Đông, Hưng Phong (02 xã thuộc huyện Giồng Trôm), Tiên Long (01 xã thuộc huyện Châu Thành)"},
+            {code: "56", province: "Bến Tre", region: "KV2-NT", details: "Gồm tất cả các huyện: Bình Đại, Châu Thành, Chợ Lách, Mỏ Cày Bắc, Mỏ Cày Nam, Thạnh Phú, Giồng Trôm, Ba Tri (trừ một số xã thuộc KV1 của huyện Bình Đại, Ba Tri, Thạnh Phú, Mỏ Cày Nam, Giồng Trôm, Châu Thành đã ghi ở trên)."},
+            {code: "56", province: "Bến Tre", region: "KV2", details: "TP. Bến Tre"},
+
+            {code: "57", province: "Vĩnh Long", region: "KV1", details: "Gồm các xã, phường: Đông Thuận, Thuận An, Đông Bình, Đông Thành, Cái Vồn (thị xã Bình Minh); Loan Mỹ (huyện Tam Bình); Hựu Thành, Trà Côn, Tân Mỹ (huyện Trà Ôn); Trung Thành (huyện Vũng Liêm)."},
+            {code: "57", province: "Vĩnh Long", region: "KV2-NT", details: "Gồm các xã của huyện Long Hồ, huyện Mang Thít, huyện Vũng Liêm (trừ xã Trung Thành), huyện Tam Bình (trừ xã Loan Mỹ), huyện Trà Ôn (trừ xã Hựu Thành, Tân Mỹ, Trà Côn), huyện Bình Tân."},
+            {code: "57", province: "Vĩnh Long", region: "KV2", details: "Gồm các phường 1, 2, 3, 4, 5, 8, 9; xã Tân Hòa, xã Tân Ngãi, xã Trường An, xã Tân Hội (thành phố Vĩnh Long), Thị xã Bình Minh (trừ xã, phường Đông Thuận, Thuận An, Đông Bình, Đông Thành, Cái Vồn)."},
+
+            {code: "58", province: "Trà Vinh", region: "KV1", details: "Gồm: xã Huyền Hội, xã Bình Phú, xã Phương Thạnh (thuộc huyện Càng Long); xã Đại An, xã Hàm Giang, xã Long Hiệp, xã An Quảng Hữu, xã Ngọc Biên, xã Phước Hưng, xã Tân Hiệp, xã Thanh Sơn, xã Kim Sơn, xã Lưu Nghiệp Anh, xã Hàm Tân, thị trấn Trà Cú, thị trấn Định An, xã Tân Sơn, xã Ngãi Xuyên, xã Tập Sơn, (thuộc huyện Trà Cú); xã Hòa Lợi, xã Đa Lộc, xã Lương Hòa, xã Mỹ Chánh, xã Song Lộc, xã Hòa Minh, xã Long Hòa, xã Lương Hòa A, thị trấn Châu Thành, xã Nguyệt Hóa, xã phước Hảo, xã Thanh Mỹ, (thuộc huyện Châu Thành); xã Phong Phú, xã Hòa Tân, thị trấn Cầu Kè, xã Tam Ngãi, xã Thông Hòa, xã Châu Điền, xã Hòa Ân, xã Phong Thạnh, (thuộc huyện Cầu Kè); xã Nhị Trường, xã Thuận Hòa, xã Kim Hòa, xã Long Sơn, xã Thạnh Hòa Sơn, xã Trường Thọ, thị trấn Cầu Ngang, xã Hiệp Hòa, xã Mỹ Hòa (thuộc huyện Cầu Ngang); xã Hùng Hòa, xã Long Thới, Ngãi Hùng, xã Tân Hòa, xã Tân Hùng, xã Hiếu Tử, thị trấn Tiểu Cần, xã Hiếu Trung, xã Phú Cần, xã Tập Ngãi (thuộc huyện Tiểu Cần); xã Ngũ Lạc, xã Long Vĩnh, xã Long Khánh, thị trấn Long Thành, Xã Đông Hải, xã Đôn Xuân, xã Đôn Châu (thuộc huyện Duyên Hải); Phường 1, 3, 5, 6, 7, 8, 9 và xã Long Đức (thuộc thành phố Trà Vinh)."},
+            {code: "58", province: "Trà Vinh", region: "KV2-NT", details: "Gồm: xã Mỹ Cẩm, xã An Trường A, xã An Trường, xã Tân An, xã Tân Bình, xã Đại Phúc, xã Nhị Long Phú, xã Nhị Long, xã Đức Mỹ, xã Đại Phước, thị trấn Càng Long; xã Hưng Mỹ; xã An Phú Tân, xã Thạnh Phú; xã Hiệp Mỹ Tây, xã Hiệp Mỹ Đông, xã Mỹ Long Bắc, xã Mỹ Long Nam, xã Vinh Kim, thị trấn Mỹ Long; thị trấn Cầu Quan, xã Định An, xã Hòa Thuận, xã Ninh Thới. (trừ một số xã thuộc KV1 của huyện Càng Long, Châu Thành, Cầu Kè, Cầu Ngang, Tiểu Cần)."},
+            {code: "58", province: "Trà Vinh", region: "KV2", details: "Gồm: Phường 2, Phường 4 (thuộc thành phố Trà Vinh); xã Long Hữu, Phường 1, Phường 2, xã Long Toàn, xã Dân Thành, xã Trường Long Hòa, xã Hiệp Thạnh (thuộc thị xã Duyên Hải)."},
+            {code: "59", province: "Sóc Trăng", region: "KV1", details: "Toàn tỉnh (trừ thị trấn An Lạc Thôn thuộc huyện Kế Sách)"},
+            {code: "59", province: "Sóc Trăng", region: "KV2-NT", details: "Thị trấn An Lạc Thôn thuộc huyện Kế Sách"},
+
+            {code: "60", province: "Bạc Liêu", region: "KV1", details: "Gồm các xã, thị trấn: xã Châu Hưng A, xã Vĩnh Hưng, xã Vĩnh Hưng A, xã Hưng Hội, xã Long Thạnh (thuộc huyện Vĩnh Lợi); xã Vĩnh Hậu, xã Minh Diệu, xã Vĩnh Thịnh, thị trấn Hòa Bình, xã Vĩnh Mỹ A (thuộc huyện Hòa Bình); xã Ninh Quới, xã Ninh Thạnh Lợi, xã Vĩnh Lộc, xã Vĩnh Lộc A, xã Ninh Hòa, xã Lộc Ninh (thuộc huyện Hồng Dân); xã Long Điền, Long Điền Đông, xã Long Điền Đông A, xã Long Điền Tây, xã Điền Hải, xã An Trạch A, xã An Trạch, xã An Phúc (thuộc huyện Đông Hải); xã Phong Thạnh Đông, Phường Hộ Phòng, xã Tân Thạnh, xã Phong Thạnh A (thuộc thị xã Giá Rai); xã Vĩnh Phú Đông, xã Vĩnh Phú Tây (thuộc huyện Phước Long)."},
+            {code: "60", province: "Bạc Liêu", region: "KV2-NT", details: "Gồm có các xã, thị trấn: xã Ninh Quới A, xã Ninh Thạnh Lợi A, thị trấn Ngan Dừa (thuộc huyện Hồng Dân); thị trấn Châu Hưng, xã Châu Thới, xã Hưng Thành (thuộc huyện Vĩnh Lợi); xã Vĩnh Bình, xã Vĩnh Mỹ B, xã Vĩnh Hậu A (thuộc huyện Hòa Bình); xã Định Thành, xã Định Thành A và thị trấn Gành Hào (thuộc huyện Đông Hải); xã Vĩnh Thanh, xã Hưng Phú, xã Phước Long, xã Phong Thạnh Tây A, xã Phong Thạnh Tây B, thị trấn Phước Long (thuộc huyện Phước Long)"},
+            {code: "60", province: "Bạc Liêu", region: "KV2", details: "Có 7 phường, 03 xã của thành phố Bạc Liêu: xã Vĩnh Trạch Đông, xã Vĩnh Trạch và xã Hiệp Thành, phường 1, phường 2, phường 3, phường 5, phường 7, phường 8, phường Nhà Mát. Các phường, xã thuộc thị xã Giá Rai (Trừ các phường, xã thuộc KV1)."},
+
+            {code: "61", province: "Cà mau", region: "KV1", details: "Gồm: Huyện U Minh; các xã/phường/thị trấn: An Xuyên, Định Bình, Hoà Tân, Hoà Thành, Lý Văn Lâm, Tắc Vân, xã Tân Thành, Phường 2, Phường 4, Phường 5, Phường 6, Phường 7, Phường 8, Phường 9, Phường Tân Thành (thuộc thành phố Cà Mau), thị trấn Thới Bình, Biển Bạch, Biển Bạch Đông, Hồ Thị Kỷ, Tân Bằng, Tân Lộc, Tân Lộc Bắc, Tân Phú, Thới Bình (thuộc huyện Thới Bình), thị trấn Sông Đốc, thị trấn Trần Văn Thời, Khánh Bình Đông, Khánh Bình Tây, Khánh Bình Tây Bắc, Khánh Hải, Khánh Hưng, Lợi An, Phong Lạc, Trần Hợi (thuộc huyện Trần Văn Thời), Đông Thới, Hưng Mỹ, Tân Hưng, Tân Hưng Đông (thuộc huyện Cái Nước), thị trấn Đầm Dơi, Ngọc Chánh, Nguyễn Huân, Quách Phẩm, Quách Phẩm Bắc, Tạ An Khương, Tạ An Khương Đông, Tân Duyệt, Tân Thuận, Tân Tiến, Thanh Tùng, Trần Phán (thuộc huyện Đầm Dơi), Đất Mũi, Tam Giang Tây, Tân Ân, Tân Ân Tây, Viên An, Viên An Đông (thuộc huyện Ngọc Hiển), Lâm Hải, Tam Giang Đông (thuộc huyện Năm Căn), Nguyễn Việt Khái, Tân Hải (thuộc huyện Phú Tân)."},
+
+            {code: "61", province: "Cà mau", region: "KV2-NT", details: "Gồm các xã/thị trấn: Tân Lộc Đông, Trí Lực, Trí Phải (thuộc huyện Thới Bình), Khánh Bình, Khánh Lộc, Phong Điền (thuộc huyện Trần Văn Thời), thị trấn Cái Nước, Đông Hưng, Hoà Mỹ, Lương Thế Trân, Phú Hưng, Thạnh Phú, Trần Thới (thuộc huyện Cái Nước), Tạ An Khương Nam, Tân Dân, Tân Đức, Tân Trung (thuộc huyện Đầm Dơi), thị trấn Rạch Gốc (thuộc huyện Ngọc Hiển), thị trấn Năm Căn, Đất Mới, Hàm Rồng, Hàng Vịnh, Hiệp Tùng, Tam Giang (thuộc huyện Năm Căn), thị trấn Cái Đôi Vàm, Phú Mỹ, Phú Tân, Phú Thuận, Rạch Chèo, Tân Hưng Tây, Việt Thắng (thuộc huyện Phú Tân)."},
+            {code: "61", province: "Cà mau", region: "KV2", details: "Gồm các phường: Phường 1, Tân Thành, Tân Xuyên (thuộc thành phố Cà Mau)."},
+
+            {code: "62", province: "Điện Biên", region: "KV1", details: "Toàn tỉnh"},
+
+            {code: "63", province: "Đăk Nông", region: "KV1", details: "Toàn tỉnh"},
+
+            {code: "64", province: "Hậu Giang", region: "KV1", details: "Gồm phường I, phường III, phường IV, phường VII, xã Vị Tân, xã Hỏa Lựu, xã Hỏa Tiến (thuộc thành phố Vị Thanh), xã Vị Thủy, xã Vị Trung, xã Vĩnh Trung, xã Vị Bình, (thuộc huyện Vị Thủy), xã Vĩnh Viễn, Xã Vĩnh Viễn A, xã Xà Phiên, xã Lương Nghĩa, xã Lương Tâm, xã Vĩnh Thuận Đông (thuộc huyện Long Mỹ), Thị trấn Cái Tắc, xã Tân Phú Thạnh, Thị trấn Bảy Ngàn, Xã Trường Long A (thuộc huyện Châu Thành A), xã Hiệp Hưng, thị trấn Búng Tàu, xã Tân Phước Hưng, xã Thạnh Hòa, xã Phụng Hiệp, xã Long Thạnh, xã Tân Bình, xã Hòa An, xã Hòa Mỹ (thuộc huyện Phụng Hiệp), phường Ngã Bảy, phường Lái Hiếu (thuộc thị xã Ngã bảy)."},
+            {code: "64", province: "Hậu Giang", region: "KV2-NT", details: "Gồm thị trấn Nàng Mau, xã Vị Thắng, xã Vĩnh Thuận Tây, xã Vĩnh Tường, xã Vị Thanh, xã Vị Đông (thuộc huyện Vị Thủy), thị trấn Cây Dương, xã Phương Bình, xã Tân Long, xã Bình Thành, thị trấn Kinh Cùng, xã Phương Phú (thuộc huyện Phụng Hiệp), thị trấn Một Ngàn, xã Nhơn Nghĩa A, thị trấn Rạch Gòi, xã Thạnh Xuân, xã Tân Hòa, xã Trường Long Tây (thuộc huyện Châu Thành A), huyện Châu Thành, xã Thuận Hưng, xã Thuận Hòa (thuộc huyện Long Mỹ)."},
+            {code: "64", province: "Hậu Giang", region: "KV2", details: "Gồm phường V, xã Tân Tiến (thuộc thành phố Vị Thanh); thị xã Long Mỹ; Xã Hiệp Lợi, phường Hiệp Thành, xã Đại Thành, xã Tân Thành (thuộc thị xã Ngã Bảy)."},
+
+
+
+        ];
+
+        // Hàm load dữ liệu vào bảng
+        function loadRegionData() {
+            const tableBody = document.getElementById('regionTableBody');
+            tableBody.innerHTML = '';
+
+            regionData.forEach(item => {
+                const row = document.createElement('tr');
+                let regionClass = item.region.toLowerCase();
+                // Xử lý đặc biệt cho KV2-NT
+                if (regionClass === 'kv2-nt') {
+                    regionClass = 'kv2nt';
+                } else {
+                    regionClass = regionClass.replace('-', '');
+                }
+
+                row.innerHTML = `
+                    <td>${item.code}</td>
+                    <td><strong>${item.province}</strong></td>
+                    <td><span class="kv-badge ${regionClass}">${item.region}</span></td>
+                    <td>${item.details || '<em class="text-muted">Không có thông tin chi tiết</em>'}</td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+
+            // Thêm sự kiện tìm kiếm
+            const searchInput = document.getElementById('regionSearch');
+            searchInput.addEventListener('input', function() {
+                filterRegionTable(this.value);
+            });
+        }
+
+        // Hàm tìm kiếm trong bảng
+        function filterRegionTable(searchTerm) {
+            const tableBody = document.getElementById('regionTableBody');
+            const rows = tableBody.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const text = row.textContent.toLowerCase();
+
+                if (text.includes(searchTerm.toLowerCase())) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+
+        // Hàm xuất Excel cho bảng khu vực
+        function exportRegionTable() {
+            const data = [
+                ['Mã', 'Tỉnh thành', 'Khu vực', 'Đơn vị hành chính']
+            ];
+
+            regionData.forEach(item => {
+                data.push([
+                    item.code,
+                    item.province,
+                    item.region,
+                    item.details || 'Không có thông tin chi tiết'
+                ]);
+            });
+
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Khu vực ưu tiên');
+            XLSX.writeFile(wb, 'khu_vuc_uu_tien.xlsx');
+        }
     </script>
 </body>
-</html> 
+</html>
