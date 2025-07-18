@@ -24,24 +24,21 @@
         }
 
         .header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 3rem 0;
+            background: url('baner.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
+            padding: 0;
             margin-bottom: 2rem;
             position: relative;
             overflow: hidden;
+            height: 0;
+            padding-bottom: 33.33%; /* Tỉ lệ 3:1 (100/3 = 33.33%) */
         }
 
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff10" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-            background-size: cover;
-            opacity: 0.1;
+        .header .container {
+            display: none; /* Ẩn nội dung text */
         }
 
         .card {
@@ -305,7 +302,7 @@
 
         @media (max-width: 768px) {
             .header {
-                padding: 2rem 0;
+                padding-bottom: 33.33%; /* Giữ tỉ lệ 3:1 trên mobile */
             }
 
             .card {
@@ -1330,6 +1327,65 @@
         <img src="AECK.svg" alt="Thương hiệu" style="max-width: 340px; height: auto; opacity: 0.95;">
     </div>
 
+    <!-- Modal thông báo cập nhật -->
+    <div class="modal fade" id="updateNotificationModal" tabindex="-1" aria-labelledby="updateNotificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, #E63946, #F77F00); color: white;">
+                    <h5 class="modal-title" id="updateNotificationModalLabel">
+                        <i class="fas fa-info-circle me-2"></i>Thông báo cập nhật dữ liệu
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-calendar-alt me-2"></i>
+                        <strong>Cập nhật:</strong> 18/07/2025
+                    </div>
+                    <div class="mb-3">
+                        <h6 class="text-primary"><i class="fas fa-university me-2"></i>Thông tin quy đổi điểm:</h6>
+                        <p class="mb-3">Thông tin quy đổi được cập nhật tới ngày <strong>18/07/2025</strong>.</p>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card border-success">
+                                    <div class="card-header bg-success text-white">
+                                        <h6 class="mb-0"><i class="fas fa-check-circle me-2"></i>Dữ liệu 2025 đầy đủ</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="mb-0"><strong>Đại học Bách Khoa Hà Nội</strong></p>
+                                        <small class="text-muted">Sử dụng toàn bộ dữ liệu 2025</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card border-warning">
+                                    <div class="card-header bg-warning text-dark">
+                                        <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Dữ liệu hỗn hợp</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="mb-0"><strong>Các trường đại học khác</strong></p>
+                                        <small class="text-muted">Sử dụng dữ liệu 2025 trên nền 2024</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Lưu ý:</strong> Dữ liệu được cập nhật liên tục để đảm bảo độ chính xác cao nhất cho việc tra cứu và quy đổi điểm.
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <i class="fas fa-check me-2"></i>Đã hiểu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Bảng Phân Vị -->
     <div class="modal fade" id="percentileTableModal" tabindex="-1" aria-labelledby="percentileTableModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -1365,6 +1421,58 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     <button type="button" class="btn btn-primary" onclick="exportPercentileTable()">
+                        <i class="fas fa-download me-2"></i>Xuất Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Bảng Điểm Chuẩn Đầy Đủ -->
+    <div class="modal fade" id="fullBenchmarkModal" tabindex="-1" aria-labelledby="fullBenchmarkModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fullBenchmarkModalLabel">
+                        <i class="fas fa-table me-2"></i>Bảng Điểm Chuẩn Đại học Bách Khoa Hà Nội (2023-2024)
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Thông tin:</strong> Bảng dưới đây hiển thị điểm chuẩn của tất cả các ngành qua 2 năm để bạn tham khảo xu hướng.
+                    </div>
+
+                    <!-- Tìm kiếm -->
+                    <div class="search-box mb-3">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="fullBenchmarkSearch" placeholder="Tìm kiếm ngành hoặc mã ngành..." class="form-control">
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="fullBenchmarkTable">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Ngành</th>
+                                    <th>Mã ngành</th>
+                                    <th>THPT 2024</th>
+                                    <th>THPT 2023</th>
+                                    <th>TSA 2024</th>
+                                    <th>TSA 2023</th>
+                                    <th>Xu hướng THPT</th>
+                                    <th>Xu hướng TSA</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fullBenchmarkTableBody">
+                                <!-- Dữ liệu sẽ được tạo bằng JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="exportFullBenchmarkTable()">
                         <i class="fas fa-download me-2"></i>Xuất Excel
                     </button>
                 </div>
@@ -1737,6 +1845,10 @@
 
         // Lấy danh sách trường khi trang được tải
         document.addEventListener('DOMContentLoaded', function() {
+            // Hiển thị modal thông báo cập nhật khi trang được tải
+            const updateModal = new bootstrap.Modal(document.getElementById('updateNotificationModal'));
+            updateModal.show();
+
             const truongSelect = document.getElementById('truong');
             const phuongthucSelect = document.getElementById('phuongthuc');
             const diemInput = document.getElementById('diem');
@@ -1829,11 +1941,21 @@
             // Xử lý khi chọn phương thức
             phuongthucSelect.addEventListener('change', function() {
                 const methodValue = this.value.toLowerCase();
-                const showExtra = (methodValue.includes('tsa') || methodValue.includes('đgtd') || methodValue.includes('dgtd')) && truongSelect.value.toLowerCase().includes('bách khoa');
-                ccnnGroup.style.display = showExtra ? '' : 'none';
-                diemvungGroup.style.display = showExtra ? '' : 'none';
-                if (!showExtra) {
+                const truongValue = truongSelect.value.toLowerCase();
+
+                // Hiển thị chứng chỉ ngoại ngữ cho TSA/ĐGTD ở Bách Khoa
+                const showCCNN = (methodValue.includes('tsa') || methodValue.includes('đgtd') || methodValue.includes('dgtd')) && truongValue.includes('bách khoa');
+                ccnnGroup.style.display = showCCNN ? '' : 'none';
+
+                // Hiển thị điểm ưu tiên cho THPT hoặc TSA/ĐGTD ở Bách Khoa
+                const showDiemUuTien = methodValue.includes('thpt') ||
+                                      ((methodValue.includes('tsa') || methodValue.includes('đgtd') || methodValue.includes('dgtd')) && truongValue.includes('bách khoa'));
+                diemvungGroup.style.display = showDiemUuTien ? '' : 'none';
+
+                if (!showCCNN) {
                     ccnnSelect.value = '0';
+                }
+                if (!showDiemUuTien) {
                     diemvungSelect.value = '0';
                     doituongSelect.value = '0';
                 }
@@ -1856,18 +1978,38 @@
                 if (diemvungGroup.style.display !== 'none') {
                     vung = parseFloat(diemvungSelect.value) || 0;
                     doituong = parseFloat(doituongSelect.value) || 0;
-                    // Cộng điểm đối tượng ưu tiên vào điểm vùng
-                    vung = 10*(vung + doituong)/3;
                 }
+
                 let tong = score + bonus;
+
+                // Xử lý điểm ưu tiên theo phương thức
                 if (diemvungGroup.style.display !== 'none') {
-                    if (tong < 75) {
-                        tong = tong + vung;
-                    } else {
-                        tong = tong + (vung * (100 - tong) / 25);
+                    const methodValue = method.toLowerCase();
+
+                    if (methodValue.includes('thpt')) {
+                        // Với THPT: áp dụng công thức điểm ưu tiên mới
+                        const tongDiemUuTien = vung + doituong; // Tổng điểm ưu tiên thông thường
+
+                        if (tong >= 22.5) {
+                            // Điểm từ 22.5 trở lên: áp dụng công thức giảm dần
+                            const diemUuTienThucTe = ((30 - tong) / 7.5) * tongDiemUuTien;
+                            tong = tong + diemUuTienThucTe;
+                        } else {
+                            // Điểm dưới 22.5: cộng thẳng điểm ưu tiên
+                            tong = tong + tongDiemUuTien;
+                        }
+                    } else if (methodValue.includes('tsa') || methodValue.includes('đgtd') || methodValue.includes('dgtd')) {
+                        // Với TSA: sử dụng công thức cũ
+                        const vungTSA = 10*(vung + doituong)/3;
+                        if (tong < 75) {
+                            tong = tong + vungTSA;
+                        } else {
+                            tong = tong + (vungTSA * (100 - tong) / 25);
+                        }
                     }
                 }
-                score = Math.round(tong * 100) / 100;
+                const finalScore = Math.round(tong * 100) / 100; // Điểm cuối cùng sau khi cộng ưu tiên
+                score = Math.round(tong * 100) / 100; // Giữ nguyên để tương thích
 
                 if (!truong || !method || isNaN(score)) {
                     alert('Vui lòng điền đầy đủ thông tin!');
@@ -1940,7 +2082,7 @@
                             </div>
                         `;
 
-                        // Hiển thị thông tin phân vị TSA nếu có
+                        // Hiển thị thông tin phân vị TSA nếu có (trừ phương thức XTTN)
                         console.log('Debug TSA:', {
                             method: method.toLowerCase(),
                             truong: truong.toLowerCase(),
@@ -1949,8 +2091,10 @@
                             truongCheck: truong.toLowerCase().includes('bách khoa') || truong.toLowerCase().includes('bach khoa')
                         });
 
-                        // LUÔN hiển thị phân vị TSA để test
-                        const shouldShowTSA = true;
+                        // Chỉ hiển thị phân vị TSA khi KHÔNG phải phương thức XTTN
+                        const shouldShowTSA = !method.toLowerCase().includes('xttn') &&
+                                             (method.toLowerCase().includes('tsa') || method.toLowerCase().includes('đgtd') || method.toLowerCase().includes('dgtd')) &&
+                                             (truong.toLowerCase().includes('bách khoa') || truong.toLowerCase().includes('bach khoa'));
 
                         console.log('Should show TSA:', shouldShowTSA);
                         console.log('Current score for TSA:', score);
@@ -1996,71 +2140,7 @@
                             }
                         }
 
-                        // Gợi ý ngành dựa trên điểm THPT thang 30 trong output
-                        let suggestScore = null;
-                        let thpt30Key = Object.keys(data).find(k => k.toLowerCase().includes('thpt') && k.includes('30'));
-                        if (thpt30Key) {
-                            suggestScore = parseFloat(data[thpt30Key]);
-                        } else if (method.toLowerCase().includes('thpt')) {
-                            suggestScore = parseFloat(score);
-                        }
-                        if (!isNaN(suggestScore)) {
-                            const suggestedMajors = benchmarkData
-                                .filter(item => (suggestScore - item.diem_thpt_2024) >= -0.4)
-                                .sort((a, b) => b.diem_thpt_2024 - a.diem_thpt_2024);
-                            if (suggestedMajors.length > 0) {
-                                html += `
-                                    <div class="benchmark-card mt-4">
-                                        <div class="benchmark-title">
-                                            <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm của bạn (Số liệu điểm chuẩn năm 2024)
-                                        </div>
-                                        <div class="result-summary">
-                                            <p><i class="fas fa-info-circle me-2"></i>Với điểm THPT <b>${suggestScore}</b>, bạn có thể xét tuyển vào các ngành sau của Đại học Bách Khoa Hà Nội:</p>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table class="benchmark-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Ngành</th>
-                                                        <th>Mã ngành</th>
-                                                        <th>Điểm chuẩn THPT 2024</th>
-                                                        <th>Điểm của bạn</th>
-                                                        <th>Đánh giá</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                `;
-                                suggestedMajors.forEach(item => {
-                                    const status = getAdmissionStatus(suggestScore, item.diem_thpt_2024);
-                                    html += `
-                                        <tr>
-                                            <td>${item.major}</td>
-                                            <td>${item.code}</td>
-                                            <td>${item.diem_thpt_2024}</td>
-                                            <td>${suggestScore}</td>
-                                            <td><span class="score-status ${status.class}">${status.text}</span></td>
-                                        </tr>
-                                    `;
-                                });
-                                html += `
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                `;
-                            } else {
-                                html += `
-                                    <div class="benchmark-card mt-4">
-                                        <div class="benchmark-title">
-                                            <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm THPT 2024 của bạn
-                                        </div>
-                                        <div class="result-summary">
-                                            <p><i class="fas fa-info-circle me-2"></i>Rất tiếc, hiện không có ngành nào phù hợp với điểm THPT của bạn.</p>
-                                        </div>
-                                    </div>
-                                `;
-                            }
-                        }
+
 
                         // Dữ liệu ngành UET
                         const uetMajors = [
@@ -2121,7 +2201,7 @@
                                         </thead>
                                         <tbody>`;
                             sortedMajors.forEach(item => {
-                                const status = getAdmissionStatus(userScore, item.diem);
+                                const status = getAdmissionStatus(userScore, item.diem, 'THPT');
                                 html += `<tr>
                                     <td>${item.code}</td>
                                     <td>${item.name}</td>
@@ -2144,74 +2224,126 @@
 
                         if (showUetMajorTable) {
                             html += renderUetMajorTable(maxBlockScore, maxBlockName);
-                        } else {
-                            // Không ghi đè html, chỉ thêm vào phần gợi ý ngành
-                            // Phần bảng kết quả và phân vị TSA đã được thêm ở trên
+                        }
 
-                            // Gợi ý ngành chung (benchmarkData)
-                            let suggestScore = null;
-                            let thpt30Key = Object.keys(data).find(k => k.toLowerCase().includes('thpt') && k.includes('30'));
-                            if (thpt30Key) {
-                                suggestScore = parseFloat(data[thpt30Key]);
-                            } else if (method.toLowerCase().includes('thpt')) {
-                                suggestScore = parseFloat(score);
+                        // Gợi ý ngành chung (benchmarkData) - không gợi ý cho XTTN
+                        let suggestScore = null;
+                        let suggestMethod = '';
+                        let benchmarkField = '';
+
+                        // Kiểm tra phương thức để quyết định có gợi ý hay không
+                        const methodLower = method.toLowerCase();
+                        const isHUSTMethod = truong.toLowerCase().includes('bách khoa') || truong.toLowerCase().includes('bach khoa');
+
+                        // Chỉ gợi ý cho THPT và TSA của Đại học Bách khoa Hà Nội
+                        if (isHUSTMethod && (methodLower.includes('thpt') || methodLower.includes('tsa') || methodLower.includes('đgtd') || methodLower.includes('dgtd'))) {
+                            // Ưu tiên điểm từ kết quả quy đổi
+                            if (methodLower.includes('tsa') || methodLower.includes('đgtd') || methodLower.includes('dgtd')) {
+                                // Phương thức TSA - luôn sử dụng điểm output (đã cộng ưu tiên)
+                                suggestMethod = 'TSA';
+                                benchmarkField = 'diem_tsa_2024';
+                                suggestScore = finalScore; // Luôn sử dụng điểm output
+                            } else if (methodLower.includes('thpt')) {
+                                // Phương thức THPT - luôn sử dụng điểm output (đã cộng ưu tiên)
+                                suggestMethod = 'THPT';
+                                benchmarkField = 'diem_thpt_2024';
+                                suggestScore = finalScore; // Luôn sử dụng điểm output
                             }
-                            if (!isNaN(suggestScore)) {
-                                const suggestedMajors = benchmarkData
-                                    .filter(item => (suggestScore - item.diem_thpt_2024) >= -0.4)
-                                    .sort((a, b) => b.diem_thpt_2024 - a.diem_thpt_2024);
-                                if (suggestedMajors.length > 0) {
-                                    html += `
-                                        <div class="benchmark-card mt-4">
-                                            <div class="benchmark-title">
-                                                <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm của bạn (Số liệu điểm chuẩn năm 2024)
-                                            </div>
-                                            <div class="result-summary">
-                                                <p><i class="fas fa-info-circle me-2"></i>Với điểm THPT <b>${suggestScore}</b>, bạn có thể xét tuyển vào các ngành sau của Đại học Bách Khoa Hà Nội:</p>
-                                            </div>
-                                            <div class="table-responsive">
-                                                <table class="benchmark-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Ngành</th>
-                                                            <th>Mã ngành</th>
-                                                            <th>Điểm chuẩn THPT 2024</th>
-                                                            <th>Điểm của bạn</th>
-                                                            <th>Đánh giá</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                    `;
-                                    suggestedMajors.forEach(item => {
-                                        const status = getAdmissionStatus(suggestScore, item.diem_thpt_2024);
-                                        html += `
-                                            <tr>
-                                                <td>${item.major}</td>
-                                                <td>${item.code}</td>
-                                                <td>${item.diem_thpt_2024}</td>
-                                                <td>${suggestScore}</td>
-                                                <td><span class="score-status ${status.class}">${status.text}</span></td>
-                                            </tr>
-                                        `;
-                                    });
-                                    html += `
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                        }
+
+                        if (!isNaN(suggestScore) && benchmarkField) {
+                            let suggestedMajors;
+
+                            if (suggestMethod === 'TSA') {
+                                // Với TSA: hiển thị tất cả ngành (không lọc)
+                                suggestedMajors = benchmarkData
+                                    .sort((a, b) => b[benchmarkField] - a[benchmarkField]);
+                            } else {
+                                // Với THPT: chỉ hiển thị ngành có cơ hội (như cũ)
+                                suggestedMajors = benchmarkData
+                                    .filter(item => (suggestScore - item[benchmarkField]) >= -0.4)
+                                    .sort((a, b) => b[benchmarkField] - a[benchmarkField]);
+                            }
+                            if (suggestedMajors.length > 0) {
+                                html += `
+                                    <div class="benchmark-card mt-4">
+                                        <div class="benchmark-title">
+                                            <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm của bạn (Số liệu điểm chuẩn năm 2024)
                                         </div>
-                                    `;
-                                } else {
-                                    html += `
-                                        <div class="benchmark-card mt-4">
-                                            <div class="benchmark-title">
-                                                <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm THPT 2024 của bạn
-                                            </div>
-                                            <div class="result-summary">
-                                                <p><i class="fas fa-info-circle me-2"></i>Rất tiếc, hiện không có ngành nào phù hợp với điểm THPT của bạn.</p>
-                                            </div>
+                                        <div class="result-summary">
+                                            <p><i class="fas fa-info-circle me-2"></i>Với điểm ${suggestMethod} <b>${suggestScore}</b>, bạn có thể xét tuyển vào các ngành sau của Đại học Bách Khoa Hà Nội:</p>
                                         </div>
+                                        <div class="table-responsive">
+                                            <table class="benchmark-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Ngành</th>
+                                                        <th>Mã ngành</th>
+                                                        <th>Điểm chuẩn ${suggestMethod} 2024</th>
+                                                        <th>Điểm của bạn</th>
+                                                        <th>Đánh giá</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                `;
+                                suggestedMajors.forEach(item => {
+                                    const status = getAdmissionStatus(suggestScore, item[benchmarkField], suggestMethod);
+                                    html += `
+                                        <tr>
+                                            <td>${item.major}</td>
+                                            <td>${item.code}</td>
+                                            <td>${item[benchmarkField]}</td>
+                                            <td>${suggestScore}</td>
+                                            <td><span class="score-status ${status.class}">${status.text}</span></td>
+                                        </tr>
                                     `;
-                                }
+                                });
+                                html += `
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#fullBenchmarkModal">
+                                                <i class="fas fa-table me-2"></i>Xem bảng điểm chuẩn đầy đủ các năm
+                                            </button>
+                                        </div>
+                                    </div>
+                                `;
+                            } else {
+                                html += `
+                                    <div class="benchmark-card mt-4">
+                                        <div class="benchmark-title">
+                                            <i class="fas fa-lightbulb me-2"></i>Gợi ý ngành phù hợp với điểm ${suggestMethod} 2024 của bạn
+                                        </div>
+                                        <div class="result-summary">
+                                            <p><i class="fas fa-info-circle me-2"></i>Rất tiếc, hiện không có ngành nào phù hợp với điểm ${suggestMethod} của bạn.</p>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#fullBenchmarkModal">
+                                                <i class="fas fa-table me-2"></i>Xem bảng điểm chuẩn đầy đủ các năm
+                                            </button>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+
+                            // Thêm nút xem bảng điểm chuẩn đầy đủ cho trường hợp Bách khoa Hà Nội
+                            if (isHUSTMethod) {
+                                html += `
+                                    <div class="benchmark-card mt-4">
+                                        <div class="benchmark-title">
+                                            <i class="fas fa-chart-bar me-2"></i>Bảng điểm chuẩn tham khảo
+                                        </div>
+                                        <div class="result-summary">
+                                            <p><i class="fas fa-info-circle me-2"></i>Xem bảng điểm chuẩn đầy đủ các ngành của Đại học Bách Khoa Hà Nội qua các năm để tham khảo.</p>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fullBenchmarkModal">
+                                                <i class="fas fa-table me-2"></i>Xem bảng điểm chuẩn đầy đủ các năm
+                                            </button>
+                                        </div>
+                                    </div>
+                                `;
                             }
                         }
 
@@ -2416,80 +2548,91 @@
 
         // Add the benchmark data and functions
         const benchmarkData = [
-            { major: "Kỹ thuật Sinh học", code: "BF1", diem_thpt_2024: 24.00 },
-            { major: "Kỹ thuật Thực phẩm", code: "BF2", diem_thpt_2024: 24.54 },
-            { major: "Kỹ thuật Thực phẩm (CT tiên tiến)", code: "BF-E12", diem_thpt_2024: 22.00 },
-            { major: "Kỹ thuật sinh học (CT tiên tiến)", code: "BF-E19", diem_thpt_2024: 22.00 },
-            { major: "Kỹ thuật Hóa học", code: "CH1", diem_thpt_2024: 24.38 },
-            { major: "Hóa học", code: "CH2", diem_thpt_2024: 23.81 },
-            { major: "Công nghệ Giáo dục", code: "ED2", diem_thpt_2024: 25.30 },
-            { major: "Quản lý giáo dục", code: "ED3", diem_thpt_2024: 24.78 },
-            { major: "Kỹ thuật điện", code: "EE1", diem_thpt_2024: 26.81 },
-            { major: "Kỹ thuật điều khiển & Tự động hóa", code: "EE2", diem_thpt_2024: 28.16 },
-            { major: "Hệ thống điện và năng lượng tái tạo (CT tiên tiến)", code: "EE-E18", diem_thpt_2024: 25.80 },
-            { major: "Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)", code: "EE-E8", diem_thpt_2024: 27.54 },
-            { major: "Tin học công nghiệp và Tự động hóa (CT Việt - Pháp PFIEV)", code: "EE-EP", diem_thpt_2024: 26.22 },
-            { major: "Quản lý Năng lượng", code: "EM1", diem_thpt_2024: 25.40 },
-            { major: "Quản lý Công nghiệp", code: "EM2", diem_thpt_2024: 25.60 },
-            { major: "Quản trị Kinh doanh", code: "EM3", diem_thpt_2024: 25.77 },
-            { major: "Kế toán", code: "EM4", diem_thpt_2024: 25.80 },
-            { major: "Tài chính-Ngân hàng", code: "EM5", diem_thpt_2024: 25.91 },
-            { major: "Phân tích kinh doanh (CT tiên tiến)", code: "EM-E13", diem_thpt_2024: 25.50 },
-            { major: "Logistics và Quản lý chuỗi cung ứng (CT tiên tiến)", code: "EM-E14", diem_thpt_2024: 26.06 },
-            { major: "Kỹ thuật Điện tử-Viễn thông", code: "ET1", diem_thpt_2024: 27.41 },
-            { major: "Kỹ thuật Y sinh", code: "ET2", diem_thpt_2024: 25.80 },
-            { major: "Truyền thông số và Kỹ thuật đa phương tiện (CT tiên tiến)", code: "ET-E16", diem_thpt_2024: 26.61 },
-            { major: "Kỹ thuật Điện tử - Viễn thông (CT tiên tiến)", code: "ET-E4", diem_thpt_2024: 27.03 },
-            { major: "Kỹ thuật Y sinh (CT tiên tiến)", code: "ET-E5", diem_thpt_2024: 25.08 },
-            { major: "Hệ thống nhúng thông minh và IoT (CT tiên tiến)", code: "ET-E9", diem_thpt_2024: 27.21 },
-            { major: "Điện tử - Viễn thông - ĐH Leibniz Hannover (CHLB Đức)", code: "ET-LUH", diem_thpt_2024: 25.65 },
-            { major: "Kỹ thuật Môi trường", code: "EV1", diem_thpt_2024: 22.10 },
-            { major: "Quản lý Tài nguyên và Môi trường", code: "EV2", diem_thpt_2024: 21.78 },
-            { major: "Tiếng Anh KHKT và Công nghệ", code: "FL1", diem_thpt_2024: 25.00 },
-            { major: "Tiếng Anh chuyên nghiệp quốc tế", code: "FL2", diem_thpt_2024: 23.81 },
-            { major: "Kỹ thuật Nhiệt", code: "HE1", diem_thpt_2024: 25.20 },
-            { major: "CNTT: Khoa học Máy tính", code: "IT1", diem_thpt_2024: 28.53 },
-            { major: "CNTT: Kỹ thuật Máy tính", code: "IT2", diem_thpt_2024: 28.48 },
-            { major: "Khoa học dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)", code: "IT-E10", diem_thpt_2024: 28.22 },
-            { major: "An toàn không gian số - Cyber security (CT tiên tiến)", code: "IT-E15", diem_thpt_2024: 27.90 },
-            { major: "Công nghệ Thông tin Việt – Nhật (CT tiên tiến)", code: "IT-E6", diem_thpt_2024: 27.35 },
-            { major: "Công nghệ Thông tin Global ICT (CT tiên tiến)", code: "IT-E7", diem_thpt_2024: 28.01 },
-            { major: "Công nghệ Thông tin Việt-Pháp (CT tiên tiến)", code: "IT-EP", diem_thpt_2024: 27.35 },
-            { major: "Kỹ thuật Cơ điện tử", code: "ME1", diem_thpt_2024: 27.49 },
-            { major: "Kỹ thuật Cơ khí", code: "ME2", diem_thpt_2024: 25.80 },
-            { major: "Kỹ thuật Cơ điện tử (CT tiên tiến)", code: "ME-E1", diem_thpt_2024: 26.38 },
-            { major: "Cơ khí Chế tạo máy – hợp tác với trường ĐH Griffith (Úc)", code: "ME-GU", diem_thpt_2024: 24.89 },
-            { major: "Cơ điện tử - hợp tác với ĐH Leibniz Hannover (CHLB Đức)", code: "ME-LUH", diem_thpt_2024: 25.24 },
-            { major: "Cơ điện tử - hợp tác với ĐHCN Nagaoka (Nhật Bản)", code: "ME-NUT", diem_thpt_2024: 25.11 },
-            { major: "Toán-Tin", code: "MI1", diem_thpt_2024: 27.35 },
-            { major: "Hệ thống Thông tin quản lý", code: "MI2", diem_thpt_2024: 27.34 },
-            { major: "Kỹ thuật Vật liệu", code: "MS1", diem_thpt_2024: 24.90 },
-            { major: "Kỹ thuật Vi điện tử và Công nghệ nano", code: "MS2", diem_thpt_2024: 27.64 },
-            { major: "Công nghệ vật liệu Polyme và Compozit", code: "MS3", diem_thpt_2024: 25.00 },
-            { major: "Khoa học và Kỹ thuật Vật liệu (CT tiên tiến)", code: "MS-E3", diem_thpt_2024: 24.00 },
-            { major: "Kỹ thuật In", code: "MS5", diem_thpt_2024: 24.00 },
-            { major: "Vật lý Kỹ thuật", code: "PH1", diem_thpt_2024: 25.87 },
-            { major: "Kỹ thuật Hạt nhân", code: "PH2", diem_thpt_2024: 24.64 },
-            { major: "Vật lý Y khoa", code: "PH3", diem_thpt_2024: 25.31 },
-            { major: "Kỹ thuật Ô tô", code: "TE1", diem_thpt_2024: 26.99 },
-            { major: "Kỹ thuật Cơ khí động lực", code: "TE2", diem_thpt_2024: 26.12 },
-            { major: "Kỹ thuật Hàng không", code: "TE3", diem_thpt_2024: 26.22 },
-            { major: "Kỹ thuật Ô tô (CT tiên tiến)", code: "TE-E2", diem_thpt_2024: 25.90 },
-            { major: "Cơ khí hàng không (CT Việt - Pháp PFIEV)", code: "TE-EP", diem_thpt_2024: 24.86 },
-            { major: "Quản trị Kinh doanh - ĐH Troy (Hoa Kỳ)", code: "TROY-BA", diem_thpt_2024: 21.00 },
-            { major: "Khoa học Máy tính - ĐH Troy (Hoa Kỳ)", code: "TROY-IT", diem_thpt_2024: 21.00 },
-            { major: "Công nghệ Dệt May", code: "TX1", diem_thpt_2024: 22.50 }
+            { major: "Kỹ thuật Sinh học", code: "BF1", diem_thpt_2024: 24.00, diem_tsa_2024: 50.29, diem_thpt_2023: 24.60, diem_tsa_2023: 50.29 },
+            { major: "Kỹ thuật Thực phẩm", code: "BF2", diem_thpt_2024: 24.54, diem_tsa_2024: 50.29, diem_thpt_2023: 24.49, diem_tsa_2023: 50.29 },
+            { major: "Kỹ thuật Thực phẩm (CT tiên tiến)", code: "BF-E12", diem_thpt_2024: 22.00, diem_tsa_2024: 52.55, diem_thpt_2023: 22.70, diem_tsa_2023: 52.55 },
+            { major: "Kỹ thuật sinh học (CT tiên tiến)", code: "BF-E19", diem_thpt_2024: 22.00, diem_tsa_2024: 50.29, diem_thpt_2023: 21.00, diem_tsa_2023: 50.29 },
+            { major: "Kỹ thuật Hóa học", code: "CH1", diem_thpt_2024: 24.38, diem_tsa_2024: 51.85, diem_thpt_2023: 23.70, diem_tsa_2023: 51.85 },
+            { major: "Hóa học", code: "CH2", diem_thpt_2024: 23.81, diem_tsa_2024: 50.29, diem_thpt_2023: 23.04, diem_tsa_2023: 50.29 },
+            { major: "Công nghệ Giáo dục", code: "ED2", diem_thpt_2024: 25.30, diem_tsa_2024: 52.07, diem_thpt_2023: 24.55, diem_tsa_2023: 52.07 },
+            { major: "Quản lý giáo dục", code: "ED3", diem_thpt_2024: 24.78, diem_tsa_2024: 50.29, diem_thpt_2023: 0, diem_tsa_2023: 0 },
+            { major: "Kỹ thuật điện", code: "EE1", diem_thpt_2024: 26.81, diem_tsa_2024: 65.25, diem_thpt_2023: 25.55, diem_tsa_2023: 65.25 },
+            { major: "Kỹ thuật điều khiển & Tự động hóa", code: "EE2", diem_thpt_2024: 28.16, diem_tsa_2024: 73.77, diem_thpt_2023: 27.57, diem_tsa_2023: 73.77 },
+            { major: "Hệ thống điện và năng lượng tái tạo (CT tiên tiến)", code: "EE-E18", diem_thpt_2024: 25.80, diem_tsa_2024: 58.18, diem_thpt_2023: 24.47, diem_tsa_2023: 58.18 },
+            { major: "Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)", code: "EE-E8", diem_thpt_2024: 27.54, diem_tsa_2024: 69.13, diem_thpt_2023: 26.74, diem_tsa_2023: 69.13 },
+            { major: "Tin học công nghiệp và Tự động hóa (CT Việt - Pháp PFIEV)", code: "EE-EP", diem_thpt_2024: 26.22, diem_tsa_2024: 62.48, diem_thpt_2023: 25.14, diem_tsa_2023: 62.48 },
+            { major: "Quản lý Năng lượng", code: "EM1", diem_thpt_2024: 25.40, diem_tsa_2024: 52.68, diem_thpt_2023: 24.98, diem_tsa_2023: 52.68 },
+            { major: "Quản lý Công nghiệp", code: "EM2", diem_thpt_2024: 25.60, diem_tsa_2024: 52.68, diem_thpt_2023: 25.39, diem_tsa_2023: 52.68 },
+            { major: "Quản trị Kinh doanh", code: "EM3", diem_thpt_2024: 25.77, diem_tsa_2024: 55.65, diem_thpt_2023: 25.83, diem_tsa_2023: 55.65 },
+            { major: "Kế toán", code: "EM4", diem_thpt_2024: 25.80, diem_tsa_2024: 54.62, diem_thpt_2023: 25.52, diem_tsa_2023: 54.62 },
+            { major: "Tài chính-Ngân hàng", code: "EM5", diem_thpt_2024: 25.91, diem_tsa_2024: 56.17, diem_thpt_2023: 25.75, diem_tsa_2023: 56.17 },
+            { major: "Phân tích kinh doanh (CT tiên tiến)", code: "EM-E13", diem_thpt_2024: 25.50, diem_tsa_2024: 53.81, diem_thpt_2023: 25.47, diem_tsa_2023: 53.81 },
+            { major: "Logistics và Quản lý chuỗi cung ứng (CT tiên tiến)", code: "EM-E14", diem_thpt_2024: 26.06, diem_tsa_2024: 55.92, diem_thpt_2023: 25.69, diem_tsa_2023: 55.92 },
+            { major: "Kỹ thuật Điện tử-Viễn thông", code: "ET1", diem_thpt_2024: 27.41, diem_tsa_2024: 68.88, diem_thpt_2023: 26.46, diem_tsa_2023: 68.88 },
+            { major: "Kỹ thuật Y sinh", code: "ET2", diem_thpt_2024: 25.80, diem_tsa_2024: 59.98, diem_thpt_2023: 25.04, diem_tsa_2023: 59.98 },
+            { major: "Truyền thông số và Kỹ thuật đa phương tiện (CT tiên tiến)", code: "ET-E16", diem_thpt_2024: 26.61, diem_tsa_2024: 64.98, diem_thpt_2023: 25.73, diem_tsa_2023: 64.98 },
+            { major: "Kỹ thuật Điện tử - Viễn thông (CT tiên tiến)", code: "ET-E4", diem_thpt_2024: 27.03, diem_tsa_2024: 65.00, diem_thpt_2023: 25.99, diem_tsa_2023: 65.00 },
+            { major: "Kỹ thuật Y sinh (CT tiên tiến)", code: "ET-E5", diem_thpt_2024: 25.08, diem_tsa_2024: 53.67, diem_thpt_2023: 23.70, diem_tsa_2023: 53.67 },
+            { major: "Hệ thống nhúng thông minh và IoT (CT tiên tiến)", code: "ET-E9", diem_thpt_2024: 27.21, diem_tsa_2024: 69.07, diem_thpt_2023: 26.45, diem_tsa_2023: 69.07 },
+            { major: "Điện tử - Viễn thông - ĐH Leibniz Hannover (CHLB Đức)", code: "ET-LUH", diem_thpt_2024: 25.65, diem_tsa_2024: 56.68, diem_thpt_2023: 24.30, diem_tsa_2023: 56.68 },
+            { major: "Kỹ thuật Môi trường", code: "EV1", diem_thpt_2024: 22.10, diem_tsa_2024: 50.72, diem_thpt_2023: 21.00, diem_tsa_2023: 50.72 },
+            { major: "Quản lý Tài nguyên và Môi trường", code: "EV2", diem_thpt_2024: 21.78, diem_tsa_2024: 50.33, diem_thpt_2023: 21.00, diem_tsa_2023: 50.33 },
+            { major: "Tiếng Anh KHKT và Công nghệ", code: "FL1", diem_thpt_2024: 25.00, diem_tsa_2024: 52.01, diem_thpt_2023: 25.45, diem_tsa_2023: 52.01 },
+            { major: "Tiếng Anh chuyên nghiệp quốc tế", code: "FL2", diem_thpt_2024: 23.81, diem_tsa_2024: 50.29, diem_thpt_2023: 25.17, diem_tsa_2023: 50.29 },
+            { major: "Kỹ thuật Nhiệt", code: "HE1", diem_thpt_2024: 25.20, diem_tsa_2024: 56.67, diem_thpt_2023: 23.94, diem_tsa_2023: 56.67 },
+            { major: "CNTT: Khoa học Máy tính", code: "IT1", diem_thpt_2024: 28.53, diem_tsa_2024: 83.82, diem_thpt_2023: 29.42, diem_tsa_2023: 83.82 },
+            { major: "CNTT: Kỹ thuật Máy tính", code: "IT2", diem_thpt_2024: 28.48, diem_tsa_2024: 82.08, diem_thpt_2023: 28.29, diem_tsa_2023: 82.08 },
+            { major: "Khoa học dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)", code: "IT-E10", diem_thpt_2024: 28.22, diem_tsa_2024: 81.60, diem_thpt_2023: 28.80, diem_tsa_2023: 81.60 },
+            { major: "An toàn không gian số - Cyber security (CT tiên tiến)", code: "IT-E15", diem_thpt_2024: 27.90, diem_tsa_2024: 74.88, diem_thpt_2023: 28.05, diem_tsa_2023: 74.88 },
+            { major: "Công nghệ Thông tin Việt – Nhật (CT tiên tiến)", code: "IT-E6", diem_thpt_2024: 27.35, diem_tsa_2024: 71.05, diem_thpt_2023: 27.64, diem_tsa_2023: 71.05 },
+            { major: "Công nghệ Thông tin Global ICT (CT tiên tiến)", code: "IT-E7", diem_thpt_2024: 28.01, diem_tsa_2024: 74.88, diem_thpt_2023: 28.16, diem_tsa_2023: 74.88 },
+            { major: "Công nghệ Thông tin Việt-Pháp (CT tiên tiến)", code: "IT-EP", diem_thpt_2024: 27.35, diem_tsa_2024: 70.66, diem_thpt_2023: 27.32, diem_tsa_2023: 70.66 },
+            { major: "Kỹ thuật Cơ điện tử", code: "ME1", diem_thpt_2024: 27.49, diem_tsa_2024: 68.02, diem_thpt_2023: 26.75, diem_tsa_2023: 68.02 },
+            { major: "Kỹ thuật Cơ khí", code: "ME2", diem_thpt_2024: 25.80, diem_tsa_2024: 61.36, diem_thpt_2023: 24.96, diem_tsa_2023: 61.36 },
+            { major: "Kỹ thuật Cơ điện tử (CT tiên tiến)", code: "ME-E1", diem_thpt_2024: 26.38, diem_tsa_2024: 61.36, diem_thpt_2023: 25.47, diem_tsa_2023: 61.36 },
+            { major: "Cơ khí Chế tạo máy – hợp tác với trường ĐH Griffith (Úc)", code: "ME-GU", diem_thpt_2024: 24.89, diem_tsa_2024: 56.19, diem_thpt_2023: 23.32, diem_tsa_2023: 56.19 },
+            { major: "Cơ điện tử - hợp tác với ĐH Leibniz Hannover (CHLB Đức)", code: "ME-LUH", diem_thpt_2024: 25.24, diem_tsa_2024: 56.53, diem_thpt_2023: 24.02, diem_tsa_2023: 56.53 },
+            { major: "Cơ điện tử - hợp tác với ĐHCN Nagaoka (Nhật Bản)", code: "ME-NUT", diem_thpt_2024: 25.11, diem_tsa_2024: 56.19, diem_thpt_2023: 23.85, diem_tsa_2023: 56.19 },
+            { major: "Toán-Tin", code: "MI1", diem_thpt_2024: 27.35, diem_tsa_2024: 70.60, diem_thpt_2023: 27.21, diem_tsa_2023: 70.60 },
+            { major: "Hệ thống Thông tin quản lý", code: "MI2", diem_thpt_2024: 27.34, diem_tsa_2024: 68.45, diem_thpt_2023: 27.06, diem_tsa_2023: 68.45 },
+            { major: "Kỹ thuật Vật liệu", code: "MS1", diem_thpt_2024: 24.90, diem_tsa_2024: 56.55, diem_thpt_2023: 23.25, diem_tsa_2023: 56.55 },
+            { major: "Kỹ thuật Vi điện tử và Công nghệ nano", code: "MS2", diem_thpt_2024: 27.64, diem_tsa_2024: 71.68, diem_thpt_2023: 26.18, diem_tsa_2023: 71.68 },
+            { major: "Công nghệ vật liệu Polyme và Compozit", code: "MS3", diem_thpt_2024: 25.00, diem_tsa_2024: 56.55, diem_thpt_2023: 23.70, diem_tsa_2023: 56.55 },
+            { major: "Khoa học và Kỹ thuật Vật liệu (CT tiên tiến)", code: "MS-E3", diem_thpt_2024: 24.00, diem_tsa_2024: 52.53, diem_thpt_2023: 21.50, diem_tsa_2023: 52.53 },
+            { major: "Kỹ thuật In", code: "MS5", diem_thpt_2024: 24.00, diem_tsa_2024: 53.42, diem_thpt_2023: 22.70, diem_tsa_2023: 53.42 },
+            { major: "Vật lý Kỹ thuật", code: "PH1", diem_thpt_2024: 25.87, diem_tsa_2024: 56.66, diem_thpt_2023: 24.28, diem_tsa_2023: 56.66 },
+            { major: "Kỹ thuật Hạt nhân", code: "PH2", diem_thpt_2024: 24.64, diem_tsa_2024: 53.28, diem_thpt_2023: 22.31, diem_tsa_2023: 53.28 },
+            { major: "Vật lý Y khoa", code: "PH3", diem_thpt_2024: 25.31, diem_tsa_2024: 55.28, diem_thpt_2023: 24.02, diem_tsa_2023: 55.28 },
+            { major: "Kỹ thuật Ô tô", code: "TE1", diem_thpt_2024: 26.99, diem_tsa_2024: 64.36, diem_thpt_2023: 26.48, diem_tsa_2023: 64.36 },
+            { major: "Kỹ thuật Cơ khí động lực", code: "TE2", diem_thpt_2024: 26.12, diem_tsa_2024: 59.89, diem_thpt_2023: 25.31, diem_tsa_2023: 59.89 },
+            { major: "Kỹ thuật Hàng không", code: "TE3", diem_thpt_2024: 26.22, diem_tsa_2024: 62.36, diem_thpt_2023: 25.50, diem_tsa_2023: 62.36 },
+            { major: "Kỹ thuật Ô tô (CT tiên tiến)", code: "TE-E2", diem_thpt_2024: 25.90, diem_tsa_2024: 60.68, diem_thpt_2023: 25.00, diem_tsa_2023: 60.68 },
+            { major: "Cơ khí hàng không (CT Việt - Pháp PFIEV)", code: "TE-EP", diem_thpt_2024: 24.86, diem_tsa_2024: 54.68, diem_thpt_2023: 23.70, diem_tsa_2023: 54.68 },
+            { major: "Quản trị Kinh doanh - ĐH Troy (Hoa Kỳ)", code: "TROY-BA", diem_thpt_2024: 21.00, diem_tsa_2024: 50.29, diem_thpt_2023: 23.70, diem_tsa_2023: 50.29 },
+            { major: "Khoa học Máy tính - ĐH Troy (Hoa Kỳ)", code: "TROY-IT", diem_thpt_2024: 21.00, diem_tsa_2024: 50.29, diem_thpt_2023: 24.96, diem_tsa_2023: 50.29 },
+            { major: "Công nghệ Dệt May", code: "TX1", diem_thpt_2024: 22.50, diem_tsa_2024: 50.68, diem_thpt_2023: 21.40, diem_tsa_2023: 50.68 }
         ];
 
-        function getAdmissionStatus(userScore, benchmarkScore) {
+        function getAdmissionStatus(userScore, benchmarkScore, scoreType = 'THPT') {
             const diff = userScore - benchmarkScore;
-            if (diff >= 1.5) return { class: 'very-safe', text: 'Rất an toàn' };
-            if (diff >= 0.8) return { class: 'safe', text: 'An toàn' };
-            if (diff >= -0.1) return { class: 'risky', text: 'Có cơ hội' };
-            return { class: 'low', text: 'Cơ hội thấp' };
+
+            if (scoreType === 'TSA') {
+                // Thang đánh giá cho TSA (thang 100 điểm)
+                if (diff > 5) return { class: 'very-safe', text: 'Rất an toàn' };
+                if (diff >= 1.5) return { class: 'safe', text: 'An toàn' };
+                if (diff >= 0 && diff < 1.5) return { class: 'risky', text: 'Có cơ hội' };
+                if (diff >= -2) return { class: 'risky', text: 'Có cơ hội' };
+                return { class: 'low', text: 'Cơ hội thấp' }; // kém từ 2-3 điểm trở xuống
+            } else {
+                // Thang đánh giá cho THPT (giữ nguyên như cũ)
+                if (diff >= 1.5) return { class: 'very-safe', text: 'Rất an toàn' };
+                if (diff >= 0.8) return { class: 'safe', text: 'An toàn' };
+                if (diff >= -0.1) return { class: 'risky', text: 'Có cơ hội' };
+                return { class: 'low', text: 'Cơ hội thấp' };
+            }
         }
 
-        function updateBenchmarkTable(userScore, searchTerm = '') {
+        function updateBenchmarkTable(userScore, searchTerm = '', scoreType = 'THPT') {
             const tbody = document.getElementById('benchmarkTableBody');
             if (!tbody) return; // Kiểm tra element tồn tại
 
@@ -2500,13 +2643,15 @@
                 item.code.toLowerCase().includes(searchTerm.toLowerCase())
             );
 
+            const benchmarkField = scoreType === 'TSA' ? 'diem_tsa_2024' : 'diem_thpt_2024';
+
             filteredData.forEach(item => {
-                const status = getAdmissionStatus(userScore, item.diem_thpt_2024);
+                const status = getAdmissionStatus(userScore, item[benchmarkField], scoreType);
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${item.major}</td>
                     <td>${item.code}</td>
-                    <td>${item.diem_thpt_2024}</td>
+                    <td>${item[benchmarkField]}</td>
                     <td>${userScore}</td>
                     <td><span class="score-status ${status.class}">${status.text}</span></td>
                 `;
@@ -2637,10 +2782,99 @@
             XLSX.writeFile(wb, "Bang_Phan_Vi_TSA_2024.xlsx");
         }
 
+        // Hàm tạo bảng điểm chuẩn đầy đủ
+        function generateFullBenchmarkTable(searchTerm = '') {
+            const tbody = document.getElementById('fullBenchmarkTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            const filteredData = benchmarkData.filter(item =>
+                item.major.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                item.code.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            filteredData.forEach(item => {
+                // Tính xu hướng THPT
+                const thptTrend = item.diem_thpt_2023 === 0 ? 'N/A' :
+                    (item.diem_thpt_2024 > item.diem_thpt_2023 ? '↗️ Tăng' :
+                     item.diem_thpt_2024 < item.diem_thpt_2023 ? '↘️ Giảm' : '➡️ Ổn định');
+
+                // Tính xu hướng TSA
+                const tsaTrend = item.diem_tsa_2023 === 0 ? 'N/A' :
+                    (item.diem_tsa_2024 > item.diem_tsa_2023 ? '↗️ Tăng' :
+                     item.diem_tsa_2024 < item.diem_tsa_2023 ? '↘️ Giảm' : '➡️ Ổn định');
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.major}</td>
+                    <td>${item.code}</td>
+                    <td>${item.diem_thpt_2024}</td>
+                    <td>${item.diem_thpt_2023 === 0 ? 'N/A' : item.diem_thpt_2023}</td>
+                    <td>${item.diem_tsa_2024}</td>
+                    <td>${item.diem_tsa_2023 === 0 ? 'N/A' : item.diem_tsa_2023}</td>
+                    <td>${thptTrend}</td>
+                    <td>${tsaTrend}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Hàm xuất Excel cho bảng điểm chuẩn đầy đủ
+        function exportFullBenchmarkTable() {
+            const excelData = [];
+
+            // Thêm header
+            excelData.push(['Ngành', 'Mã ngành', 'THPT 2024', 'THPT 2023', 'TSA 2024', 'TSA 2023', 'Xu hướng THPT', 'Xu hướng TSA']);
+
+            // Thêm dữ liệu
+            benchmarkData.forEach(item => {
+                const thptTrend = item.diem_thpt_2023 === 0 ? 'N/A' :
+                    (item.diem_thpt_2024 > item.diem_thpt_2023 ? 'Tăng' :
+                     item.diem_thpt_2024 < item.diem_thpt_2023 ? 'Giảm' : 'Ổn định');
+
+                const tsaTrend = item.diem_tsa_2023 === 0 ? 'N/A' :
+                    (item.diem_tsa_2024 > item.diem_tsa_2023 ? 'Tăng' :
+                     item.diem_tsa_2024 < item.diem_tsa_2023 ? 'Giảm' : 'Ổn định');
+
+                excelData.push([
+                    item.major,
+                    item.code,
+                    item.diem_thpt_2024,
+                    item.diem_thpt_2023 === 0 ? 'N/A' : item.diem_thpt_2023,
+                    item.diem_tsa_2024,
+                    item.diem_tsa_2023 === 0 ? 'N/A' : item.diem_tsa_2023,
+                    thptTrend,
+                    tsaTrend
+                ]);
+            });
+
+            // Tạo workbook và worksheet
+            const ws = XLSX.utils.aoa_to_sheet(excelData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Điểm chuẩn HUST 2023-2024");
+
+            // Xuất file Excel
+            XLSX.writeFile(wb, "Diem_Chuan_HUST_2023_2024.xlsx");
+        }
+
         // Khởi tạo bảng phân vị khi modal được mở
         document.getElementById('percentileTableModal').addEventListener('shown.bs.modal', function () {
             generatePercentileTable();
         });
+
+        // Khởi tạo bảng điểm chuẩn đầy đủ khi modal được mở
+        document.getElementById('fullBenchmarkModal').addEventListener('shown.bs.modal', function () {
+            generateFullBenchmarkTable();
+        });
+
+        // Thêm tìm kiếm cho bảng điểm chuẩn đầy đủ
+        const fullBenchmarkSearchElement = document.getElementById('fullBenchmarkSearch');
+        if (fullBenchmarkSearchElement) {
+            fullBenchmarkSearchElement.addEventListener('input', function(e) {
+                generateFullBenchmarkTable(e.target.value);
+            });
+        }
 
         // Dữ liệu khu vực ưu tiên (mẫu - sẽ được mở rộng)
         const regionData = [
