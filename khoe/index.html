@@ -1,10 +1,38 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
     <head>
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'GA_MEASUREMENT_ID');
+        </script>
+
+        <!-- Facebook Pixel -->
+        <script>
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', 'YOUR_PIXEL_ID');
+            fbq('track', 'PageView');
+        </script>
+        <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"
+        /></noscript>
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+        <meta name="description" content="AECK - Hệ sinh thái luyện thi TSA/HSA 2025 hàng đầu Việt Nam. Khóa học TSA 2K8 MIỄN PHÍ, kho đề thi phong phú, phương pháp học hiệu quả. Đăng ký ngay!">
+        <meta name="keywords" content="TSA, HSA, luyện thi TSA, đề thi TSA, AECK, tư duy toán học, ĐHQG Hà Nội, thi đại học">
         <style>
             img:is([sizes="auto" i], [sizes^="auto," i]) {
                 contain-intrinsic-size: 3000px 1500px
@@ -87,13 +115,16 @@
                 color: #dd3333;
                 font-size: 24px;
                 cursor: pointer;
-                width: 30px;
-                height: 30px;
+                width: 44px;
+                height: 44px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
                 transition: background-color 0.3s ease;
+                /* Better touch target for mobile */
+                min-width: 44px;
+                min-height: 44px;
             }
 
             .notification-popup .close-btn:hover {
@@ -141,12 +172,198 @@
             @media (max-width: 768px) {
                 .notification-popup {
                     padding: 20px;
-                    margin: 20px;
+                    margin: 15px;
+                    max-width: 95%;
                 }
 
                 .notification-popup h2 {
-                    font-size: 20px;
+                    font-size: 18px;
+                    margin-bottom: 15px;
                 }
+
+                .notification-popup .popup-image {
+                    max-width: 150px;
+                    margin-bottom: 15px;
+                }
+
+                .notification-popup .btn-action {
+                    padding: 10px 20px;
+                    font-size: 14px;
+                    margin: 8px 3px;
+                }
+
+                .notification-popup p {
+                    font-size: 13px !important;
+                    margin-bottom: 20px !important;
+                }
+
+                /* Urgency Banner Mobile */
+                #urgencyBanner {
+                    font-size: 12px !important;
+                    padding: 8px 5px !important;
+                    line-height: 1.3;
+                }
+
+                #urgencyBanner a {
+                    display: block;
+                    margin: 5px 0 0 0 !important;
+                    font-size: 11px;
+                }
+
+                /* Testimonials Mobile */
+                .testimonial-card {
+                    margin-bottom: 20px !important;
+                }
+
+                /* General Mobile Improvements */
+                .btn-one {
+                    padding: 12px 20px !important;
+                    font-size: 14px !important;
+                    margin: 10px 5px !important;
+                }
+
+                .section-title {
+                    font-size: 24px !important;
+                    margin-bottom: 20px !important;
+                }
+
+                /* Header spacing for mobile */
+                body {
+                    padding-top: 60px !important;
+                }
+
+                /* Mobile Menu Responsive */
+                .hamburger-menu {
+                    top: 70px !important;
+                    left: 10px !important;
+                    padding: 8px !important;
+                }
+
+                .menu-items {
+                    padding: 100px 15px 20px 15px !important;
+                }
+
+                .menu-items ul li a {
+                    font-size: 16px !important;
+                }
+
+                /* Hide desktop menu on tablet */
+                .main-menu {
+                    display: none !important;
+                }
+            }
+
+            /* Extra small devices (phones, 480px and down) */
+            @media (max-width: 480px) {
+                .notification-popup {
+                    padding: 15px;
+                    margin: 10px;
+                    max-width: 98%;
+                }
+
+                .notification-popup h2 {
+                    font-size: 16px;
+                    margin-bottom: 12px;
+                }
+
+                .notification-popup .popup-image {
+                    max-width: 120px;
+                    margin-bottom: 12px;
+                }
+
+                .notification-popup .btn-action {
+                    padding: 8px 15px;
+                    font-size: 13px;
+                    margin: 6px 2px;
+                    width: calc(50% - 4px);
+                    display: inline-block;
+                }
+
+                .notification-popup p {
+                    font-size: 12px !important;
+                    margin-bottom: 15px !important;
+                }
+
+                #urgencyBanner {
+                    font-size: 11px !important;
+                    padding: 6px 3px !important;
+                }
+
+                #urgencyBanner a {
+                    font-size: 10px;
+                }
+
+                .btn-one {
+                    padding: 10px 15px !important;
+                    font-size: 13px !important;
+                }
+
+                .section-title {
+                    font-size: 20px !important;
+                }
+
+                body {
+                    padding-top: 50px !important;
+                }
+
+                /* Mobile Menu for small screens */
+                .hamburger-menu {
+                    top: 55px !important;
+                    left: 8px !important;
+                    padding: 6px !important;
+                }
+
+                .bar {
+                    width: 20px !important;
+                    height: 2px !important;
+                    margin: 3px 0 !important;
+                }
+
+                .menu-items {
+                    padding: 80px 10px 15px 10px !important;
+                }
+
+                .menu-items ul li {
+                    margin: 10px 0 !important;
+                    padding-bottom: 10px !important;
+                }
+
+                .menu-items ul li a {
+                    font-size: 14px !important;
+                    padding: 8px 0 !important;
+                }
+
+                .menu-items .sub-menu li a {
+                    font-size: 13px !important;
+                }
+
+                /* Hide desktop menu on small mobile */
+                .main-menu {
+                    display: none !important;
+                }
+            }
+
+            /* General Mobile UX Improvements */
+            html {
+                scroll-behavior: smooth;
+            }
+
+            /* Prevent zoom on input focus (iOS) */
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+
+            /* Better touch feedback */
+            .btn-one, .btn-action {
+                -webkit-tap-highlight-color: rgba(221, 51, 51, 0.3);
+            }
+
+            /* Prevent text selection on buttons */
+            .btn-one, .btn-action, .close-btn {
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
             }
         </style>
         <!-- Meta Tag Manager -->
@@ -158,12 +375,12 @@
         <meta property="og:image:height" content="627">
         <!-- / Meta Tag Manager -->
         <!-- This site is optimized with the Yoast SEO plugin v23.8 - https://yoast.com/wordpress/plugins/seo/ -->
-        <title>AECK - TSA / HSA</title>
+        <title>AECK - Phòng luyện thi TSA/HSA 2025 | Khóa học miễn phí TSA 2K8</title>
         <link rel="canonical" href="./index.html">
         <meta property="og:locale" content="en_US">
         <meta property="og:type" content="website">
         <meta property="og:title" content="Hệ sinh thái AECK">
-        <meta property="og:description" content="Phòng luyện thi TSA - Elab độc quyền AECK">
+        <meta property="og:description" content="Hệ sinh thái AECK - Phòng luyện thi TSA/HSA 2025 hàng đầu. Khóa học TSA 2K8 MIỄN PHÍ. Kho đề thi phong phú, phương pháp học hiệu quả.">
         <meta property="og:url" content="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/tsa-2025">
         <meta property="og:site_name" content="AECK - TSA / HSA">
         <meta property="article:modified_time" content="2024-11-18T08:58:40+00:00">
@@ -494,33 +711,379 @@
                 --wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);
             }
 
+			/* Hide old hamburger menu - not used anymore */
 			.hamburger-menu {
-				position: fixed;
-				top: 10px;
-				left: 10px;
-				cursor: pointer;
+				display: none !important;
 			}
 
-			.bar {
-				width: 30px;
-				height: 4px;
-				background-color: #333;
-				margin: 6px 0;
-				transition: 0.4s;
-			}
+			/* Old bar styles - not used */
 
+			/* Hide old menu items - not used anymore */
 			.menu-items {
-				display: none;
-				position: fixed;
-				top: 50px;
-				left: 0;
-				background-color: #f0f0f0;
-				width: 200px;
-				padding: 10px;
+				display: none !important;
 			}
 
 			.menu-items.show {
-				display: block;
+				display: none !important;
+			}
+
+			/* Old menu styles removed - using new mobile menu */
+
+			/* New Mobile Menu Overlay - Enhanced */
+			.mobile-menu-overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100vh;
+				background: linear-gradient(135deg,
+					rgba(221, 51, 51, 0.98) 0%,
+					rgba(157, 29, 31, 0.98) 50%,
+					rgba(139, 25, 27, 0.98) 100%);
+				z-index: 10000;
+				opacity: 0;
+				visibility: hidden;
+				transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+				backdrop-filter: blur(15px);
+				-webkit-backdrop-filter: blur(15px);
+			}
+
+			.mobile-menu-overlay.show {
+				opacity: 1;
+				visibility: visible;
+			}
+
+			.mobile-menu-content {
+				padding: 30px 25px;
+				height: 100%;
+				overflow-y: auto;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.mobile-menu-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 40px;
+				padding-bottom: 25px;
+				border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+				position: relative;
+			}
+
+			.mobile-menu-header::after {
+				content: '';
+				position: absolute;
+				bottom: -2px;
+				left: 0;
+				width: 60px;
+				height: 2px;
+				background: linear-gradient(90deg, #ffeb3b, #ffc107);
+				border-radius: 2px;
+			}
+
+			.mobile-menu-header h3 {
+				font-size: 24px;
+				font-weight: 700;
+				color: white;
+				margin: 0;
+				text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+			}
+
+			.mobile-menu-close {
+				background: rgba(255, 255, 255, 0.1);
+				border: 2px solid rgba(255, 255, 255, 0.2);
+				color: white;
+				font-size: 28px;
+				cursor: pointer;
+				width: 48px;
+				height: 48px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+				transition: all 0.3s ease;
+				font-weight: 300;
+				backdrop-filter: blur(10px);
+			}
+
+			.mobile-menu-close:hover {
+				background: rgba(255, 255, 255, 0.2);
+				border-color: rgba(255, 255, 255, 0.4);
+				transform: rotate(90deg);
+				box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+			}
+
+			.mobile-menu-nav {
+				flex: 1;
+				display: block !important;
+			}
+
+			.mobile-menu-nav ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: block !important;
+			}
+
+			.mobile-menu-nav ul li {
+				margin: 0 0 25px 0;
+				opacity: 1 !important;
+				transform: translateX(0) !important;
+				display: block !important;
+			}
+
+			@keyframes slideInLeft {
+				to {
+					opacity: 1;
+					transform: translateX(0);
+				}
+			}
+
+			.mobile-menu-nav ul li a {
+				color: white;
+				text-decoration: none;
+				font-size: 20px;
+				font-weight: 600;
+				display: flex;
+				align-items: center;
+				padding: 20px 25px;
+				border-radius: 16px;
+				transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+				background: rgba(255, 255, 255, 0.08);
+				border: 1px solid rgba(255, 255, 255, 0.12);
+				position: relative;
+				overflow: hidden;
+				backdrop-filter: blur(10px);
+				text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+			}
+
+			.mobile-menu-nav ul li a::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: -100%;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+				transition: left 0.6s ease;
+			}
+
+			.mobile-menu-nav ul li a:hover::before {
+				left: 100%;
+			}
+
+			.mobile-menu-nav ul li a:hover {
+				background: rgba(255, 255, 255, 0.15);
+				border-color: rgba(255, 255, 255, 0.25);
+				transform: translateX(8px) scale(1.02);
+				box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+				color: #ffeb3b;
+			}
+
+			.mobile-submenu {
+				display: none;
+				margin: 15px 0 0 0;
+				padding: 15px 20px;
+				background: rgba(0, 0, 0, 0.2);
+				border-radius: 12px;
+				border: 1px solid rgba(255, 255, 255, 0.1);
+				backdrop-filter: blur(5px);
+			}
+
+			.mobile-submenu li {
+				margin: 12px 0 !important;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+				padding-bottom: 12px !important;
+				opacity: 1;
+				transform: translateY(0);
+			}
+
+			.mobile-submenu.show li {
+				opacity: 0;
+				transform: translateY(-10px);
+				animation: fadeInUp 0.3s ease forwards;
+			}
+
+			.mobile-submenu.show li:nth-child(1) { animation-delay: 0.1s; }
+			.mobile-submenu.show li:nth-child(2) { animation-delay: 0.2s; }
+			.mobile-submenu.show li:nth-child(3) { animation-delay: 0.3s; }
+
+			@keyframes fadeInUp {
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.mobile-submenu li a {
+				font-size: 17px !important;
+				color: rgba(255, 255, 255, 0.9) !important;
+				padding: 12px 15px !important;
+				border-radius: 8px !important;
+				background: rgba(255, 255, 255, 0.05) !important;
+				transition: all 0.3s ease !important;
+			}
+
+			.mobile-submenu li a:hover {
+				background: rgba(255, 255, 255, 0.1) !important;
+				color: #ffeb3b !important;
+				transform: translateX(5px) !important;
+			}
+
+			.submenu-arrow {
+				float: right;
+				transition: transform 0.3s ease;
+				font-size: 18px;
+				color: rgba(255, 255, 255, 0.7);
+			}
+
+			.submenu-arrow.rotated {
+				transform: rotate(180deg);
+				color: #ffeb3b;
+			}
+
+			/* Mobile Menu Footer */
+			.mobile-menu-footer {
+				margin-top: auto;
+				padding-top: 30px;
+				border-top: 2px solid rgba(255, 255, 255, 0.15);
+			}
+
+			.mobile-menu-social {
+				display: flex;
+				gap: 15px;
+				margin-bottom: 25px;
+			}
+
+			.social-btn {
+				flex: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 15px 20px;
+				background: rgba(255, 255, 255, 0.1);
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				border-radius: 12px;
+				color: white;
+				text-decoration: none;
+				font-weight: 600;
+				font-size: 16px;
+				transition: all 0.3s ease;
+				backdrop-filter: blur(10px);
+			}
+
+			.social-btn:hover {
+				background: rgba(255, 255, 255, 0.2);
+				border-color: rgba(255, 255, 255, 0.3);
+				transform: translateY(-2px);
+				box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+			}
+
+			.mobile-menu-info {
+				text-align: center;
+				opacity: 0.8;
+			}
+
+			.mobile-menu-info p {
+				margin: 5px 0;
+				color: rgba(255, 255, 255, 0.7);
+				font-size: 14px;
+				font-weight: 400;
+			}
+
+			/* Responsive adjustments for mobile menu */
+			@media (max-width: 480px) {
+				.mobile-menu-content {
+					padding: 25px 20px;
+				}
+
+				.mobile-menu-nav ul li a {
+					font-size: 18px;
+					padding: 18px 20px;
+				}
+
+				.mobile-menu-header h3 {
+					font-size: 22px;
+				}
+
+				.social-btn {
+					padding: 12px 15px;
+					font-size: 15px;
+				}
+			}
+
+			@media (max-width: 360px) {
+				.mobile-menu-content {
+					padding: 20px 15px;
+				}
+
+				.mobile-menu-nav ul li a {
+					font-size: 17px;
+					padding: 16px 18px;
+				}
+
+				.mobile-menu-header h3 {
+					font-size: 20px;
+				}
+			}
+
+			/* Force display mobile menu items - Debug */
+			.mobile-menu-overlay * {
+				visibility: visible !important;
+			}
+
+			.mobile-menu-nav,
+			.mobile-menu-nav ul,
+			.mobile-menu-nav ul li,
+			.mobile-menu-nav ul li a {
+				display: block !important;
+				opacity: 1 !important;
+				visibility: visible !important;
+			}
+
+			/* Hamburger Button Styling */
+			.bars {
+				display: none;
+				flex-direction: column;
+				cursor: pointer;
+				padding: 10px;
+				background: rgba(221, 51, 51, 0.9);
+				border-radius: 5px;
+				transition: all 0.3s ease;
+			}
+
+			.bars:hover {
+				background: rgba(221, 51, 51, 1);
+			}
+
+			.bars span {
+				width: 25px;
+				height: 3px;
+				background-color: white;
+				margin: 2px 0;
+				transition: 0.3s;
+				border-radius: 2px;
+			}
+
+			/* Show hamburger on mobile and hide desktop menu */
+			@media (max-width: 991px) {
+				.bars {
+					display: flex !important;
+				}
+
+				/* Hide desktop menu on mobile */
+				.main-menu {
+					display: none !important;
+				}
+
+				.main-menu nav {
+					display: none !important;
+				}
+
+				.main-menu ul {
+					display: none !important;
+				}
 			}
 
             :where(.is-layout-flex) {
@@ -833,14 +1396,12 @@
                 --theme-color: rgb(221,51,51);
             }
 
-            :root {
-                .main-menu ul.sub-menu li a: before {
-                    content: "\f469";
-                }
+            .main-menu ul.sub-menu li a::before {
+                content: "\f469";
             }
 
             .header-area::after {
-                /*background: none;*/
+                background: transparent;
             }
 
             .slide-bg::before {
@@ -908,7 +1469,8 @@
             .service-three__item:hover .service-three__up-content .text, .service__item .text {
                 display: -webkit-box;
                 -webkit-line-clamp: 6;
-                /* Limit to 5 lines or adjust as needed */
+                line-clamp: 6;
+                /* Limit to 6 lines */
                 -webkit-box-orient: vertical;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -924,7 +1486,7 @@
                 background: #1D0C0C;
             }
 
-            .secondary-bg::before, {
+            .secondary-bg::before {
                 background: linear-gradient(270.07deg, #472125 0.07%, #00060c 99.95%);
             }
 
@@ -1071,7 +1633,8 @@
                 /* Hide the overflowed content */
                 display: -webkit-box;
                 -webkit-line-clamp: 7;
-                /* Limits the component to 10 lines */
+                line-clamp: 7;
+                /* Limits the component to 7 lines */
                 -webkit-box-orient: vertical;
                 text-overflow: ellipsis;
                 /* Adds ellipsis (...) */
@@ -1226,19 +1789,29 @@
         <script src="./Homepage - AI4LIFE_files/wp-emoji-release.min.js.download" defer=""></script>
     </head>
     <body class="pace-done home page-template page-template-template-builder page-template-template-builder-php page page-id-38 wp-embed-responsive theme-gratech woocommerce-js elementor-default elementor-kit-7 elementor-page elementor-page-38 e--ua-blink e--ua-edge e--ua-webkit" data-elementor-device-mode="desktop">
+
+        <!-- Urgency Banner -->
+        <div id="urgencyBanner" style="background: linear-gradient(90deg, #ff6b6b, #ee5a24); color: white; text-align: center; padding: 10px 0; position: fixed; top: 0; width: 100%; z-index: 10000; font-size: 14px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
+            <span id="urgencyText">KHÓA HỌC TSA 2K8 MIỄN PHÍ - CHỈ CÒN <span id="countdown">72</span> GIỜ ĐỂ ĐĂNG KÝ!</span>
+            <a href="https://www.facebook.com/share/p/1Br6gVY76b/" style="color: white; text-decoration: underline; margin-left: 10px;">ĐĂNG KÝ NGAY</a>
+            <button onclick="closeUrgencyBanner()" style="background: none; border: none; color: white; font-size: 16px; margin-left: 15px; cursor: pointer;">×</button>
+        </div>
         <!-- Notification Popup -->
         <div id="notificationOverlay" class="notification-overlay">
             <div class="notification-popup">
                 <button class="close-btn" onclick="closeNotification()">&times;</button>
                 <img src="./Homepage - AI4LIFE_files/nentangtsa.png" alt="TSA Course" class="popup-image">
-                <h2>🎉 Thông báo quan trọng! 🎉</h2>
+                <h2>Thông báo quan trọng!</h2>
                 <p style="font-size: 18px; margin-bottom: 20px; line-height: 1.5; color: #dd3333;">
                     <strong>Khai giảng khoá học Nhập môn TSA 2K8 FREE</strong>
                 </p>
                 <p style="font-size: 14px; margin-bottom: 25px; color: #666; line-height: 1.6;">
-                    Đừng bỏ lỡ cơ hội học miễn phí! Đăng ký ngay để nhận được những kiến thức bổ ích về TSA và chuẩn bị tốt nhất cho kỳ thi.
+                    <strong>Khóa học hoàn toàn MIỄN PHÍ</strong> dành cho học sinh lớp 12<br>
+                    Phương pháp học hiệu quả từ chuyên gia<br>
+                    Tài liệu độc quyền và bài tập thực hành<br>
+                    Hỗ trợ 24/7 từ cộng đồng AECK
                 </p>
-                <button class="btn-action" onclick="registerCourse()">Đăng ký ngay</button>
+                <button class="btn-action" onclick="registerCourse()">Đăng ký MIỄN PHÍ ngay</button>
                 <button class="btn-action btn-secondary" onclick="closeNotification()">Để sau</button>
             </div>
         </div>
@@ -1366,7 +1939,11 @@
                             </nav>
                         </div>
                         <div class="header-btn"></div>
-                        <div class="bars d-block d-lg-none"></div>
+                        <div class="bars d-block d-lg-none">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1451,8 +2028,8 @@
                                                             </svg>
                                                             Phòng luyện thi TSA - AECK
                                                         </h4>
-                                                        <h1 data-animation="slideInRight" data-duration="2s" data-delay=".5s" class="ot-title text-white" style="animation-delay: 0.5s; animation-duration: 2s;">Đoạn 1</h1>
-                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="https://aeckpltest.ddns.net/" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Thi ngay </a>
+                                                        <h1 data-animation="slideInRight" data-duration="2s" data-delay=".5s" class="ot-title text-white" style="animation-delay: 0.5s; animation-duration: 2s;">Luyện thi TSA hiệu quả - Chinh phục điểm cao</h1>
+                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="https://aeckpltest.ddns.net/" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Thi thử TSA ngay</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1522,7 +2099,7 @@
                                                             Hệ sinh thái AECK
                                                         </h4>
                                                         <h1 data-animation="slideInRight" data-duration="2s" data-delay=".5s" class="ot-title text-white" style="animation-delay: 0.5s; animation-duration: 2s;">Chào mừng bạn đã đến với AECK</h1>
-                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="./index.html" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Khám phá ngay</a>
+                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="#services" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Xem khóa học</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1592,8 +2169,7 @@
                                                             Phòng luyện thi TSA - AECK
                                                         </h4>
                                                         <h1 data-animation="slideInRight" data-duration="2s" data-delay=".5s" class="ot-title text-white" style="animation-delay: 0.5s; animation-duration: 2s;">Phòng luyện AECK - Nâng tầm tri thức Việt</h1>
-                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="https://aeckpltest.ddns.net/
-											" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Thi ngay </a>
+                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="https://aeckpltest.ddns.net/" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Thi thử TSA ngay</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1663,7 +2239,7 @@
                                                             Anh Em Cây Khế 
                                                         </h4>
                                                         <h1 data-animation="slideInRight" data-duration="2s" data-delay=".5s" class="ot-title text-white" style="animation-delay: 0.5s; animation-duration: 2s;">Kho đề TSA đồ sộ</h1>
-                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="./index.html" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Khám phá ngay</a>
+                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/tsa-2025" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Xem kho đề TSA</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1722,7 +2298,7 @@
                                                         <img decoding="async" src="https://ai4life.hust.edu.vn/wp-content/plugins/gratech-core/assets/img/banner/banner-right-line4.png" alt="shape">
                                                     </noscript>
                                                 </div>
-                                                <div class="slide-bg" data-background="https://www.facebook.com/profile.php?id=61559392792455" style="background-image: url(&quot;https://www.facebook.com/profile.php?id=61559392792455&quot;);"></div>
+                                                <div class="slide-bg" data-background="./Homepage - AI4LIFE_files/HUST.png" style="background-image: url(&quot;./Homepage - AI4LIFE_files/HUST.png&quot;);"></div>
                                                 <div class="container">
                                                     <div class="banner__content">
                                                         <h4 data-animation="slideInRight" data-duration="2s" data-delay=".3s" class="ot-subtitle text-white mb-20" style="animation-delay: 0.3s; animation-duration: 2s;">
@@ -1733,7 +2309,7 @@
                                                             Phòng luyện thi TSA - AECK
                                                         </h4>
                                                         <h1 data-animation="slideInRight" data-duration="2s" data-delay=".5s" class="ot-title text-white" style="animation-delay: 0.5s; animation-duration: 2s;">Tuyển tập các đề HSA chọn lọc</h1>
-                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="./index.html" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Khám phá ngay</a>
+                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/hsa-2025" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Xem đề HSA</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1942,8 +2518,8 @@
                                                             </svg>
                                                             Phòng luyện thi TSA - AECK
                                                         </h4>
-                                                        <h1 data-animation="slideInRight" data-duration="2s" data-delay=".5s" class="ot-title text-white" style="animation-delay: 0.5s; animation-duration: 2s;">Đoạn 7</h1>
-                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="https://aeckpltest.ddns.net/" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Thi ngay </a>
+                                                        <h1 data-animation="slideInRight" data-duration="2s" data-delay=".5s" class="ot-title text-white" style="animation-delay: 0.5s; animation-duration: 2s;">Khóa học TSA 2K8 FREE - Đăng ký ngay!</h1>
+                                                        <a data-animation="slideInRight" data-duration="2s" data-delay=".9s" href="https://www.facebook.com/share/p/1Br6gVY76b/" class="btn-one mt-60" style="animation-delay: 0.9s; animation-duration: 2s;">Đăng ký FREE</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2339,9 +2915,7 @@
                                                 <div class="case__content">
                                                     <span class="primary-color sm-font">Đề thi thử Tư duy Toán học Lần 3</span>
                                                     <h3 class="box-titleg">
-                                                        <a href="This is a comprehensive large-scale
-PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paired CT-PET images from studies of
-3,454 patients, designed to cover a wide range of anatomical regions." class="text-white primary-hover">CT2PET</a>
+                                                        <a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/tsa-2025" class="text-white primary-hover">Đề TSA AECK</a>
                                                     </h3>
                                                 </div>
                                                 <a href="https://dicom.vaipe.io/" class="case__btn"></a>
@@ -2836,6 +3410,83 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
             </div>
         </div>
 </div>
+
+<!-- Testimonials Section -->
+<div class="testimonials-area pt-100 pb-100" style="background: #f8f9fa;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="section-header text-center mb-60">
+                    <h2 class="section-title">Học viên nói gì về AECK?</h2>
+                    <p>Những phản hồi tích cực từ học viên đã tham gia khóa học TSA tại AECK</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-30">
+                <div class="testimonial-card" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); height: 100%;">
+                    <div class="stars mb-20" style="color: #ffc107;">
+                        ★★★★★
+                    </div>
+                    <p style="font-style: italic; margin-bottom: 20px; line-height: 1.6;">
+                        "Khóa học TSA của AECK thực sự hiệu quả! Từ 15 điểm lên 25 điểm chỉ sau 2 tháng học. Cảm ơn thầy cô!"
+                    </p>
+                    <div class="author" style="display: flex; align-items: center;">
+                        <div class="avatar" style="width: 50px; height: 50px; background: #dd3333; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin-right: 15px;">
+                            N
+                        </div>
+                        <div>
+                            <h5 style="margin: 0; color: #333;">Nguyễn Minh A.</h5>
+                            <small style="color: #666;">Học sinh lớp 12A1</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-30">
+                <div class="testimonial-card" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); height: 100%;">
+                    <div class="stars mb-20" style="color: #ffc107;">
+                        ★★★★★
+                    </div>
+                    <p style="font-style: italic; margin-bottom: 20px; line-height: 1.6;">
+                        "Phương pháp giảng dạy rất dễ hiểu, kho đề phong phú. Đặc biệt là được hỗ trợ 24/7 từ cộng đồng AECK."
+                    </p>
+                    <div class="author" style="display: flex; align-items: center;">
+                        <div class="avatar" style="width: 50px; height: 50px; background: #dd3333; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin-right: 15px;">
+                            T
+                        </div>
+                        <div>
+                            <h5 style="margin: 0; color: #333;">Trần Thị B.</h5>
+                            <small style="color: #666;">Học sinh lớp 12A3</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-30">
+                <div class="testimonial-card" style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); height: 100%;">
+                    <div class="stars mb-20" style="color: #ffc107;">
+                        ★★★★★
+                    </div>
+                    <p style="font-style: italic; margin-bottom: 20px; line-height: 1.6;">
+                        "Khóa học miễn phí mà chất lượng không thua gì khóa học trả phí. Rất recommend cho các bạn 2K8!"
+                    </p>
+                    <div class="author" style="display: flex; align-items: center;">
+                        <div class="avatar" style="width: 50px; height: 50px; background: #dd3333; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin-right: 15px;">
+                            L
+                        </div>
+                        <div>
+                            <h5 style="margin: 0; color: #333;">Lê Văn C.</h5>
+                            <small style="color: #666;">Học sinh lớp 12B2</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-40">
+            <a href="https://www.facebook.com/share/p/1Br6gVY76b/" class="btn-one">Tham gia cùng 1000+ học viên khác</a>
+        </div>
+    </div>
+</div>
+
 <!---footer-wrapper start-->
 <footer class="footer-area secondary-bg prebuilt-foo" data-bg-src="#">
     <div class="footer__shape-regular-left wow slideInLeft" data-wow-delay="00ms" data-wow-duration="1500ms" style="visibility: visible; animation-duration: 1500ms; animation-delay: 0ms; animation-name: slideInLeft;">
@@ -3366,6 +4017,21 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
 
     // Function to handle course registration
     function registerCourse() {
+        // Track conversion events
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'course_registration_click', {
+                'event_category': 'engagement',
+                'event_label': 'TSA_2K8_FREE_Course'
+            });
+        }
+
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'Lead', {
+                content_name: 'TSA 2K8 FREE Course',
+                content_category: 'Education'
+            });
+        }
+
         // Redirect to Facebook registration post
         window.open('https://www.facebook.com/share/p/1Br6gVY76b/', '_blank');
         closeNotification();
@@ -3414,6 +4080,183 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
                 closeNotification();
             }
         }
+    });
+
+    // Urgency Banner Functions
+    function closeUrgencyBanner() {
+        const banner = document.getElementById('urgencyBanner');
+        if (banner) {
+            banner.style.display = 'none';
+            // Adjust body padding
+            document.body.style.paddingTop = '0';
+        }
+    }
+
+    // Countdown timer for urgency
+    function startCountdown() {
+        const countdownElement = document.getElementById('countdown');
+        if (!countdownElement) return;
+
+        // Set target time (72 hours from now)
+        const targetTime = new Date().getTime() + (72 * 60 * 60 * 1000);
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = targetTime - now;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                countdownElement.innerHTML = "0";
+                return;
+            }
+
+            const hours = Math.floor(distance / (1000 * 60 * 60));
+            countdownElement.innerHTML = hours;
+        }, 1000 * 60 * 60); // Update every hour
+    }
+
+    // Initialize urgency banner
+    window.addEventListener('load', function() {
+        // Add padding to body to account for fixed banner
+        const isMobile = window.innerWidth <= 768;
+        document.body.style.paddingTop = isMobile ? '60px' : '50px';
+        startCountdown();
+
+        // Mobile-specific improvements
+        if (isMobile) {
+            // Adjust popup timing for mobile (show faster)
+            setTimeout(function() {
+                if (shouldShowNotification()) {
+                    showNotification();
+                }
+            }, 500); // Show after 0.5 seconds on mobile instead of 1 second
+        }
+    });
+
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        setTimeout(function() {
+            // Recalculate popup position after orientation change
+            const overlay = document.getElementById('notificationOverlay');
+            if (overlay && overlay.classList.contains('show')) {
+                overlay.style.display = 'none';
+                setTimeout(() => overlay.style.display = 'flex', 100);
+            }
+        }, 500);
+    });
+
+    // Prevent double-tap zoom on buttons
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+
+    // Mobile Menu Functionality
+    function initMobileMenu() {
+        console.log('Initializing mobile menu...');
+        // Create mobile menu if it doesn't exist
+        if (!document.querySelector('.mobile-menu-overlay')) {
+            console.log('Creating mobile menu HTML...');
+            const mobileMenuHTML = `
+                <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+                    <div class="mobile-menu-content">
+                        <div class="mobile-menu-header">
+                            <h3 style="color: white; margin: 0;">AECK Menu</h3>
+                            <button class="mobile-menu-close" onclick="closeMobileMenu()">&times;</button>
+                        </div>
+                        <nav class="mobile-menu-nav">
+                            <ul>
+                                <li><a href="./index.html" onclick="closeMobileMenu()">Trang chủ</a></li>
+                                <li class="has-submenu">
+                                    <a href="#" onclick="toggleSubmenu(this)">Web tải đề <span class="submenu-arrow">▼</span></a>
+                                    <ul class="mobile-submenu">
+                                        <li><a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/tsa-2025" onclick="closeMobileMenu()">TSA 2025</a></li>
+                                        <li><a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/hsa-2025" onclick="closeMobileMenu()">HSA 2025</a></li>
+                                        <li><a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/ebook-b%E1%BB%95-tr%E1%BB%A3-t%C6%B0-duy-tsa?authuser=0" onclick="closeMobileMenu()">Ebook AECK</a></li>
+                                        <li><a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/t%C3%A0i-li%E1%BB%87u-2k6" onclick="closeMobileMenu()">Tài liệu TSA / HSA 2024</a></li>
+                                        <li><a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/mua-file-word?authuser=0" onclick="closeMobileMenu()">Mua File Word</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/tsa-2025" onclick="closeMobileMenu()">TSA 2025</a></li>
+                                <li><a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/hsa-2025" onclick="closeMobileMenu()">HSA 2025</a></li>
+                                <li><a href="https://sites.google.com/view/anh-em-cay-khe-tsa-hsa/li%C3%AAn-h%E1%BB%87?authuser=0" onclick="closeMobileMenu()">Liên hệ</a></li>
+                            </ul>
+                        </nav>
+                        <div class="mobile-menu-footer">
+                            <div class="mobile-menu-social">
+                                <a href="https://www.facebook.com/groups/anhemcaykhe" target="_blank" class="social-btn">
+                                    Facebook
+                                </a>
+                                <a href="https://www.youtube.com/@anhemcaykhe" target="_blank" class="social-btn">
+                                    YouTube
+                                </a>
+                            </div>
+                            <div class="mobile-menu-info">
+                                <p>© 2025 Anh Em Cây Khế</p>
+                                <p>Hỗ trợ học tập TSA & HSA</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', mobileMenuHTML);
+            console.log('Mobile menu HTML added to DOM');
+        } else {
+            console.log('Mobile menu already exists');
+        }
+
+        // Add click event to hamburger menu
+        const hamburgerBtn = document.querySelector('.bars');
+        if (hamburgerBtn) {
+            hamburgerBtn.addEventListener('click', function() {
+                openMobileMenu();
+            });
+        }
+    }
+
+    function openMobileMenu() {
+        const overlay = document.getElementById('mobileMenuOverlay');
+        if (overlay) {
+            overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeMobileMenu() {
+        const overlay = document.getElementById('mobileMenuOverlay');
+        if (overlay) {
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    }
+
+    function toggleSubmenu(element) {
+        const submenu = element.nextElementSibling;
+        const arrow = element.querySelector('.submenu-arrow');
+
+        if (submenu.style.display === 'block') {
+            submenu.classList.remove('show');
+            submenu.style.display = 'none';
+            arrow.textContent = '▼';
+            arrow.classList.remove('rotated');
+        } else {
+            submenu.style.display = 'block';
+            // Trigger animation
+            setTimeout(() => {
+                submenu.classList.add('show');
+            }, 10);
+            arrow.textContent = '▲';
+            arrow.classList.add('rotated');
+        }
+    }
+
+    // Initialize mobile menu when page loads
+    window.addEventListener('load', function() {
+        initMobileMenu();
     });
 </script>
 
