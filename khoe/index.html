@@ -9,24 +9,144 @@
             img:is([sizes="auto" i], [sizes^="auto," i]) {
                 contain-intrinsic-size: 3000px 1500px
             }
-            
+
             /* Hide preloader */
             #preloader {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
             }
-            
+
             .loading {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
             }
-            
+
             .pace {
                 display: none !important;
                 visibility: hidden !important;
                 opacity: 0 !important;
+            }
+
+            /* Notification Popup Styles */
+            .notification-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .notification-overlay.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .notification-popup {
+                background: white;
+                color: #333;
+                padding: 30px;
+                border-radius: 15px;
+                text-align: center;
+                max-width: 600px;
+                width: 90%;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                transform: scale(0.7);
+                transition: transform 0.3s ease;
+                position: relative;
+                border: 3px solid #dd3333;
+            }
+
+            .notification-overlay.show .notification-popup {
+                transform: scale(1);
+            }
+
+            .notification-popup h2 {
+                margin: 0 0 20px 0;
+                font-size: 24px;
+                font-weight: bold;
+                color: #dd3333;
+                text-shadow: none;
+            }
+
+            .notification-popup .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                background: none;
+                border: none;
+                color: #dd3333;
+                font-size: 24px;
+                cursor: pointer;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                transition: background-color 0.3s ease;
+            }
+
+            .notification-popup .close-btn:hover {
+                background-color: rgba(221, 51, 51, 0.1);
+            }
+
+            .notification-popup .btn-action {
+                background: #dd3333;
+                color: white;
+                border: 2px solid #dd3333;
+                padding: 12px 25px;
+                border-radius: 25px;
+                font-weight: bold;
+                cursor: pointer;
+                margin: 10px 5px;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            .notification-popup .btn-secondary {
+                background: transparent;
+                color: #dd3333;
+                border: 2px solid #dd3333;
+            }
+
+            .notification-popup .btn-secondary:hover {
+                background: #dd3333;
+                color: white;
+            }
+
+            .notification-popup .popup-image {
+                width: 100%;
+                max-width: 200px;
+                height: auto;
+                margin-bottom: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .notification-popup .btn-action:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            }
+
+            @media (max-width: 768px) {
+                .notification-popup {
+                    padding: 20px;
+                    margin: 20px;
+                }
+
+                .notification-popup h2 {
+                    font-size: 20px;
+                }
             }
         </style>
         <!-- Meta Tag Manager -->
@@ -1106,6 +1226,23 @@
         <script src="./Homepage - AI4LIFE_files/wp-emoji-release.min.js.download" defer=""></script>
     </head>
     <body class="pace-done home page-template page-template-template-builder page-template-template-builder-php page page-id-38 wp-embed-responsive theme-gratech woocommerce-js elementor-default elementor-kit-7 elementor-page elementor-page-38 e--ua-blink e--ua-edge e--ua-webkit" data-elementor-device-mode="desktop">
+        <!-- Notification Popup -->
+        <div id="notificationOverlay" class="notification-overlay">
+            <div class="notification-popup">
+                <button class="close-btn" onclick="closeNotification()">&times;</button>
+                <img src="./Homepage - AI4LIFE_files/nentangtsa.png" alt="TSA Course" class="popup-image">
+                <h2>🎉 Thông báo quan trọng! 🎉</h2>
+                <p style="font-size: 18px; margin-bottom: 20px; line-height: 1.5; color: #dd3333;">
+                    <strong>Khai giảng khoá học Nhập môn TSA 2K8 FREE</strong>
+                </p>
+                <p style="font-size: 14px; margin-bottom: 25px; color: #666; line-height: 1.6;">
+                    Đừng bỏ lỡ cơ hội học miễn phí! Đăng ký ngay để nhận được những kiến thức bổ ích về TSA và chuẩn bị tốt nhất cho kỳ thi.
+                </p>
+                <button class="btn-action" onclick="registerCourse()">Đăng ký ngay</button>
+                <button class="btn-action btn-secondary" onclick="closeNotification()">Để sau</button>
+            </div>
+        </div>
+
         <div class="mouse-cursor cursor-outer" style="visibility: visible; transform: translate(1047px, 572px);"></div>
         <div class="mouse-cursor cursor-inner" style="visibility: visible; transform: translate(1047px, 572px);"></div>
         <header class="prebuilt">
@@ -3206,4 +3343,78 @@ PET/CT dataset collected from hospitals. The dataset consists of 2,028,628 paire
 	
     // ]]>
 </script>
+
+<!-- Notification Popup JavaScript -->
+<script>
+    // Function to show notification popup
+    function showNotification() {
+        const overlay = document.getElementById('notificationOverlay');
+        if (overlay) {
+            overlay.classList.add('show');
+        }
+    }
+
+    // Function to close notification popup
+    function closeNotification() {
+        const overlay = document.getElementById('notificationOverlay');
+        if (overlay) {
+            overlay.classList.remove('show');
+        }
+        // Set a cookie to remember that user has seen the notification
+        document.cookie = "notificationSeen=true; expires=" + new Date(Date.now() + 24*60*60*1000).toUTCString() + "; path=/";
+    }
+
+    // Function to handle course registration
+    function registerCourse() {
+        // Redirect to Facebook registration post
+        window.open('https://www.facebook.com/share/p/1Br6gVY76b/', '_blank');
+        closeNotification();
+    }
+
+    // Function to check if notification should be shown
+    function shouldShowNotification() {
+        // Check if user has already seen the notification today
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [name, value] = cookie.trim().split('=');
+            if (name === 'notificationSeen' && value === 'true') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Show notification when page loads
+    window.addEventListener('load', function() {
+        // Wait a bit for the page to fully load, then show notification
+        setTimeout(function() {
+            if (shouldShowNotification()) {
+                showNotification();
+            }
+        }, 1000); // Show after 1 second
+    });
+
+    // Close notification when clicking outside the popup
+    document.addEventListener('click', function(event) {
+        const overlay = document.getElementById('notificationOverlay');
+        const popup = document.querySelector('.notification-popup');
+
+        if (overlay && overlay.classList.contains('show')) {
+            if (event.target === overlay && !popup.contains(event.target)) {
+                closeNotification();
+            }
+        }
+    });
+
+    // Close notification with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const overlay = document.getElementById('notificationOverlay');
+            if (overlay && overlay.classList.contains('show')) {
+                closeNotification();
+            }
+        }
+    });
+</script>
+
 </body></html>
