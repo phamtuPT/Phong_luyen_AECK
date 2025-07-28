@@ -5,7 +5,7 @@
         <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
+            function gtag(){dataLayer.push(;}
             gtag('js', new Date());
             gtag('config', 'GA_MEASUREMENT_ID');
         </script>
@@ -64,17 +64,19 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 9999;
-                display: flex;
+                background-color: rgba(0, 0, 0, 0.8);
+                z-index: 1000001;
+                display: none;
                 justify-content: center;
                 align-items: center;
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.3s ease;
+                backdrop-filter: blur(5px);
             }
 
             .notification-overlay.show {
+                display: flex !important;
                 opacity: 1;
                 visibility: visible;
             }
@@ -110,8 +112,8 @@
                 position: absolute;
                 top: 10px;
                 right: 15px;
-                background: none;
-                border: none;
+                background: rgba(255, 255, 255, 0.9);
+                border: 2px solid #dd3333;
                 color: #dd3333;
                 font-size: 24px;
                 cursor: pointer;
@@ -121,14 +123,19 @@
                 align-items: center;
                 justify-content: center;
                 border-radius: 50%;
-                transition: background-color 0.3s ease;
+                transition: all 0.3s ease;
                 /* Better touch target for mobile */
                 min-width: 44px;
                 min-height: 44px;
+                font-weight: bold;
+                z-index: 999999;
+                pointer-events: auto;
             }
 
             .notification-popup .close-btn:hover {
-                background-color: rgba(221, 51, 51, 0.1);
+                background-color: #dd3333;
+                color: white;
+                transform: scale(1.1);
             }
 
             .notification-popup .btn-action {
@@ -229,12 +236,12 @@
 
                 /* Header spacing for mobile */
                 body {
-                    padding-top: 60px !important;
+                    padding-top: 0px !important;
                 }
 
                 /* Mobile Menu Responsive */
                 .hamburger-menu {
-                    top: 70px !important;
+                    top: 10px !important;
                     left: 10px !important;
                     padding: 8px !important;
                 }
@@ -303,12 +310,12 @@
                 }
 
                 body {
-                    padding-top: 50px !important;
+                    padding-top: 0px !important;
                 }
 
                 /* Mobile Menu for small screens */
                 .hamburger-menu {
-                    top: 55px !important;
+                    top: 10px !important;
                     left: 8px !important;
                     padding: 6px !important;
                 }
@@ -711,9 +718,11 @@
                 --wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);
             }
 
-			/* Hide old hamburger menu - not used anymore */
+			/* Hamburger menu styles */
 			.hamburger-menu {
-				display: none !important;
+				display: block !important;
+				position: fixed !important;
+				z-index: 9999 !important;
 			}
 
 			/* Old bar styles - not used */
@@ -740,7 +749,7 @@
 					rgba(221, 51, 51, 0.98) 0%,
 					rgba(157, 29, 31, 0.98) 50%,
 					rgba(139, 25, 27, 0.98) 100%);
-				z-index: 10000;
+				z-index: 1000000;
 				opacity: 0;
 				visibility: hidden;
 				transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -749,8 +758,10 @@
 			}
 
 			.mobile-menu-overlay.show {
-				opacity: 1;
-				visibility: visible;
+				opacity: 1 !important;
+				visibility: visible !important;
+				display: flex !important;
+				z-index: 999999 !important;
 			}
 
 			.mobile-menu-content {
@@ -1042,6 +1053,12 @@
 				visibility: visible !important;
 			}
 
+			/* Header z-index */
+			header {
+				position: relative;
+				z-index: 100000;
+			}
+
 			/* Hamburger Button Styling */
 			.bars {
 				display: none;
@@ -1051,6 +1068,10 @@
 				background: rgba(221, 51, 51, 0.9);
 				border-radius: 5px;
 				transition: all 0.3s ease;
+				position: fixed !important;
+				top: 15px !important;
+				right: 15px !important;
+				z-index: 999999 !important;
 			}
 
 			.bars:hover {
@@ -1066,10 +1087,25 @@
 				border-radius: 2px;
 			}
 
+			.fallback-hamburger span {
+				width: 25px !important;
+				height: 3px !important;
+				background-color: white !important;
+				margin: 2px 0 !important;
+				display: block !important;
+				border-radius: 2px !important;
+			}
+
 			/* Show hamburger on mobile and hide desktop menu */
 			@media (max-width: 991px) {
 				.bars {
 					display: flex !important;
+					position: fixed !important;
+					top: 15px !important;
+					right: 15px !important;
+					z-index: 999999 !important;
+					background: rgba(221, 51, 51, 0.95) !important;
+					pointer-events: auto !important;
 				}
 
 				/* Hide desktop menu on mobile */
@@ -1790,16 +1826,11 @@
     </head>
     <body class="pace-done home page-template page-template-template-builder page-template-template-builder-php page page-id-38 wp-embed-responsive theme-gratech woocommerce-js elementor-default elementor-kit-7 elementor-page elementor-page-38 e--ua-blink e--ua-edge e--ua-webkit" data-elementor-device-mode="desktop">
 
-        <!-- Urgency Banner -->
-        <div id="urgencyBanner" style="background: linear-gradient(90deg, #ff6b6b, #ee5a24); color: white; text-align: center; padding: 10px 0; position: fixed; top: 0; width: 100%; z-index: 10000; font-size: 14px; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.2);">
-            <span id="urgencyText">KHÓA HỌC TSA 2K8 MIỄN PHÍ - CHỈ CÒN <span id="countdown">72</span> GIỜ ĐỂ ĐĂNG KÝ!</span>
-            <a href="https://www.facebook.com/share/p/1Br6gVY76b/" style="color: white; text-decoration: underline; margin-left: 10px;">ĐĂNG KÝ NGAY</a>
-            <button onclick="closeUrgencyBanner()" style="background: none; border: none; color: white; font-size: 16px; margin-left: 15px; cursor: pointer;">×</button>
-        </div>
+
         <!-- Notification Popup -->
         <div id="notificationOverlay" class="notification-overlay">
-            <div class="notification-popup">
-                <button class="close-btn" onclick="closeNotification()">&times;</button>
+            <div class="notification-popup" onclick="event.stopPropagation()">
+                <button class="close-btn" onclick="event.stopPropagation(); event.preventDefault(); closeNotification(); return false;">&times;</button>
                 <img src="./Homepage - AI4LIFE_files/nentangtsa.png" alt="TSA Course" class="popup-image">
                 <h2>Thông báo quan trọng!</h2>
                 <p style="font-size: 18px; margin-bottom: 20px; line-height: 1.5; color: #dd3333;">
@@ -1811,8 +1842,8 @@
                     Tài liệu độc quyền và bài tập thực hành<br>
                     Hỗ trợ 24/7 từ cộng đồng AECK
                 </p>
-                <button class="btn-action" onclick="registerCourse()">Đăng ký MIỄN PHÍ ngay</button>
-                <button class="btn-action btn-secondary" onclick="closeNotification()">Để sau</button>
+                <button class="btn-action" onclick="event.stopPropagation(); event.preventDefault(); registerCourse(); return false;">Đăng ký MIỄN PHÍ ngay</button>
+                <button class="btn-action btn-secondary" onclick="handleDeferButton(event)">Để sau</button>
             </div>
         </div>
 
@@ -4001,18 +4032,60 @@
     function showNotification() {
         const overlay = document.getElementById('notificationOverlay');
         if (overlay) {
-            overlay.classList.add('show');
+            overlay.style.display = 'flex';
+            // Small delay to ensure proper animation
+            setTimeout(() => {
+                overlay.classList.add('show');
+            }, 10);
+
+            // Add direct click handler to overlay
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    closeNotification();
+                }
+            });
+
+            // Add ESC key handler
+            document.addEventListener('keydown', handleNotificationKeydown);
         }
+    }
+
+    // Function to handle defer button click
+    function handleDeferButton(event) {
+        console.log('handleDeferButton called');
+        if (event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+        closeNotification();
+        return false;
     }
 
     // Function to close notification popup
     function closeNotification() {
+        console.log('closeNotification called');
         const overlay = document.getElementById('notificationOverlay');
         if (overlay) {
+            console.log('Overlay found, closing notification');
             overlay.classList.remove('show');
+            // Hide the overlay completely and clean up
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                console.log('Notification hidden');
+                // Remove all event listeners from overlay after animation
+                const newOverlay = overlay.cloneNode(true);
+                overlay.parentNode.replaceChild(newOverlay, overlay);
+            }, 300);
+        } else {
+            console.log('Overlay not found');
         }
         // Set a cookie to remember that user has seen the notification (1 hour)
         document.cookie = "notificationSeen=true; expires=" + new Date(Date.now() + 1*60*60*1000).toUTCString() + "; path=/";
+
+        // Remove keydown event listener
+        document.removeEventListener('keydown', handleNotificationKeydown);
     }
 
     // Function to handle course registration
@@ -4060,67 +4133,39 @@
         }, 1000); // Show after 1 second
     });
 
-    // Close notification when clicking outside the popup
-    document.addEventListener('click', function(event) {
+    // Handle notification click events
+    function handleNotificationClick(event) {
         const overlay = document.getElementById('notificationOverlay');
         const popup = document.querySelector('.notification-popup');
 
-        if (overlay && overlay.classList.contains('show')) {
+        // Only handle if notification is visible and click is on overlay
+        if (overlay && overlay.classList.contains('show') && overlay.style.display !== 'none') {
+            // Only close if clicking directly on the overlay background
             if (event.target === overlay && !popup.contains(event.target)) {
+                event.preventDefault();
+                event.stopPropagation();
                 closeNotification();
+                return;
             }
         }
-    });
+    }
 
-    // Close notification with Escape key
-    document.addEventListener('keydown', function(event) {
+    // Handle notification keyboard events
+    function handleNotificationKeydown(event) {
         if (event.key === 'Escape') {
             const overlay = document.getElementById('notificationOverlay');
             if (overlay && overlay.classList.contains('show')) {
+                event.preventDefault();
+                event.stopPropagation();
                 closeNotification();
             }
         }
-    });
-
-    // Urgency Banner Functions
-    function closeUrgencyBanner() {
-        const banner = document.getElementById('urgencyBanner');
-        if (banner) {
-            banner.style.display = 'none';
-            // Adjust body padding
-            document.body.style.paddingTop = '0';
-        }
     }
 
-    // Countdown timer for urgency
-    function startCountdown() {
-        const countdownElement = document.getElementById('countdown');
-        if (!countdownElement) return;
+    // Event listeners are now added dynamically when notification is shown
 
-        // Set target time (72 hours from now)
-        const targetTime = new Date().getTime() + (72 * 60 * 60 * 1000);
-
-        const timer = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = targetTime - now;
-
-            if (distance < 0) {
-                clearInterval(timer);
-                countdownElement.innerHTML = "0";
-                return;
-            }
-
-            const hours = Math.floor(distance / (1000 * 60 * 60));
-            countdownElement.innerHTML = hours;
-        }, 1000 * 60 * 60); // Update every hour
-    }
-
-    // Initialize urgency banner
+    // Initialize page
     window.addEventListener('load', function() {
-        // Add padding to body to account for fixed banner
-        const isMobile = window.innerWidth <= 768;
-        document.body.style.paddingTop = isMobile ? '60px' : '50px';
-        startCountdown();
 
         // Mobile-specific improvements
         if (isMobile) {
@@ -4155,6 +4200,263 @@
         lastTouchEnd = now;
     }, false);
 
+    // Create Mobile Menu Immediately
+    function createMobileMenuNow() {
+        console.log('Creating mobile menu now...');
+        const mobileMenuHTML = `
+            <div class="mobile-menu-overlay" id="mobileMenuOverlay" style="
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: linear-gradient(135deg, #dd3333 0%, #b92828 100%);
+                z-index: 999999;
+                display: none;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            ">
+                <div class="mobile-menu-content" style="
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 40px 30px;
+                    position: relative;
+                    overflow-y: auto;
+                ">
+                    <!-- Header với logo và nút đóng -->
+                    <div class="mobile-menu-header" style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 40px;
+                        padding-bottom: 20px;
+                        border-bottom: 2px solid rgba(255,255,255,0.2);
+                    ">
+                        <div style="display: flex; align-items: center;">
+                            <h2 style="
+                                color: white;
+                                margin: 0;
+                                font-size: 28px;
+                                font-weight: bold;
+                                text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                            ">AECK</h2>
+                            <span style="
+                                color: rgba(255,255,255,0.8);
+                                font-size: 14px;
+                                margin-left: 10px;
+                                font-weight: 300;
+                            ">TSA / HSA</span>
+                        </div>
+                        <button class="mobile-menu-close" onclick="closeMobileMenu();" style="
+                            background: rgba(255,255,255,0.1);
+                            border: 2px solid rgba(255,255,255,0.3);
+                            color: white;
+                            font-size: 24px;
+                            cursor: pointer;
+                            width: 45px;
+                            height: 45px;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">&times;</button>
+                    </div>
+
+                    <!-- Navigation Menu -->
+                    <div class="mobile-menu-nav" style="flex: 1;">
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+                            <li style="margin-bottom: 8px;">
+                                <a href="#" style="
+                                    color: white;
+                                    text-decoration: none;
+                                    font-size: 20px;
+                                    font-weight: 600;
+                                    display: block;
+                                    padding: 18px 20px;
+                                    background: rgba(255,255,255,0.1);
+                                    border-radius: 12px;
+                                    transition: all 0.3s ease;
+                                    border: 1px solid rgba(255,255,255,0.1);
+                                " onmouseover="this.style.background='rgba(255,255,255,0.2)'; this.style.transform='translateX(5px)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'; this.style.transform='translateX(0)'">
+                                    🏠 Trang chủ
+                                </a>
+                            </li>
+                            <!-- Web tài đề - Dropdown Menu -->
+                            <li style="margin-bottom: 8px;">
+                                <div onclick="toggleDropdown('webTaiDe')" style="
+                                    color: white;
+                                    text-decoration: none;
+                                    font-size: 20px;
+                                    font-weight: 600;
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    padding: 18px 20px;
+                                    background: rgba(255,255,255,0.15);
+                                    border-radius: 12px;
+                                    transition: all 0.3s ease;
+                                    border: 1px solid rgba(255,255,255,0.2);
+                                    cursor: pointer;
+                                " onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">
+                                    <span>📚 Web tài đề</span>
+                                    <span id="webTaiDeArrow" style="transition: transform 0.3s ease;">▼</span>
+                                </div>
+                                <div id="webTaiDe" style="
+                                    max-height: 0;
+                                    overflow: hidden;
+                                    transition: max-height 0.4s ease;
+                                    margin-top: 8px;
+                                ">
+                                    <a href="#" style="
+                                        color: rgba(255,255,255,0.9);
+                                        text-decoration: none;
+                                        font-size: 18px;
+                                        font-weight: 500;
+                                        display: block;
+                                        padding: 15px 25px;
+                                        background: rgba(0,0,0,0.2);
+                                        border-radius: 8px;
+                                        transition: all 0.3s ease;
+                                        border: 1px solid rgba(255,255,255,0.1);
+                                        margin-bottom: 6px;
+                                    " onmouseover="this.style.background='rgba(0,0,0,0.3)'; this.style.transform='translateX(5px)'" onmouseout="this.style.background='rgba(0,0,0,0.2)'; this.style.transform='translateX(0)'">
+                                        📝 TSA 2025
+                                    </a>
+                                    <a href="#" style="
+                                        color: rgba(255,255,255,0.9);
+                                        text-decoration: none;
+                                        font-size: 18px;
+                                        font-weight: 500;
+                                        display: block;
+                                        padding: 15px 25px;
+                                        background: rgba(0,0,0,0.2);
+                                        border-radius: 8px;
+                                        transition: all 0.3s ease;
+                                        border: 1px solid rgba(255,255,255,0.1);
+                                        margin-bottom: 6px;
+                                    " onmouseover="this.style.background='rgba(0,0,0,0.3)'; this.style.transform='translateX(5px)'" onmouseout="this.style.background='rgba(0,0,0,0.2)'; this.style.transform='translateX(0)'">
+                                        📋 HSA 2025
+                                    </a>
+                                    <a href="#" style="
+                                        color: rgba(255,255,255,0.9);
+                                        text-decoration: none;
+                                        font-size: 18px;
+                                        font-weight: 500;
+                                        display: block;
+                                        padding: 15px 25px;
+                                        background: rgba(0,0,0,0.2);
+                                        border-radius: 8px;
+                                        transition: all 0.3s ease;
+                                        border: 1px solid rgba(255,255,255,0.1);
+                                        margin-bottom: 6px;
+                                    " onmouseover="this.style.background='rgba(0,0,0,0.3)'; this.style.transform='translateX(5px)'" onmouseout="this.style.background='rgba(0,0,0,0.2)'; this.style.transform='translateX(0)'">
+                                        📖 Ebook AECK
+                                    </a>
+                                    <a href="#" style="
+                                        color: rgba(255,255,255,0.9);
+                                        text-decoration: none;
+                                        font-size: 18px;
+                                        font-weight: 500;
+                                        display: block;
+                                        padding: 15px 25px;
+                                        background: rgba(0,0,0,0.2);
+                                        border-radius: 8px;
+                                        transition: all 0.3s ease;
+                                        border: 1px solid rgba(255,255,255,0.1);
+                                        margin-bottom: 6px;
+                                    " onmouseover="this.style.background='rgba(0,0,0,0.3)'; this.style.transform='translateX(5px)'" onmouseout="this.style.background='rgba(0,0,0,0.2)'; this.style.transform='translateX(0)'">
+                                        📁 Tài liệu TSA/HSA 2024
+                                    </a>
+                                    <a href="#" style="
+                                        color: rgba(255,255,255,0.9);
+                                        text-decoration: none;
+                                        font-size: 18px;
+                                        font-weight: 500;
+                                        display: block;
+                                        padding: 15px 25px;
+                                        background: rgba(0,0,0,0.2);
+                                        border-radius: 8px;
+                                        transition: all 0.3s ease;
+                                        border: 1px solid rgba(255,255,255,0.1);
+                                        margin-bottom: 0;
+                                    " onmouseover="this.style.background='rgba(0,0,0,0.3)'; this.style.transform='translateX(5px)'" onmouseout="this.style.background='rgba(0,0,0,0.2)'; this.style.transform='translateX(0)'">
+                                        💼 Mua File Word
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="mobile-menu-footer" style="
+                        margin-top: 30px;
+                        padding-top: 20px;
+                        border-top: 2px solid rgba(255,255,255,0.2);
+                        text-align: center;
+                    ">
+                        <p style="
+                            color: rgba(255,255,255,0.8);
+                            font-size: 14px;
+                            margin: 0;
+                            font-weight: 300;
+                        ">© 2025 AECK - Hệ sinh thái luyện thi TSA/HSA</p>
+                        <div style="margin-top: 15px;">
+                            <a href="#" style="
+                                color: rgba(255,255,255,0.8);
+                                text-decoration: none;
+                                margin: 0 10px;
+                                font-size: 24px;
+                                transition: all 0.3s ease;
+                            " onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.8)'">📘</a>
+                            <a href="#" style="
+                                color: rgba(255,255,255,0.8);
+                                text-decoration: none;
+                                margin: 0 10px;
+                                font-size: 24px;
+                                transition: all 0.3s ease;
+                            " onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.8)'">📞</a>
+                            <a href="#" style="
+                                color: rgba(255,255,255,0.8);
+                                text-decoration: none;
+                                margin: 0 10px;
+                                font-size: 24px;
+                                transition: all 0.3s ease;
+                            " onmouseover="this.style.color='white'" onmouseout="this.style.color='rgba(255,255,255,0.8)'">✉️</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', mobileMenuHTML);
+        console.log('Mobile menu HTML added to body');
+    }
+
+    // Toggle Dropdown Function
+    function toggleDropdown(dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+        const arrow = document.getElementById(dropdownId + 'Arrow');
+
+        if (dropdown && arrow) {
+            const isOpen = dropdown.style.maxHeight && dropdown.style.maxHeight !== '0px';
+
+            if (isOpen) {
+                // Close dropdown
+                dropdown.style.maxHeight = '0px';
+                arrow.style.transform = 'rotate(0deg)';
+                arrow.innerHTML = '▼';
+            } else {
+                // Open dropdown
+                dropdown.style.maxHeight = dropdown.scrollHeight + 'px';
+                arrow.style.transform = 'rotate(180deg)';
+                arrow.innerHTML = '▲';
+            }
+        }
+    }
+
     // Mobile Menu Functionality
     function initMobileMenu() {
         console.log('Initializing mobile menu...');
@@ -4166,7 +4468,7 @@
                     <div class="mobile-menu-content">
                         <div class="mobile-menu-header">
                             <h3 style="color: white; margin: 0;">AECK Menu</h3>
-                            <button class="mobile-menu-close" onclick="closeMobileMenu()">&times;</button>
+                            <button class="mobile-menu-close" onclick="event.stopPropagation(); closeMobileMenu();">&times;</button>
                         </div>
                         <nav class="mobile-menu-nav">
                             <ul>
@@ -4211,26 +4513,113 @@
 
         // Add click event to hamburger menu
         const hamburgerBtn = document.querySelector('.bars');
+        console.log('Hamburger button found:', hamburgerBtn);
         if (hamburgerBtn) {
-            hamburgerBtn.addEventListener('click', function() {
+            hamburgerBtn.addEventListener('click', function(e) {
+                console.log('Hamburger clicked!');
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Check if mobile menu exists, if not create it
+                let overlay = document.getElementById('mobileMenuOverlay');
+                if (!overlay) {
+                    console.log('Mobile menu not found, creating it...');
+                    createMobileMenuNow();
+                    overlay = document.getElementById('mobileMenuOverlay');
+                }
+
+                if (overlay) {
+                    console.log('Opening mobile menu...');
+                    overlay.classList.add('show');
+                    overlay.style.display = 'flex';
+                    overlay.style.opacity = '1';
+                    overlay.style.visibility = 'visible';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    console.log('Failed to create mobile menu');
+                }
+            });
+            console.log('Event listener added to hamburger');
+        } else {
+            console.log('Hamburger button not found! Creating fallback...');
+            // Create a fallback hamburger button
+            const fallbackBtn = document.createElement('div');
+            fallbackBtn.className = 'bars fallback-hamburger';
+            fallbackBtn.innerHTML = '<span></span><span></span><span></span>';
+            fallbackBtn.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                display: flex;
+                flex-direction: column;
+                cursor: pointer;
+                padding: 10px;
+                background: rgba(221, 51, 51, 0.9);
+                border-radius: 5px;
+                z-index: 999999;
+            `;
+            fallbackBtn.addEventListener('click', function(e) {
+                console.log('Fallback hamburger clicked!');
+                e.preventDefault();
+                e.stopPropagation();
                 openMobileMenu();
             });
+            document.body.appendChild(fallbackBtn);
+            console.log('Fallback hamburger created');
         }
     }
 
     function openMobileMenu() {
+        console.log('openMobileMenu called');
         const overlay = document.getElementById('mobileMenuOverlay');
+        console.log('Mobile menu overlay found:', overlay);
         if (overlay) {
+            console.log('Adding show class to overlay');
             overlay.classList.add('show');
             document.body.style.overflow = 'hidden';
+
+            // Force display for debugging
+            overlay.style.display = 'flex';
+            overlay.style.opacity = '1';
+            overlay.style.visibility = 'visible';
+
+            // Hide other overlays that might interfere
+            const notificationOverlay = document.getElementById('notificationOverlay');
+            if (notificationOverlay) {
+                notificationOverlay.style.display = 'none';
+            }
+
+            const urgencyBanner = document.getElementById('urgencyBanner');
+            if (urgencyBanner) {
+                urgencyBanner.style.display = 'none';
+            }
+            console.log('Mobile menu should be visible now');
+        } else {
+            console.log('Mobile menu overlay not found!');
         }
     }
 
     function closeMobileMenu() {
+        console.log('Closing mobile menu...');
         const overlay = document.getElementById('mobileMenuOverlay');
         if (overlay) {
             overlay.classList.remove('show');
+            overlay.style.display = 'none';
+            overlay.style.opacity = '0';
+            overlay.style.visibility = 'hidden';
             document.body.style.overflow = '';
+            console.log('Mobile menu closed');
+
+            // Restore other overlays
+            const notificationOverlay = document.getElementById('notificationOverlay');
+            if (notificationOverlay && notificationOverlay.classList.contains('show')) {
+                notificationOverlay.style.display = 'flex';
+            }
+
+            const urgencyBanner = document.getElementById('urgencyBanner');
+            if (urgencyBanner) {
+                urgencyBanner.style.display = 'block';
+            }
         }
     }
 
@@ -4256,6 +4645,12 @@
 
     // Initialize mobile menu when page loads
     window.addEventListener('load', function() {
+        initMobileMenu();
+    });
+
+    // Also try to initialize after DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded, initializing mobile menu...');
         initMobileMenu();
     });
 </script>

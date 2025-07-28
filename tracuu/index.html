@@ -1337,39 +1337,38 @@
             <div class="modal-content">
                 <div class="modal-header" style="background: linear-gradient(135deg, #E63946, #F77F00); color: white;">
                     <h5 class="modal-title" id="updateNotificationModalLabel">
-                        <i class="fas fa-info-circle me-2"></i>Thông báo cập nhật dữ liệu
+                        <i class="fas fa-rocket me-2"></i>Dữ liệu mới 2025 - Cập nhật hoàn toàn!
                     </h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-warning">
+                    <div class="alert alert-success">
                         <i class="fas fa-calendar-alt me-2"></i>
-                        <strong>Cập nhật:</strong> 18/07/2025
+                        <strong>Cập nhật mới:</strong> Tháng 1/2025
                     </div>
+
+                    <div class="alert alert-primary">
+                        <i class="fas fa-star me-2"></i>
+                        <strong>Tin tuyệt vời!</strong> Dữ liệu quy đổi điểm đã được cập nhật hoàn toàn mới cho năm 2025!
+                    </div>
+
                     <div class="mb-3">
-                        <h6 class="text-primary"><i class="fas fa-university me-2"></i>Thông tin quy đổi điểm:</h6>
-                        <p class="mb-3">Thông tin quy đổi được cập nhật tới ngày <strong>18/07/2025</strong>.</p>
+                        <h6 class="text-primary"><i class="fas fa-university me-2"></i>Dữ liệu mới 2025:</h6>
+                        <p class="mb-3">Tất cả thông tin quy đổi điểm đã được cập nhật với <strong>dữ liệu chính thức năm 2025</strong> từ các trường đại học.</p>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="card border-success">
                                     <div class="card-header bg-success text-white">
-                                        <h6 class="mb-0"><i class="fas fa-check-circle me-2"></i>Dữ liệu 2025 đầy đủ</h6>
+                                        <h6 class="mb-0"><i class="fas fa-check-circle me-2"></i>Dữ liệu 2025 hoàn toàn mới</h6>
                                     </div>
                                     <div class="card-body">
-                                        <p class="mb-0"><strong>Đại học Bách Khoa Hà Nội</strong></p>
-                                        <small class="text-muted">Sử dụng toàn bộ dữ liệu 2025</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card border-warning">
-                                    <div class="card-header bg-warning text-dark">
-                                        <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Dữ liệu hỗn hợp</h6>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="mb-0"><strong>Các trường đại học khác</strong></p>
-                                        <small class="text-muted">Sử dụng dữ liệu 2025 trên nền 2024</small>
+                                        <ul class="list-unstyled mb-0">
+                                            <li><i class="fas fa-check text-success me-2"></i><strong>Tất cả các trường đại học</strong></li>
+                                            <li><i class="fas fa-check text-success me-2"></i><strong>Phương thức xét tuyển mới nhất</strong></li>
+                                            <li><i class="fas fa-check text-success me-2"></i><strong>Bảng quy đổi điểm cập nhật</strong></li>
+                                            <li><i class="fas fa-check text-success me-2"></i><strong>Dữ liệu chính thức từ Bộ GD&ĐT</strong></li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -1378,12 +1377,12 @@
 
                     <div class="alert alert-info">
                         <i class="fas fa-lightbulb me-2"></i>
-                        <strong>Lưu ý:</strong> Dữ liệu được cập nhật liên tục để đảm bảo độ chính xác cao nhất cho việc tra cứu và quy đổi điểm.
+                        <strong>Lưu ý:</strong> Dữ liệu được đồng bộ từ hệ thống chính thức và cập nhật liên tục để đảm bảo độ chính xác cao nhất cho việc tra cứu và quy đổi điểm năm 2025.
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <i class="fas fa-check me-2"></i>Đã hiểu
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                        <i class="fas fa-thumbs-up me-2"></i>Tuyệt vời! Bắt đầu tra cứu
                     </button>
                 </div>
             </div>
@@ -1835,8 +1834,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxbtIj7OMS6FK_o3PXWOvUrrypJocnFTFE0mVdq2z99jdMOe-Rkh1DLV4h2wuPT5fmK/exec";
-        
+        const API_URL = "https://script.google.com/macros/s/AKfycbzMY8TErxagRPZdiUVi8n6e10nsta7J5nzckzpPvxbmnj2wEaGheBIqQcHOBbbn1E9K/exec";
+
+        // Biến lưu trữ toàn bộ dữ liệu
+        let allData = [];
+
         // Hàm chuyển chuỗi có dấu sang không dấu
         function toSlug(str) {
             return str.replace(/Đ/g, "D")
@@ -1845,6 +1847,62 @@
                     .replace(/[̀-ͯ]/g, "")
                     .replace(/[^a-zA-Z0-9]/g, "")
                     .toLowerCase();
+        }
+
+        // Hàm quy đổi điểm ở phía client (từ web HM)
+        function convertScoreClient(allData, truong, method, score) {
+            // 1. Lọc rows cùng trường
+            const rows = allData.filter(r => r["Trường"] === truong);
+            if (!rows.length) {
+                return { error: `Không tìm thấy dữ liệu cho trường "${truong}"` };
+            }
+
+            // 2. Tìm sourceRow
+            const src = rows.find(r => r["Phương thức"] === method);
+            if (!src) {
+                return { error: `Không tìm thấy phương thức "${method}"` };
+            }
+
+            // 3. Lấy và strip BOM + trim key, rồi lọc "Khoảng"
+            const rangeKeys = Object.keys(src).filter(k => {
+                const cleanKey = k.replace(/^\uFEFF/, "").trim().toLowerCase();
+                const v = src[k] + "";
+                return cleanKey.startsWith("khoảng")
+                    && v.trim() !== ""
+                    && /[–—-]/.test(v);
+            });
+
+            // 4. Tìm khoảng chứa điểm
+            let pickKey = null, minSrc = 0, maxSrc = 0;
+            for (let k of rangeKeys) {
+                const raw = (src[k] + "").replace(/[–—]/g, "-");
+                const [a, b] = raw.split("-").map(s => s.trim());
+                const n1 = parseFloat(a.replace(/[^0-9.]/g, ""));
+                const n2 = parseFloat(b.replace(/[^0-9.]/g, ""));
+                if (!isNaN(n1) && !isNaN(n2) && score >= n1 && score <= n2) {
+                    pickKey = k; minSrc = n1; maxSrc = n2;
+                    break;
+                }
+            }
+            if (!pickKey) {
+                return { error: "Điểm của bạn chưa nằm trong bất kỳ khoảng nào." };
+            }
+
+            // 5. Nội suy cho các phương thức khác
+            const result = {};
+            rows.forEach(r => {
+                if (r["Phương thức"] === method) return;
+                const raw = (r[pickKey] + "").replace(/[–—]/g, "-");
+                const [a, b] = raw.split("-").map(s => s.trim());
+                const t1 = parseFloat(a.replace(/[^0-9.]/g, ""));
+                const t2 = parseFloat(b.replace(/[^0-9.]/g, ""));
+                if (!isNaN(t1) && !isNaN(t2)) {
+                    const v = t1 + (score - minSrc) * (t2 - t1) / (maxSrc - minSrc);
+                    result[r["Phương thức"]] = parseFloat(v.toFixed(2));
+                }
+            });
+
+            return result;
         }
 
         // Lấy danh sách trường khi trang được tải
@@ -1891,12 +1949,19 @@
                 certificateModal.show();
             });
 
-            // Lấy danh sách trường
-            fetch(`${API_URL}?action=getTruongs`)
+            // Hiển thị loading
+            truongSelect.innerHTML = '<option value="">Đang tải danh sách các trường...</option>';
+
+            // Lấy toàn bộ dữ liệu một lần
+            fetch(`${API_URL}?action=getAllData`)
                 .then(res => res.json())
                 .then(data => {
+                    allData = data;
+
+                    // Đổ dropdown trường
+                    const truongs = Array.from(new Set(data.map(r => r["Trường"])));
                     truongSelect.innerHTML = '<option value="">Chọn trường</option>';
-                    data.forEach(truong => {
+                    truongs.forEach(truong => {
                         const option = document.createElement('option');
                         option.value = truong;
                         option.textContent = truong;
@@ -1904,8 +1969,8 @@
                     });
                 })
                 .catch(error => {
-                    truongSelect.innerHTML = '<option value="">Lỗi khi tải danh sách trường</option>';
-                    console.error('Error:', error);
+                    console.error('Lỗi khi tải dữ liệu:', error);
+                    truongSelect.innerHTML = '<option value="">Lỗi tải dữ liệu</option>';
                 });
 
             // Xử lý khi chọn trường
@@ -1924,22 +1989,21 @@
                     document.getElementById('vnu-school').value = '';
                 }
 
-                fetch(`${API_URL}?action=getPhuongThuc&truong=${encodeURIComponent(truong)}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        phuongthucSelect.innerHTML = '<option value="">Chọn phương thức xét tuyển</option>';
-                        data.forEach(method => {
-                            const option = document.createElement('option');
-                            option.value = method;
-                            option.textContent = method;
-                            phuongthucSelect.appendChild(option);
-                        });
-                        phuongthucSelect.disabled = false;
-                    })
-                    .catch(error => {
-                        phuongthucSelect.innerHTML = '<option value="">Lỗi khi tải phương thức</option>';
-                        console.error('Error:', error);
-                    });
+                // Lọc phương thức từ dữ liệu đã tải
+                const methods = allData
+                    .filter(r => r["Trường"] === truong)
+                    .map(r => r["Phương thức"])
+                    .filter(m => m?.trim());
+                const uniqueMethods = Array.from(new Set(methods));
+
+                phuongthucSelect.innerHTML = '<option value="">Chọn phương thức xét tuyển</option>';
+                uniqueMethods.forEach(method => {
+                    const option = document.createElement('option');
+                    option.value = method;
+                    option.textContent = method;
+                    phuongthucSelect.appendChild(option);
+                });
+                phuongthucSelect.disabled = false;
             });
 
             // Xử lý khi chọn phương thức
@@ -2034,18 +2098,17 @@
                     </div>
                 `;
 
-                // Gọi API quy đổi điểm
-                fetch(`${API_URL}?action=convertScore&truong=${encodeURIComponent(truong)}&method=${encodeURIComponent(method)}&score=${score}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.error) {
-                            resultContent.innerHTML = `
-                                <div class="alert alert-danger">
-                                    <i class="fas fa-exclamation-circle me-2"></i>${data.error}
-                                </div>
-                            `;
-                            return;
-                        }
+                // Gọi hàm convertScoreClient
+                const data = convertScoreClient(allData, truong, method, score);
+
+                if (data.error) {
+                    resultContent.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i>${data.error}
+                        </div>
+                    `;
+                    return;
+                }
 
                         // Tạo bảng kết quả
                         let html = `
@@ -2356,19 +2419,10 @@
 
                         resultContent.innerHTML = html;
 
-                        // Cập nhật sự kiện in kết quả
-                        printBtn.onclick = function() {
-                            window.print();
-                        };
-                    })
-                    .catch(error => {
-                        resultContent.innerHTML = `
-                            <div class="alert alert-danger">
-                                <i class="fas fa-exclamation-circle me-2"></i>Lỗi khi xử lý dữ liệu. Vui lòng thử lại sau.
-                            </div>
-                        `;
-                        console.error('Error:', error);
-                    });
+                // Cập nhật sự kiện in kết quả
+                printBtn.onclick = function() {
+                    window.print();
+                };
             });
 
             // Xử lý URL parameters
